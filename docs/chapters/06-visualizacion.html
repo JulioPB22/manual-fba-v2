@@ -1,0 +1,1568 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Manual en español sobre Flux Balance Analysis (FBA) con Python y CobraPy, orientado a estudiantes de bioinformática, biología computacional e ingeniería biotecnológica de nivel universitario y posgrado.">
+
+<title>9&nbsp; Visualización Científica con Matplotlib – Análisis de Balance de Flujos Metabólicos con Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/07-paquetes-buenas-practicas.html" rel="next">
+<link href="../chapters/05-control-flujo.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-8a36787d37a309c00503ce8984a43a6b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7e29095fd6801b388fb53898fd2568a8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Playfair+Display:ital,wght@0,700;1,400&amp;family=Source+Sans+3:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Análisis de Balance de Flujos Metabólicos con Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Buscar"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navegación de palanca" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/[tu-usuario]/manual-fba-python"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/[tu-usuario]/manual-fba-python" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../Análisis-de-Balance-de-Flujos-Metabólicos-con-Python.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../Análisis-de-Balance-de-Flujos-Metabólicos-con-Python.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-instalacion.html">Parte I — Fundamentos de Python para Bioinformáticos</a></li><li class="breadcrumb-item"><a href="../chapters/06-visualizacion.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Visualización Científica con Matplotlib</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Prefacio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../prologo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Prólogo al Estudiante</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../indice-general.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Índice General</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Parte I — Fundamentos de Python para Bioinformáticos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-instalacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Instalación de Python e Introducción al Entorno de Desarrollo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-tipos-datos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tipos de Datos y Estructuras en Python</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-numpy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">NumPy — Vectores y Matrices para Biología Computacional</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-pandas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pandas — DataFrames para Análisis Biológico</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-control-flujo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estructuras de Control de Flujo y Funciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-visualizacion.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Visualización Científica con Matplotlib</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-paquetes-buenas-practicas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">07-paquetes-buenas-practicas</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Parte II — Sistemas Biológicos y Modelado</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-sistemas-biologicos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">08-sistemas-biologicos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-tipos-modelos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">09-tipos-modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-redes-grafos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">10-redes-grafos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-metabolismo-matematica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">11-metabolismo-matematica</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Parte III — Flux Balance Analysis con CobraPy</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-fundamentos-fba.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">12-fundamentos-fba</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-formulacion-matematica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">13-formulacion-matematica</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-intro-cobrapy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">14-intro-cobrapy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-analisis-resultados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">15-analisis-resultados</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/16-casos-practicos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">16-casos-practicos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/17-visualizacion-redes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">17-visualizacion-redes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/18-errores-comunes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">18-errores-comunes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/19-proyecto-final.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">19-proyecto-final</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/A-instalacion-detallada.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">A-instalacion-detallada</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/B-datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">B-datasets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/C-glosario.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">C-glosario</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/D-como-citar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">D-como-citar</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Referencias</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">En este capítulo</h2>
+   
+  <ul>
+  <li><a href="#motivación-biológica" id="toc-motivación-biológica" class="nav-link active" data-scroll-target="#motivación-biológica"><span class="header-section-number">9.1</span> 🧬 Motivación biológica</a></li>
+  <li><a href="#arquitectura-de-matplotlib" id="toc-arquitectura-de-matplotlib" class="nav-link" data-scroll-target="#arquitectura-de-matplotlib"><span class="header-section-number">9.2</span> 6.1 Arquitectura de Matplotlib</a></li>
+  <li><a href="#gráficas-fundamentales-con-contexto-metabólico" id="toc-gráficas-fundamentales-con-contexto-metabólico" class="nav-link" data-scroll-target="#gráficas-fundamentales-con-contexto-metabólico"><span class="header-section-number">9.3</span> 6.2 Gráficas Fundamentales con Contexto Metabólico</a>
+  <ul class="collapse">
+  <li><a href="#gráfica-de-barras-distribución-de-flujos-por-subsistema" id="toc-gráfica-de-barras-distribución-de-flujos-por-subsistema" class="nav-link" data-scroll-target="#gráfica-de-barras-distribución-de-flujos-por-subsistema"><span class="header-section-number">9.3.1</span> Gráfica de barras: distribución de flujos por subsistema</a></li>
+  <li><a href="#gráfica-de-dispersión-correlación-flujo-aeróbico-vs.-anaeróbico" id="toc-gráfica-de-dispersión-correlación-flujo-aeróbico-vs.-anaeróbico" class="nav-link" data-scroll-target="#gráfica-de-dispersión-correlación-flujo-aeróbico-vs.-anaeróbico"><span class="header-section-number">9.3.2</span> Gráfica de dispersión: correlación flujo aeróbico vs.&nbsp;anaeróbico</a></li>
+  <li><a href="#histograma-y-distribución-de-flujos" id="toc-histograma-y-distribución-de-flujos" class="nav-link" data-scroll-target="#histograma-y-distribución-de-flujos"><span class="header-section-number">9.3.3</span> Histograma y distribución de flujos</a></li>
+  </ul></li>
+  <li><a href="#figuras-multi-panel-y-anotaciones" id="toc-figuras-multi-panel-y-anotaciones" class="nav-link" data-scroll-target="#figuras-multi-panel-y-anotaciones"><span class="header-section-number">9.4</span> 6.3 Figuras Multi-Panel y Anotaciones</a></li>
+  <li><a href="#exportación-para-publicación" id="toc-exportación-para-publicación" class="nav-link" data-scroll-target="#exportación-para-publicación"><span class="header-section-number">9.5</span> 6.4 Exportación para Publicación</a></li>
+  <li><a href="#ejercicio-integrador-visualizar-distribución-de-flujos-fba" id="toc-ejercicio-integrador-visualizar-distribución-de-flujos-fba" class="nav-link" data-scroll-target="#ejercicio-integrador-visualizar-distribución-de-flujos-fba"><span class="header-section-number">9.6</span> 6.5 🔬 Ejercicio Integrador: Visualizar Distribución de Flujos FBA</a></li>
+  <li><a href="#para-profundizar" id="toc-para-profundizar" class="nav-link" data-scroll-target="#para-profundizar"><span class="header-section-number">9.7</span> 📚 Para Profundizar</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/[tu-usuario]/manual-fba-python/edit/main/chapters/06-visualizacion.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/[tu-usuario]/manual-fba-python/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-instalacion.html">Parte I — Fundamentos de Python para Bioinformáticos</a></li><li class="breadcrumb-item"><a href="../chapters/06-visualizacion.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Visualización Científica con Matplotlib</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Visualización Científica con Matplotlib</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="objetivos-de-aprendizaje" class="level4 objetivos-box">
+<h4 class="anchored" data-anchor-id="objetivos-de-aprendizaje">Objetivos de aprendizaje</h4>
+<p>Al finalizar este capítulo serás capaz de:</p>
+<ul>
+<li>Comprender la arquitectura jerárquica de Matplotlib: <code>Figure</code>, <code>Axes</code> y <em>artists</em>.</li>
+<li>Construir gráficas de línea, barras, dispersión e histogramas con calidad de publicación.</li>
+<li>Personalizar todos los elementos visuales: etiquetas, leyendas, escalas, colores y anotaciones.</li>
+<li>Exportar figuras en formatos de alta resolución para artículos científicos (PDF, SVG, PNG 300 dpi).</li>
+<li>Crear visualizaciones directamente relevantes para FBA: distribuciones de flujo y mapas de subsistemas.</li>
+</ul>
+</section>
+<section id="motivación-biológica" class="level2" data-number="9.1">
+<h2 data-number="9.1" class="anchored" data-anchor-id="motivación-biológica"><span class="header-section-number">9.1</span> 🧬 Motivación biológica</h2>
+<p>La visualización de flujos metabólicos no es decorativa: es una herramienta epistémica. Una distribución de flujo bien graficada permite identificar cuellos de botella, detectar reacciones inactivas y comparar fenotipos metabólicos entre condiciones en segundos, algo que una tabla de números haría en minutos con mayor margen de error. Aprender Matplotlib con contexto metabólico desde este capítulo significa que cuando llegues a la Parte III, ya tendrás el lenguaje visual necesario para interpretar los resultados de CobraPy.</p>
+<hr>
+</section>
+<section id="arquitectura-de-matplotlib" class="level2" data-number="9.2">
+<h2 data-number="9.2" class="anchored" data-anchor-id="arquitectura-de-matplotlib"><span class="header-section-number">9.2</span> 6.1 Arquitectura de Matplotlib</h2>
+<p>Matplotlib organiza sus gráficas en una jerarquía de objetos:</p>
+<ul>
+<li><strong><code>Figure</code></strong>: el lienzo completo (la “hoja de papel”).</li>
+<li><strong><code>Axes</code></strong>: el área de graficación dentro de la Figure (los “ejes”). Una Figure puede contener múltiples Axes.</li>
+<li><strong><em>Artists</em></strong>: todo lo que se dibuja sobre los Axes: líneas, barras, texto, imágenes.</li>
+</ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="co"># ── Modo orientado a objetos (recomendado para código científico) ──</span></span>
+<span id="cb1-5"><a href="#cb1-5"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))   <span class="co"># Figure + 1 Axes</span></span>
+<span id="cb1-6"><a href="#cb1-6"></a></span>
+<span id="cb1-7"><a href="#cb1-7"></a>ax.plot([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>])            <span class="co"># agregar un artista (línea)</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a>ax.set_title(<span class="st">"Mi primera figura"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a>ax.set_xlabel(<span class="st">"Tiempo (h)"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10"></a>ax.set_ylabel(<span class="st">"Concentración (mM)"</span>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a>plt.tight_layout()</span>
+<span id="cb1-13"><a href="#cb1-13"></a>plt.savefig(<span class="st">"figura_base.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span>
+<span id="cb1-14"><a href="#cb1-14"></a>plt.show()</span>
+<span id="cb1-15"><a href="#cb1-15"></a></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co"># ── Diferencia con el modo funcional (pyplot) ──</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co"># plt.plot(), plt.xlabel(), etc. — menos control, no recomendado para</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co"># figuras complejas ni multi-panel</span></span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>📐 OOP vs.&nbsp;pyplot
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El modo orientado a objetos (<code>fig, ax = plt.subplots()</code>) es el estándar para código reproducible. El modo <code>pyplot</code> (<code>plt.plot()</code>) es conveniente para exploración rápida en notebooks. En este manual usaremos siempre el modo OOP para garantizar que las figuras sean reproducibles y fáciles de modificar.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="gráficas-fundamentales-con-contexto-metabólico" class="level2" data-number="9.3">
+<h2 data-number="9.3" class="anchored" data-anchor-id="gráficas-fundamentales-con-contexto-metabólico"><span class="header-section-number">9.3</span> 6.2 Gráficas Fundamentales con Contexto Metabólico</h2>
+<section id="gráfica-de-barras-distribución-de-flujos-por-subsistema" class="level3" data-number="9.3.1">
+<h3 data-number="9.3.1" class="anchored" data-anchor-id="gráfica-de-barras-distribución-de-flujos-por-subsistema"><span class="header-section-number">9.3.1</span> Gráfica de barras: distribución de flujos por subsistema</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># Datos: flujo promedio por subsistema metabólico</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a>subsistemas <span class="op">=</span> [<span class="st">"Glycolysis"</span>, <span class="st">"TCA cycle"</span>, <span class="st">"Pentose-P"</span>, <span class="st">"Amino acid"</span>, <span class="st">"Nucleotide"</span>]</span>
+<span id="cb2-6"><a href="#cb2-6"></a>flujos_med  <span class="op">=</span> [<span class="fl">7.42</span>, <span class="fl">3.12</span>, <span class="fl">1.85</span>, <span class="fl">0.94</span>, <span class="fl">0.23</span>]</span>
+<span id="cb2-7"><a href="#cb2-7"></a>colores     <span class="op">=</span> [<span class="st">"#1B4F72"</span>, <span class="st">"#117A65"</span>, <span class="st">"#B7950B"</span>, <span class="st">"#5C5C6E"</span>, <span class="st">"#922B21"</span>]</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb2-10"><a href="#cb2-10"></a></span>
+<span id="cb2-11"><a href="#cb2-11"></a>barras <span class="op">=</span> ax.bar(subsistemas, flujos_med, color<span class="op">=</span>colores,</span>
+<span id="cb2-12"><a href="#cb2-12"></a>                edgecolor<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>, width<span class="op">=</span><span class="fl">0.65</span>)</span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co"># Etiquetas sobre las barras</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a><span class="cf">for</span> barra, valor <span class="kw">in</span> <span class="bu">zip</span>(barras, flujos_med):</span>
+<span id="cb2-16"><a href="#cb2-16"></a>    ax.text(barra.get_x() <span class="op">+</span> barra.get_width() <span class="op">/</span> <span class="dv">2</span>,</span>
+<span id="cb2-17"><a href="#cb2-17"></a>            barra.get_height() <span class="op">+</span> <span class="fl">0.08</span>,</span>
+<span id="cb2-18"><a href="#cb2-18"></a>            <span class="ss">f"</span><span class="sc">{</span>valor<span class="sc">:.2f}</span><span class="ss">"</span>,</span>
+<span id="cb2-19"><a href="#cb2-19"></a>            ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"bottom"</span>, fontsize<span class="op">=</span><span class="dv">9</span>, color<span class="op">=</span><span class="st">"#1C1C1E"</span>)</span>
+<span id="cb2-20"><a href="#cb2-20"></a></span>
+<span id="cb2-21"><a href="#cb2-21"></a>ax.set_title(<span class="st">"Flujo promedio por subsistema metabólico</span><span class="ch">\n</span><span class="st">(modelo E. coli core — condición aeróbica)"</span>,</span>
+<span id="cb2-22"><a href="#cb2-22"></a>             fontsize<span class="op">=</span><span class="dv">12</span>, pad<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb2-23"><a href="#cb2-23"></a>ax.set_ylabel(<span class="st">"Flujo promedio (mmol/gDW/h)"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb2-24"><a href="#cb2-24"></a>ax.set_ylim(<span class="dv">0</span>, <span class="bu">max</span>(flujos_med) <span class="op">*</span> <span class="fl">1.2</span>)</span>
+<span id="cb2-25"><a href="#cb2-25"></a>ax.spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb2-26"><a href="#cb2-26"></a>ax.tick_params(axis<span class="op">=</span><span class="st">"x"</span>, rotation<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb2-27"><a href="#cb2-27"></a></span>
+<span id="cb2-28"><a href="#cb2-28"></a>plt.tight_layout()</span>
+<span id="cb2-29"><a href="#cb2-29"></a>plt.savefig(<span class="st">"flujos_subsistemas.pdf"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb2-30"><a href="#cb2-30"></a>plt.show()</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="gráfica-de-dispersión-correlación-flujo-aeróbico-vs.-anaeróbico" class="level3" data-number="9.3.2">
+<h3 data-number="9.3.2" class="anchored" data-anchor-id="gráfica-de-dispersión-correlación-flujo-aeróbico-vs.-anaeróbico"><span class="header-section-number">9.3.2</span> Gráfica de dispersión: correlación flujo aeróbico vs.&nbsp;anaeróbico</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb3-2"><a href="#cb3-2"></a>n_rxn <span class="op">=</span> <span class="dv">40</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>flujos_aerobico   <span class="op">=</span> np.<span class="bu">abs</span>(np.random.normal(<span class="dv">5</span>, <span class="dv">3</span>, n_rxn))</span>
+<span id="cb3-4"><a href="#cb3-4"></a>flujos_anaerobico <span class="op">=</span> flujos_aerobico <span class="op">*</span> np.random.uniform(<span class="fl">0.2</span>, <span class="fl">1.8</span>, n_rxn)</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># Clasificar puntos por categoría de cambio</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>delta <span class="op">=</span> flujos_anaerobico <span class="op">-</span> flujos_aerobico</span>
+<span id="cb3-8"><a href="#cb3-8"></a>colores_pts <span class="op">=</span> np.where(delta <span class="op">&gt;</span> <span class="dv">1</span>, <span class="st">"#117A65"</span>,    <span class="co"># aumenta en anaerobiosis</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>               np.where(delta <span class="op">&lt;</span> <span class="op">-</span><span class="dv">1</span>, <span class="st">"#922B21"</span>,   <span class="co"># disminuye en anaerobiosis</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>               <span class="st">"#5C5C6E"</span>))                        <span class="co"># sin cambio significativo</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a></span>
+<span id="cb3-12"><a href="#cb3-12"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">5.5</span>))</span>
+<span id="cb3-13"><a href="#cb3-13"></a></span>
+<span id="cb3-14"><a href="#cb3-14"></a>ax.scatter(flujos_aerobico, flujos_anaerobico,</span>
+<span id="cb3-15"><a href="#cb3-15"></a>           c<span class="op">=</span>colores_pts, alpha<span class="op">=</span><span class="fl">0.75</span>, s<span class="op">=</span><span class="dv">60</span>, edgecolors<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb3-16"><a href="#cb3-16"></a></span>
+<span id="cb3-17"><a href="#cb3-17"></a><span class="co"># Línea de referencia y = x (sin cambio)</span></span>
+<span id="cb3-18"><a href="#cb3-18"></a>lim_max <span class="op">=</span> <span class="bu">max</span>(flujos_aerobico.<span class="bu">max</span>(), flujos_anaerobico.<span class="bu">max</span>()) <span class="op">*</span> <span class="fl">1.05</span></span>
+<span id="cb3-19"><a href="#cb3-19"></a>ax.plot([<span class="dv">0</span>, lim_max], [<span class="dv">0</span>, lim_max], <span class="st">"--"</span>, color<span class="op">=</span><span class="st">"#B7950B"</span>,</span>
+<span id="cb3-20"><a href="#cb3-20"></a>        linewidth<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="st">"Sin cambio (y = x)"</span>)</span>
+<span id="cb3-21"><a href="#cb3-21"></a></span>
+<span id="cb3-22"><a href="#cb3-22"></a><span class="co"># Leyenda manual con parches de color</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a><span class="im">import</span> matplotlib.patches <span class="im">as</span> mpatches</span>
+<span id="cb3-24"><a href="#cb3-24"></a>legend_elements <span class="op">=</span> [</span>
+<span id="cb3-25"><a href="#cb3-25"></a>    mpatches.Patch(color<span class="op">=</span><span class="st">"#117A65"</span>, label<span class="op">=</span><span class="st">"↑ Anaerobiosis"</span>),</span>
+<span id="cb3-26"><a href="#cb3-26"></a>    mpatches.Patch(color<span class="op">=</span><span class="st">"#922B21"</span>, label<span class="op">=</span><span class="st">"↓ Anaerobiosis"</span>),</span>
+<span id="cb3-27"><a href="#cb3-27"></a>    mpatches.Patch(color<span class="op">=</span><span class="st">"#5C5C6E"</span>, label<span class="op">=</span><span class="st">"Sin cambio"</span>),</span>
+<span id="cb3-28"><a href="#cb3-28"></a>]</span>
+<span id="cb3-29"><a href="#cb3-29"></a>ax.legend(handles<span class="op">=</span>legend_elements, fontsize<span class="op">=</span><span class="dv">9</span>, frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb3-30"><a href="#cb3-30"></a></span>
+<span id="cb3-31"><a href="#cb3-31"></a>ax.set_xlabel(<span class="st">"Flujo aeróbico (mmol/gDW/h)"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-32"><a href="#cb3-32"></a>ax.set_ylabel(<span class="st">"Flujo anaeróbico (mmol/gDW/h)"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb3-33"><a href="#cb3-33"></a>ax.set_title(<span class="st">"Comparación de flujos: aeróbico vs. anaeróbico"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb3-34"><a href="#cb3-34"></a>ax.spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb3-35"><a href="#cb3-35"></a></span>
+<span id="cb3-36"><a href="#cb3-36"></a>plt.tight_layout()</span>
+<span id="cb3-37"><a href="#cb3-37"></a>plt.savefig(<span class="st">"scatter_condiciones.png"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb3-38"><a href="#cb3-38"></a>plt.show()</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="histograma-y-distribución-de-flujos" class="level3" data-number="9.3.3">
+<h3 data-number="9.3.3" class="anchored" data-anchor-id="histograma-y-distribución-de-flujos"><span class="header-section-number">9.3.3</span> Histograma y distribución de flujos</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a>np.random.seed(<span class="dv">7</span>)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="co"># Simular distribución de flujos de un modelo FBA</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>todos_flujos <span class="op">=</span> np.concatenate([</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    np.zeros(<span class="dv">60</span>),                          <span class="co"># ~60% de reacciones inactivas</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>    np.<span class="bu">abs</span>(np.random.exponential(<span class="dv">3</span>, <span class="dv">40</span>)),  <span class="co"># reacciones activas (dist. exponencial)</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>])</span>
+<span id="cb4-7"><a href="#cb4-7"></a></span>
+<span id="cb4-8"><a href="#cb4-8"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb4-9"><a href="#cb4-9"></a></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co"># Panel izquierdo: histograma completo</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>axes[<span class="dv">0</span>].hist(todos_flujos, bins<span class="op">=</span><span class="dv">25</span>, color<span class="op">=</span><span class="st">"#1B4F72"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, edgecolor<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="cb4-12"><a href="#cb4-12"></a>axes[<span class="dv">0</span>].axvline(np.median(todos_flujos[todos_flujos <span class="op">&gt;</span> <span class="dv">0</span>]), color<span class="op">=</span><span class="st">"#922B21"</span>,</span>
+<span id="cb4-13"><a href="#cb4-13"></a>                linestyle<span class="op">=</span><span class="st">"--"</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="ss">f"Mediana activas"</span>)</span>
+<span id="cb4-14"><a href="#cb4-14"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"Flujo (mmol/gDW/h)"</span>)</span>
+<span id="cb4-15"><a href="#cb4-15"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Frecuencia (N reacciones)"</span>)</span>
+<span id="cb4-16"><a href="#cb4-16"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Distribución completa de flujos"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17"></a>axes[<span class="dv">0</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb4-18"><a href="#cb4-18"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb4-19"><a href="#cb4-19"></a></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co"># Panel derecho: solo reacciones activas en escala log</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a>activos <span class="op">=</span> todos_flujos[todos_flujos <span class="op">&gt;</span> <span class="fl">1e-6</span>]</span>
+<span id="cb4-22"><a href="#cb4-22"></a>axes[<span class="dv">1</span>].hist(activos, bins<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span><span class="st">"#117A65"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>, edgecolor<span class="op">=</span><span class="st">"white"</span>,</span>
+<span id="cb4-23"><a href="#cb4-23"></a>             log<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb4-24"><a href="#cb4-24"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Flujo (mmol/gDW/h)"</span>)</span>
+<span id="cb4-25"><a href="#cb4-25"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">"Frecuencia (escala logarítmica)"</span>)</span>
+<span id="cb4-26"><a href="#cb4-26"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f"Reacciones activas (N=</span><span class="sc">{</span><span class="bu">len</span>(activos)<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb4-27"><a href="#cb4-27"></a>axes[<span class="dv">1</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb4-28"><a href="#cb4-28"></a></span>
+<span id="cb4-29"><a href="#cb4-29"></a>plt.suptitle(<span class="st">"Análisis estadístico de la distribución de flujos FBA"</span>,</span>
+<span id="cb4-30"><a href="#cb4-30"></a>             fontsize<span class="op">=</span><span class="dv">12</span>, y<span class="op">=</span><span class="fl">1.02</span>)</span>
+<span id="cb4-31"><a href="#cb4-31"></a>plt.tight_layout()</span>
+<span id="cb4-32"><a href="#cb4-32"></a>plt.savefig(<span class="st">"histograma_flujos.png"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb4-33"><a href="#cb4-33"></a>plt.show()</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="figuras-multi-panel-y-anotaciones" class="level2" data-number="9.4">
+<h2 data-number="9.4" class="anchored" data-anchor-id="figuras-multi-panel-y-anotaciones"><span class="header-section-number">9.4</span> 6.3 Figuras Multi-Panel y Anotaciones</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>reacciones <span class="op">=</span> [<span class="st">"PFK"</span>, <span class="st">"TPI"</span>, <span class="st">"ENO"</span>, <span class="st">"PYK"</span>, <span class="st">"CS"</span>, <span class="st">"ACONa"</span>, <span class="st">"ICDHyr"</span>, <span class="st">"MDH"</span>]</span>
+<span id="cb5-4"><a href="#cb5-4"></a>flujos_base <span class="op">=</span> [<span class="fl">4.86</span>, <span class="fl">4.86</span>, <span class="fl">9.72</span>, <span class="fl">9.72</span>, <span class="fl">3.12</span>, <span class="fl">3.12</span>, <span class="fl">3.12</span>, <span class="fl">3.09</span>]</span>
+<span id="cb5-5"><a href="#cb5-5"></a></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co"># ── Panel A: flujos absolutos ──</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>axes[<span class="dv">0</span>,<span class="dv">0</span>].barh(reacciones, flujos_base, color<span class="op">=</span><span class="st">"#1B4F72"</span>, height<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb5-8"><a href="#cb5-8"></a>axes[<span class="dv">0</span>,<span class="dv">0</span>].set_xlabel(<span class="st">"Flujo (mmol/gDW/h)"</span>)</span>
+<span id="cb5-9"><a href="#cb5-9"></a>axes[<span class="dv">0</span>,<span class="dv">0</span>].set_title(<span class="st">"A — Flujos absolutos"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10"></a>axes[<span class="dv">0</span>,<span class="dv">0</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb5-11"><a href="#cb5-11"></a></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co"># ── Panel B: flujos normalizados ──</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>flujos_norm <span class="op">=</span> [v <span class="op">/</span> <span class="bu">max</span>(flujos_base) <span class="cf">for</span> v <span class="kw">in</span> flujos_base]</span>
+<span id="cb5-14"><a href="#cb5-14"></a>colores_b   <span class="op">=</span> [<span class="st">"#117A65"</span> <span class="cf">if</span> v <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="cf">else</span> <span class="st">"#B7950B"</span> <span class="cf">for</span> v <span class="kw">in</span> flujos_norm]</span>
+<span id="cb5-15"><a href="#cb5-15"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].barh(reacciones, flujos_norm, color<span class="op">=</span>colores_b, height<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb5-16"><a href="#cb5-16"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].axvline(<span class="fl">0.5</span>, color<span class="op">=</span><span class="st">"#922B21"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, linewidth<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb5-17"><a href="#cb5-17"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].set_xlabel(<span class="st">"Flujo relativo (normalizado)"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].set_title(<span class="st">"B — Flujos normalizados"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb5-19"><a href="#cb5-19"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb5-20"><a href="#cb5-20"></a></span>
+<span id="cb5-21"><a href="#cb5-21"></a><span class="co"># ── Panel C: perfil temporal ficticio ──</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a>tiempo <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">100</span>)</span>
+<span id="cb5-23"><a href="#cb5-23"></a>conc   <span class="op">=</span> <span class="dv">10</span> <span class="op">*</span> np.exp(<span class="op">-</span><span class="fl">0.3</span> <span class="op">*</span> tiempo) <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb5-24"><a href="#cb5-24"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].plot(tiempo, conc, color<span class="op">=</span><span class="st">"#1B4F72"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb5-25"><a href="#cb5-25"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].fill_between(tiempo, conc <span class="op">*</span> <span class="fl">0.9</span>, conc <span class="op">*</span> <span class="fl">1.1</span>,</span>
+<span id="cb5-26"><a href="#cb5-26"></a>                         alpha<span class="op">=</span><span class="fl">0.2</span>, color<span class="op">=</span><span class="st">"#1B4F72"</span>, label<span class="op">=</span><span class="st">"± 10% IC"</span>)</span>
+<span id="cb5-27"><a href="#cb5-27"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].set_xlabel(<span class="st">"Tiempo (h)"</span>)</span>
+<span id="cb5-28"><a href="#cb5-28"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].set_ylabel(<span class="st">"[Glucosa] (mM)"</span>)</span>
+<span id="cb5-29"><a href="#cb5-29"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].set_title(<span class="st">"C — Consumo de glucosa"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb5-30"><a href="#cb5-30"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb5-31"><a href="#cb5-31"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb5-32"><a href="#cb5-32"></a></span>
+<span id="cb5-33"><a href="#cb5-33"></a><span class="co"># ── Panel D: diagrama de pastel por subsistema ──</span></span>
+<span id="cb5-34"><a href="#cb5-34"></a>labels_pie <span class="op">=</span> [<span class="st">"Glucólisis"</span>, <span class="st">"Ciclo TCA"</span>, <span class="st">"Pent-Fosfato"</span>, <span class="st">"Otros"</span>]</span>
+<span id="cb5-35"><a href="#cb5-35"></a>sizes_pie  <span class="op">=</span> [<span class="dv">38</span>, <span class="dv">28</span>, <span class="dv">17</span>, <span class="dv">17</span>]</span>
+<span id="cb5-36"><a href="#cb5-36"></a>colors_pie <span class="op">=</span> [<span class="st">"#1B4F72"</span>, <span class="st">"#117A65"</span>, <span class="st">"#B7950B"</span>, <span class="st">"#5C5C6E"</span>]</span>
+<span id="cb5-37"><a href="#cb5-37"></a>axes[<span class="dv">1</span>,<span class="dv">1</span>].pie(sizes_pie, labels<span class="op">=</span>labels_pie, colors<span class="op">=</span>colors_pie,</span>
+<span id="cb5-38"><a href="#cb5-38"></a>              autopct<span class="op">=</span><span class="st">"</span><span class="sc">%1.1f%%</span><span class="st">"</span>, startangle<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb5-39"><a href="#cb5-39"></a>              wedgeprops<span class="op">=</span>{<span class="st">"edgecolor"</span>: <span class="st">"white"</span>, <span class="st">"linewidth"</span>: <span class="fl">1.5</span>})</span>
+<span id="cb5-40"><a href="#cb5-40"></a>axes[<span class="dv">1</span>,<span class="dv">1</span>].set_title(<span class="st">"D — Distribución por subsistema"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb5-41"><a href="#cb5-41"></a></span>
+<span id="cb5-42"><a href="#cb5-42"></a>plt.suptitle(<span class="st">"Panel integrado — Análisis de flujos metabólicos"</span>, fontsize<span class="op">=</span><span class="dv">13</span>, y<span class="op">=</span><span class="fl">1.01</span>)</span>
+<span id="cb5-43"><a href="#cb5-43"></a>plt.tight_layout()</span>
+<span id="cb5-44"><a href="#cb5-44"></a>plt.savefig(<span class="st">"panel_integrado.pdf"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb5-45"><a href="#cb5-45"></a>plt.show()</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="exportación-para-publicación" class="level2" data-number="9.5">
+<h2 data-number="9.5" class="anchored" data-anchor-id="exportación-para-publicación"><span class="header-section-number">9.5</span> 6.4 Exportación para Publicación</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># Configuración global de estilo para figuras de publicación</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a>mpl.rcParams.update({</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="st">"font.family"</span>       : <span class="st">"sans-serif"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="st">"font.size"</span>         : <span class="dv">10</span>,</span>
+<span id="cb6-7"><a href="#cb6-7"></a>    <span class="st">"axes.titlesize"</span>    : <span class="dv">11</span>,</span>
+<span id="cb6-8"><a href="#cb6-8"></a>    <span class="st">"axes.labelsize"</span>    : <span class="dv">10</span>,</span>
+<span id="cb6-9"><a href="#cb6-9"></a>    <span class="st">"xtick.labelsize"</span>   : <span class="dv">9</span>,</span>
+<span id="cb6-10"><a href="#cb6-10"></a>    <span class="st">"ytick.labelsize"</span>   : <span class="dv">9</span>,</span>
+<span id="cb6-11"><a href="#cb6-11"></a>    <span class="st">"legend.fontsize"</span>   : <span class="dv">9</span>,</span>
+<span id="cb6-12"><a href="#cb6-12"></a>    <span class="st">"figure.dpi"</span>        : <span class="dv">150</span>,</span>
+<span id="cb6-13"><a href="#cb6-13"></a>    <span class="st">"savefig.dpi"</span>       : <span class="dv">300</span>,</span>
+<span id="cb6-14"><a href="#cb6-14"></a>    <span class="st">"savefig.bbox"</span>      : <span class="st">"tight"</span>,</span>
+<span id="cb6-15"><a href="#cb6-15"></a>    <span class="st">"axes.spines.top"</span>   : <span class="va">False</span>,</span>
+<span id="cb6-16"><a href="#cb6-16"></a>    <span class="st">"axes.spines.right"</span> : <span class="va">False</span>,</span>
+<span id="cb6-17"><a href="#cb6-17"></a>    <span class="st">"axes.linewidth"</span>    : <span class="fl">0.8</span>,</span>
+<span id="cb6-18"><a href="#cb6-18"></a>    <span class="st">"grid.alpha"</span>        : <span class="fl">0.3</span>,</span>
+<span id="cb6-19"><a href="#cb6-19"></a>})</span>
+<span id="cb6-20"><a href="#cb6-20"></a></span>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="co"># Exportar en múltiples formatos desde una sola figura:</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb6-23"><a href="#cb6-23"></a>ax.plot([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>], [<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">5</span>], color<span class="op">=</span><span class="st">"#1B4F72"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb6-24"><a href="#cb6-24"></a>ax.set_title(<span class="st">"Figura de ejemplo para publicación"</span>)</span>
+<span id="cb6-25"><a href="#cb6-25"></a></span>
+<span id="cb6-26"><a href="#cb6-26"></a><span class="co"># PNG — para presentaciones y web (compresión sin pérdida con alta resolución):</span></span>
+<span id="cb6-27"><a href="#cb6-27"></a>fig.savefig(<span class="st">"figura_publicacion.png"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="cb6-28"><a href="#cb6-28"></a></span>
+<span id="cb6-29"><a href="#cb6-29"></a><span class="co"># PDF — para revistas (vectorial, escala sin pérdida):</span></span>
+<span id="cb6-30"><a href="#cb6-30"></a>fig.savefig(<span class="st">"figura_publicacion.pdf"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"pdf"</span>)</span>
+<span id="cb6-31"><a href="#cb6-31"></a></span>
+<span id="cb6-32"><a href="#cb6-32"></a><span class="co"># SVG — para edición posterior en Inkscape/Illustrator:</span></span>
+<span id="cb6-33"><a href="#cb6-33"></a>fig.savefig(<span class="st">"figura_publicacion.svg"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"svg"</span>)</span>
+<span id="cb6-34"><a href="#cb6-34"></a></span>
+<span id="cb6-35"><a href="#cb6-35"></a><span class="bu">print</span>(<span class="st">"Figuras exportadas: .png (300dpi), .pdf (vectorial), .svg (editable)"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="ejercicio-integrador-visualizar-distribución-de-flujos-fba" class="level2" data-number="9.6">
+<h2 data-number="9.6" class="anchored" data-anchor-id="ejercicio-integrador-visualizar-distribución-de-flujos-fba"><span class="header-section-number">9.6</span> 6.5 🔬 Ejercicio Integrador: Visualizar Distribución de Flujos FBA</h2>
+<div class="ejercicio-header">
+<p>Ejercicio 6.1 — Nivel: <span class="badge-nivel medio">Medio</span></p>
+</div>
+<div class="ejercicio-body">
+<p>Con los datos de flujos de los ejercicios anteriores, construye una figura de dos paneles que muestre:</p>
+<ol type="1">
+<li><strong>Panel izquierdo</strong>: gráfica de barras horizontales con los 10 flujos de mayor magnitud, coloreados por signo (positivo = verde, negativo = rojo).</li>
+<li><strong>Panel derecho</strong>: histograma de todos los flujos con marcadores para la media y la mediana.</li>
+</ol>
+<p>Exporta la figura en PDF con resolución de 300 dpi. La figura debe incluir título general, etiquetas de ejes, y una nota al pie indicando el modelo y la condición de simulación.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-3"><a href="#cb7-3"></a></span>
+<span id="cb7-4"><a href="#cb7-4"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb7-5"><a href="#cb7-5"></a>rxn_ids <span class="op">=</span> [<span class="ss">f"RXN_</span><span class="sc">{</span>i<span class="sc">:03d}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">30</span>)]</span>
+<span id="cb7-6"><a href="#cb7-6"></a>flujos  <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">30</span>)</span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co"># ── Tu código aquí ──</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co"># Pista: usa plt.subplots(1, 2), barh() con colores condicionales y hist()</span></span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<hr>
+</section>
+<section id="para-profundizar" class="level2" data-number="9.7">
+<h2 data-number="9.7" class="anchored" data-anchor-id="para-profundizar"><span class="header-section-number">9.7</span> 📚 Para Profundizar</h2>
+<ul>
+<li><strong>VanderPlas, J.</strong> (2016). <em>Python Data Science Handbook</em>, Cap. 4: “Visualization with Matplotlib”. — Acceso abierto online.</li>
+<li><strong>McKinney, W.</strong> (2022). <em>Python for Data Analysis</em>, 3ª ed.&nbsp;O’Reilly. — Capítulo 9: “Plotting and Visualization”.</li>
+<li><strong>Documentación oficial Matplotlib</strong>: <a href="https://matplotlib.org/stable/">https://matplotlib.org/stable/</a></li>
+<li><strong>Gallery de Matplotlib</strong>: <a href="https://matplotlib.org/stable/gallery/index.html">https://matplotlib.org/stable/gallery/index.html</a> — referencia visual de todos los tipos de gráficas.</li>
+</ul>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/05-control-flujo.html" class="pagination-link" aria-label="Estructuras de Control de Flujo y Funciones">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estructuras de Control de Flujo y Funciones</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/07-paquetes-buenas-practicas.html" class="pagination-link" aria-label="07-paquetes-buenas-practicas">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">07-paquetes-buenas-practicas</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">---</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="an">title:</span><span class="co"> "Visualización Científica con Matplotlib"</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">---</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a>::: {.objetivos-box}</span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">#### Objetivos de aprendizaje</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a>Al finalizar este capítulo serás capaz de:</span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="ss">- </span>Comprender la arquitectura jerárquica de Matplotlib: <span class="in">`Figure`</span>, <span class="in">`Axes`</span> y *artists*.</span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="ss">- </span>Construir gráficas de línea, barras, dispersión e histogramas con calidad de publicación.</span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="ss">- </span>Personalizar todos los elementos visuales: etiquetas, leyendas, escalas, colores y anotaciones.</span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="ss">- </span>Exportar figuras en formatos de alta resolución para artículos científicos (PDF, SVG, PNG 300 dpi).</span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="ss">- </span>Crear visualizaciones directamente relevantes para FBA: distribuciones de flujo y mapas de subsistemas.</span>
+<span id="cb8-15"><a href="#cb8-15"></a>:::</span>
+<span id="cb8-16"><a href="#cb8-16"></a></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="fu">## 🧬 Motivación biológica</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a></span>
+<span id="cb8-19"><a href="#cb8-19"></a>La visualización de flujos metabólicos no es decorativa: es una herramienta epistémica. Una distribución de flujo bien graficada permite identificar cuellos de botella, detectar reacciones inactivas y comparar fenotipos metabólicos entre condiciones en segundos, algo que una tabla de números haría en minutos con mayor margen de error. Aprender Matplotlib con contexto metabólico desde este capítulo significa que cuando llegues a la Parte III, ya tendrás el lenguaje visual necesario para interpretar los resultados de CobraPy.</span>
+<span id="cb8-20"><a href="#cb8-20"></a></span>
+<span id="cb8-21"><a href="#cb8-21"></a>---</span>
+<span id="cb8-22"><a href="#cb8-22"></a></span>
+<span id="cb8-23"><a href="#cb8-23"></a><span class="fu">## 6.1 Arquitectura de Matplotlib</span></span>
+<span id="cb8-24"><a href="#cb8-24"></a></span>
+<span id="cb8-25"><a href="#cb8-25"></a>Matplotlib organiza sus gráficas en una jerarquía de objetos:</span>
+<span id="cb8-26"><a href="#cb8-26"></a></span>
+<span id="cb8-27"><a href="#cb8-27"></a><span class="ss">- </span>**`Figure`**: el lienzo completo (la "hoja de papel").</span>
+<span id="cb8-28"><a href="#cb8-28"></a><span class="ss">- </span>**`Axes`**: el área de graficación dentro de la Figure (los "ejes"). Una Figure puede contener múltiples Axes.</span>
+<span id="cb8-29"><a href="#cb8-29"></a><span class="ss">- </span>***Artists***: todo lo que se dibuja sobre los Axes: líneas, barras, texto, imágenes.</span>
+<span id="cb8-30"><a href="#cb8-30"></a></span>
+<span id="cb8-31"><a href="#cb8-31"></a><span class="in">```python</span></span>
+<span id="cb8-32"><a href="#cb8-32"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-33"><a href="#cb8-33"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-34"><a href="#cb8-34"></a></span>
+<span id="cb8-35"><a href="#cb8-35"></a><span class="co"># ── Modo orientado a objetos (recomendado para código científico) ──</span></span>
+<span id="cb8-36"><a href="#cb8-36"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>))   <span class="co"># Figure + 1 Axes</span></span>
+<span id="cb8-37"><a href="#cb8-37"></a></span>
+<span id="cb8-38"><a href="#cb8-38"></a>ax.plot([<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>], [<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>])            <span class="co"># agregar un artista (línea)</span></span>
+<span id="cb8-39"><a href="#cb8-39"></a>ax.set_title(<span class="st">"Mi primera figura"</span>)</span>
+<span id="cb8-40"><a href="#cb8-40"></a>ax.set_xlabel(<span class="st">"Tiempo (h)"</span>)</span>
+<span id="cb8-41"><a href="#cb8-41"></a>ax.set_ylabel(<span class="st">"Concentración (mM)"</span>)</span>
+<span id="cb8-42"><a href="#cb8-42"></a></span>
+<span id="cb8-43"><a href="#cb8-43"></a>plt.tight_layout()</span>
+<span id="cb8-44"><a href="#cb8-44"></a>plt.savefig(<span class="st">"figura_base.png"</span>, dpi<span class="op">=</span><span class="dv">150</span>)</span>
+<span id="cb8-45"><a href="#cb8-45"></a>plt.show()</span>
+<span id="cb8-46"><a href="#cb8-46"></a></span>
+<span id="cb8-47"><a href="#cb8-47"></a><span class="co"># ── Diferencia con el modo funcional (pyplot) ──</span></span>
+<span id="cb8-48"><a href="#cb8-48"></a><span class="co"># plt.plot(), plt.xlabel(), etc. — menos control, no recomendado para</span></span>
+<span id="cb8-49"><a href="#cb8-49"></a><span class="co"># figuras complejas ni multi-panel</span></span>
+<span id="cb8-50"><a href="#cb8-50"></a><span class="in">```</span></span>
+<span id="cb8-51"><a href="#cb8-51"></a></span>
+<span id="cb8-52"><a href="#cb8-52"></a>::: {.callout-tip}</span>
+<span id="cb8-53"><a href="#cb8-53"></a><span class="fu">## 📐 OOP vs. pyplot</span></span>
+<span id="cb8-54"><a href="#cb8-54"></a></span>
+<span id="cb8-55"><a href="#cb8-55"></a>El modo orientado a objetos (<span class="in">`fig, ax = plt.subplots()`</span>) es el estándar para código reproducible. El modo <span class="in">`pyplot`</span> (<span class="in">`plt.plot()`</span>) es conveniente para exploración rápida en notebooks. En este manual usaremos siempre el modo OOP para garantizar que las figuras sean reproducibles y fáciles de modificar.</span>
+<span id="cb8-56"><a href="#cb8-56"></a>:::</span>
+<span id="cb8-57"><a href="#cb8-57"></a></span>
+<span id="cb8-58"><a href="#cb8-58"></a>---</span>
+<span id="cb8-59"><a href="#cb8-59"></a></span>
+<span id="cb8-60"><a href="#cb8-60"></a><span class="fu">## 6.2 Gráficas Fundamentales con Contexto Metabólico</span></span>
+<span id="cb8-61"><a href="#cb8-61"></a></span>
+<span id="cb8-62"><a href="#cb8-62"></a><span class="fu">### Gráfica de barras: distribución de flujos por subsistema</span></span>
+<span id="cb8-63"><a href="#cb8-63"></a></span>
+<span id="cb8-64"><a href="#cb8-64"></a><span class="in">```python</span></span>
+<span id="cb8-65"><a href="#cb8-65"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-66"><a href="#cb8-66"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-67"><a href="#cb8-67"></a></span>
+<span id="cb8-68"><a href="#cb8-68"></a><span class="co"># Datos: flujo promedio por subsistema metabólico</span></span>
+<span id="cb8-69"><a href="#cb8-69"></a>subsistemas <span class="op">=</span> [<span class="st">"Glycolysis"</span>, <span class="st">"TCA cycle"</span>, <span class="st">"Pentose-P"</span>, <span class="st">"Amino acid"</span>, <span class="st">"Nucleotide"</span>]</span>
+<span id="cb8-70"><a href="#cb8-70"></a>flujos_med  <span class="op">=</span> [<span class="fl">7.42</span>, <span class="fl">3.12</span>, <span class="fl">1.85</span>, <span class="fl">0.94</span>, <span class="fl">0.23</span>]</span>
+<span id="cb8-71"><a href="#cb8-71"></a>colores     <span class="op">=</span> [<span class="st">"#1B4F72"</span>, <span class="st">"#117A65"</span>, <span class="st">"#B7950B"</span>, <span class="st">"#5C5C6E"</span>, <span class="st">"#922B21"</span>]</span>
+<span id="cb8-72"><a href="#cb8-72"></a></span>
+<span id="cb8-73"><a href="#cb8-73"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="fl">4.5</span>))</span>
+<span id="cb8-74"><a href="#cb8-74"></a></span>
+<span id="cb8-75"><a href="#cb8-75"></a>barras <span class="op">=</span> ax.bar(subsistemas, flujos_med, color<span class="op">=</span>colores,</span>
+<span id="cb8-76"><a href="#cb8-76"></a>                edgecolor<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="fl">0.8</span>, width<span class="op">=</span><span class="fl">0.65</span>)</span>
+<span id="cb8-77"><a href="#cb8-77"></a></span>
+<span id="cb8-78"><a href="#cb8-78"></a><span class="co"># Etiquetas sobre las barras</span></span>
+<span id="cb8-79"><a href="#cb8-79"></a><span class="cf">for</span> barra, valor <span class="kw">in</span> <span class="bu">zip</span>(barras, flujos_med):</span>
+<span id="cb8-80"><a href="#cb8-80"></a>    ax.text(barra.get_x() <span class="op">+</span> barra.get_width() <span class="op">/</span> <span class="dv">2</span>,</span>
+<span id="cb8-81"><a href="#cb8-81"></a>            barra.get_height() <span class="op">+</span> <span class="fl">0.08</span>,</span>
+<span id="cb8-82"><a href="#cb8-82"></a>            <span class="ss">f"</span><span class="sc">{</span>valor<span class="sc">:.2f}</span><span class="ss">"</span>,</span>
+<span id="cb8-83"><a href="#cb8-83"></a>            ha<span class="op">=</span><span class="st">"center"</span>, va<span class="op">=</span><span class="st">"bottom"</span>, fontsize<span class="op">=</span><span class="dv">9</span>, color<span class="op">=</span><span class="st">"#1C1C1E"</span>)</span>
+<span id="cb8-84"><a href="#cb8-84"></a></span>
+<span id="cb8-85"><a href="#cb8-85"></a>ax.set_title(<span class="st">"Flujo promedio por subsistema metabólico</span><span class="ch">\n</span><span class="st">(modelo E. coli core — condición aeróbica)"</span>,</span>
+<span id="cb8-86"><a href="#cb8-86"></a>             fontsize<span class="op">=</span><span class="dv">12</span>, pad<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="cb8-87"><a href="#cb8-87"></a>ax.set_ylabel(<span class="st">"Flujo promedio (mmol/gDW/h)"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb8-88"><a href="#cb8-88"></a>ax.set_ylim(<span class="dv">0</span>, <span class="bu">max</span>(flujos_med) <span class="op">*</span> <span class="fl">1.2</span>)</span>
+<span id="cb8-89"><a href="#cb8-89"></a>ax.spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb8-90"><a href="#cb8-90"></a>ax.tick_params(axis<span class="op">=</span><span class="st">"x"</span>, rotation<span class="op">=</span><span class="dv">15</span>)</span>
+<span id="cb8-91"><a href="#cb8-91"></a></span>
+<span id="cb8-92"><a href="#cb8-92"></a>plt.tight_layout()</span>
+<span id="cb8-93"><a href="#cb8-93"></a>plt.savefig(<span class="st">"flujos_subsistemas.pdf"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb8-94"><a href="#cb8-94"></a>plt.show()</span>
+<span id="cb8-95"><a href="#cb8-95"></a><span class="in">```</span></span>
+<span id="cb8-96"><a href="#cb8-96"></a></span>
+<span id="cb8-97"><a href="#cb8-97"></a><span class="fu">### Gráfica de dispersión: correlación flujo aeróbico vs. anaeróbico</span></span>
+<span id="cb8-98"><a href="#cb8-98"></a></span>
+<span id="cb8-99"><a href="#cb8-99"></a><span class="in">```python</span></span>
+<span id="cb8-100"><a href="#cb8-100"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb8-101"><a href="#cb8-101"></a>n_rxn <span class="op">=</span> <span class="dv">40</span></span>
+<span id="cb8-102"><a href="#cb8-102"></a>flujos_aerobico   <span class="op">=</span> np.<span class="bu">abs</span>(np.random.normal(<span class="dv">5</span>, <span class="dv">3</span>, n_rxn))</span>
+<span id="cb8-103"><a href="#cb8-103"></a>flujos_anaerobico <span class="op">=</span> flujos_aerobico <span class="op">*</span> np.random.uniform(<span class="fl">0.2</span>, <span class="fl">1.8</span>, n_rxn)</span>
+<span id="cb8-104"><a href="#cb8-104"></a></span>
+<span id="cb8-105"><a href="#cb8-105"></a><span class="co"># Clasificar puntos por categoría de cambio</span></span>
+<span id="cb8-106"><a href="#cb8-106"></a>delta <span class="op">=</span> flujos_anaerobico <span class="op">-</span> flujos_aerobico</span>
+<span id="cb8-107"><a href="#cb8-107"></a>colores_pts <span class="op">=</span> np.where(delta <span class="op">&gt;</span> <span class="dv">1</span>, <span class="st">"#117A65"</span>,    <span class="co"># aumenta en anaerobiosis</span></span>
+<span id="cb8-108"><a href="#cb8-108"></a>               np.where(delta <span class="op">&lt;</span> <span class="op">-</span><span class="dv">1</span>, <span class="st">"#922B21"</span>,   <span class="co"># disminuye en anaerobiosis</span></span>
+<span id="cb8-109"><a href="#cb8-109"></a>               <span class="st">"#5C5C6E"</span>))                        <span class="co"># sin cambio significativo</span></span>
+<span id="cb8-110"><a href="#cb8-110"></a></span>
+<span id="cb8-111"><a href="#cb8-111"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="fl">5.5</span>))</span>
+<span id="cb8-112"><a href="#cb8-112"></a></span>
+<span id="cb8-113"><a href="#cb8-113"></a>ax.scatter(flujos_aerobico, flujos_anaerobico,</span>
+<span id="cb8-114"><a href="#cb8-114"></a>           c<span class="op">=</span>colores_pts, alpha<span class="op">=</span><span class="fl">0.75</span>, s<span class="op">=</span><span class="dv">60</span>, edgecolors<span class="op">=</span><span class="st">"white"</span>, linewidth<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb8-115"><a href="#cb8-115"></a></span>
+<span id="cb8-116"><a href="#cb8-116"></a><span class="co"># Línea de referencia y = x (sin cambio)</span></span>
+<span id="cb8-117"><a href="#cb8-117"></a>lim_max <span class="op">=</span> <span class="bu">max</span>(flujos_aerobico.<span class="bu">max</span>(), flujos_anaerobico.<span class="bu">max</span>()) <span class="op">*</span> <span class="fl">1.05</span></span>
+<span id="cb8-118"><a href="#cb8-118"></a>ax.plot([<span class="dv">0</span>, lim_max], [<span class="dv">0</span>, lim_max], <span class="st">"--"</span>, color<span class="op">=</span><span class="st">"#B7950B"</span>,</span>
+<span id="cb8-119"><a href="#cb8-119"></a>        linewidth<span class="op">=</span><span class="fl">1.2</span>, label<span class="op">=</span><span class="st">"Sin cambio (y = x)"</span>)</span>
+<span id="cb8-120"><a href="#cb8-120"></a></span>
+<span id="cb8-121"><a href="#cb8-121"></a><span class="co"># Leyenda manual con parches de color</span></span>
+<span id="cb8-122"><a href="#cb8-122"></a><span class="im">import</span> matplotlib.patches <span class="im">as</span> mpatches</span>
+<span id="cb8-123"><a href="#cb8-123"></a>legend_elements <span class="op">=</span> [</span>
+<span id="cb8-124"><a href="#cb8-124"></a>    mpatches.Patch(color<span class="op">=</span><span class="st">"#117A65"</span>, label<span class="op">=</span><span class="st">"↑ Anaerobiosis"</span>),</span>
+<span id="cb8-125"><a href="#cb8-125"></a>    mpatches.Patch(color<span class="op">=</span><span class="st">"#922B21"</span>, label<span class="op">=</span><span class="st">"↓ Anaerobiosis"</span>),</span>
+<span id="cb8-126"><a href="#cb8-126"></a>    mpatches.Patch(color<span class="op">=</span><span class="st">"#5C5C6E"</span>, label<span class="op">=</span><span class="st">"Sin cambio"</span>),</span>
+<span id="cb8-127"><a href="#cb8-127"></a>]</span>
+<span id="cb8-128"><a href="#cb8-128"></a>ax.legend(handles<span class="op">=</span>legend_elements, fontsize<span class="op">=</span><span class="dv">9</span>, frameon<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-129"><a href="#cb8-129"></a></span>
+<span id="cb8-130"><a href="#cb8-130"></a>ax.set_xlabel(<span class="st">"Flujo aeróbico (mmol/gDW/h)"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb8-131"><a href="#cb8-131"></a>ax.set_ylabel(<span class="st">"Flujo anaeróbico (mmol/gDW/h)"</span>, fontsize<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb8-132"><a href="#cb8-132"></a>ax.set_title(<span class="st">"Comparación de flujos: aeróbico vs. anaeróbico"</span>, fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb8-133"><a href="#cb8-133"></a>ax.spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb8-134"><a href="#cb8-134"></a></span>
+<span id="cb8-135"><a href="#cb8-135"></a>plt.tight_layout()</span>
+<span id="cb8-136"><a href="#cb8-136"></a>plt.savefig(<span class="st">"scatter_condiciones.png"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb8-137"><a href="#cb8-137"></a>plt.show()</span>
+<span id="cb8-138"><a href="#cb8-138"></a><span class="in">```</span></span>
+<span id="cb8-139"><a href="#cb8-139"></a></span>
+<span id="cb8-140"><a href="#cb8-140"></a><span class="fu">### Histograma y distribución de flujos</span></span>
+<span id="cb8-141"><a href="#cb8-141"></a></span>
+<span id="cb8-142"><a href="#cb8-142"></a><span class="in">```python</span></span>
+<span id="cb8-143"><a href="#cb8-143"></a>np.random.seed(<span class="dv">7</span>)</span>
+<span id="cb8-144"><a href="#cb8-144"></a><span class="co"># Simular distribución de flujos de un modelo FBA</span></span>
+<span id="cb8-145"><a href="#cb8-145"></a>todos_flujos <span class="op">=</span> np.concatenate([</span>
+<span id="cb8-146"><a href="#cb8-146"></a>    np.zeros(<span class="dv">60</span>),                          <span class="co"># ~60% de reacciones inactivas</span></span>
+<span id="cb8-147"><a href="#cb8-147"></a>    np.<span class="bu">abs</span>(np.random.exponential(<span class="dv">3</span>, <span class="dv">40</span>)),  <span class="co"># reacciones activas (dist. exponencial)</span></span>
+<span id="cb8-148"><a href="#cb8-148"></a>])</span>
+<span id="cb8-149"><a href="#cb8-149"></a></span>
+<span id="cb8-150"><a href="#cb8-150"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">4</span>))</span>
+<span id="cb8-151"><a href="#cb8-151"></a></span>
+<span id="cb8-152"><a href="#cb8-152"></a><span class="co"># Panel izquierdo: histograma completo</span></span>
+<span id="cb8-153"><a href="#cb8-153"></a>axes[<span class="dv">0</span>].hist(todos_flujos, bins<span class="op">=</span><span class="dv">25</span>, color<span class="op">=</span><span class="st">"#1B4F72"</span>, alpha<span class="op">=</span><span class="fl">0.8</span>, edgecolor<span class="op">=</span><span class="st">"white"</span>)</span>
+<span id="cb8-154"><a href="#cb8-154"></a>axes[<span class="dv">0</span>].axvline(np.median(todos_flujos[todos_flujos <span class="op">&gt;</span> <span class="dv">0</span>]), color<span class="op">=</span><span class="st">"#922B21"</span>,</span>
+<span id="cb8-155"><a href="#cb8-155"></a>                linestyle<span class="op">=</span><span class="st">"--"</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>, label<span class="op">=</span><span class="ss">f"Mediana activas"</span>)</span>
+<span id="cb8-156"><a href="#cb8-156"></a>axes[<span class="dv">0</span>].set_xlabel(<span class="st">"Flujo (mmol/gDW/h)"</span>)</span>
+<span id="cb8-157"><a href="#cb8-157"></a>axes[<span class="dv">0</span>].set_ylabel(<span class="st">"Frecuencia (N reacciones)"</span>)</span>
+<span id="cb8-158"><a href="#cb8-158"></a>axes[<span class="dv">0</span>].set_title(<span class="st">"Distribución completa de flujos"</span>)</span>
+<span id="cb8-159"><a href="#cb8-159"></a>axes[<span class="dv">0</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb8-160"><a href="#cb8-160"></a>axes[<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb8-161"><a href="#cb8-161"></a></span>
+<span id="cb8-162"><a href="#cb8-162"></a><span class="co"># Panel derecho: solo reacciones activas en escala log</span></span>
+<span id="cb8-163"><a href="#cb8-163"></a>activos <span class="op">=</span> todos_flujos[todos_flujos <span class="op">&gt;</span> <span class="fl">1e-6</span>]</span>
+<span id="cb8-164"><a href="#cb8-164"></a>axes[<span class="dv">1</span>].hist(activos, bins<span class="op">=</span><span class="dv">20</span>, color<span class="op">=</span><span class="st">"#117A65"</span>, alpha<span class="op">=</span><span class="fl">0.85</span>, edgecolor<span class="op">=</span><span class="st">"white"</span>,</span>
+<span id="cb8-165"><a href="#cb8-165"></a>             log<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-166"><a href="#cb8-166"></a>axes[<span class="dv">1</span>].set_xlabel(<span class="st">"Flujo (mmol/gDW/h)"</span>)</span>
+<span id="cb8-167"><a href="#cb8-167"></a>axes[<span class="dv">1</span>].set_ylabel(<span class="st">"Frecuencia (escala logarítmica)"</span>)</span>
+<span id="cb8-168"><a href="#cb8-168"></a>axes[<span class="dv">1</span>].set_title(<span class="ss">f"Reacciones activas (N=</span><span class="sc">{</span><span class="bu">len</span>(activos)<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb8-169"><a href="#cb8-169"></a>axes[<span class="dv">1</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb8-170"><a href="#cb8-170"></a></span>
+<span id="cb8-171"><a href="#cb8-171"></a>plt.suptitle(<span class="st">"Análisis estadístico de la distribución de flujos FBA"</span>,</span>
+<span id="cb8-172"><a href="#cb8-172"></a>             fontsize<span class="op">=</span><span class="dv">12</span>, y<span class="op">=</span><span class="fl">1.02</span>)</span>
+<span id="cb8-173"><a href="#cb8-173"></a>plt.tight_layout()</span>
+<span id="cb8-174"><a href="#cb8-174"></a>plt.savefig(<span class="st">"histograma_flujos.png"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb8-175"><a href="#cb8-175"></a>plt.show()</span>
+<span id="cb8-176"><a href="#cb8-176"></a><span class="in">```</span></span>
+<span id="cb8-177"><a href="#cb8-177"></a></span>
+<span id="cb8-178"><a href="#cb8-178"></a>---</span>
+<span id="cb8-179"><a href="#cb8-179"></a></span>
+<span id="cb8-180"><a href="#cb8-180"></a><span class="fu">## 6.3 Figuras Multi-Panel y Anotaciones</span></span>
+<span id="cb8-181"><a href="#cb8-181"></a></span>
+<span id="cb8-182"><a href="#cb8-182"></a><span class="in">```python</span></span>
+<span id="cb8-183"><a href="#cb8-183"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">2</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
+<span id="cb8-184"><a href="#cb8-184"></a></span>
+<span id="cb8-185"><a href="#cb8-185"></a>reacciones <span class="op">=</span> [<span class="st">"PFK"</span>, <span class="st">"TPI"</span>, <span class="st">"ENO"</span>, <span class="st">"PYK"</span>, <span class="st">"CS"</span>, <span class="st">"ACONa"</span>, <span class="st">"ICDHyr"</span>, <span class="st">"MDH"</span>]</span>
+<span id="cb8-186"><a href="#cb8-186"></a>flujos_base <span class="op">=</span> [<span class="fl">4.86</span>, <span class="fl">4.86</span>, <span class="fl">9.72</span>, <span class="fl">9.72</span>, <span class="fl">3.12</span>, <span class="fl">3.12</span>, <span class="fl">3.12</span>, <span class="fl">3.09</span>]</span>
+<span id="cb8-187"><a href="#cb8-187"></a></span>
+<span id="cb8-188"><a href="#cb8-188"></a><span class="co"># ── Panel A: flujos absolutos ──</span></span>
+<span id="cb8-189"><a href="#cb8-189"></a>axes[<span class="dv">0</span>,<span class="dv">0</span>].barh(reacciones, flujos_base, color<span class="op">=</span><span class="st">"#1B4F72"</span>, height<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb8-190"><a href="#cb8-190"></a>axes[<span class="dv">0</span>,<span class="dv">0</span>].set_xlabel(<span class="st">"Flujo (mmol/gDW/h)"</span>)</span>
+<span id="cb8-191"><a href="#cb8-191"></a>axes[<span class="dv">0</span>,<span class="dv">0</span>].set_title(<span class="st">"A — Flujos absolutos"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb8-192"><a href="#cb8-192"></a>axes[<span class="dv">0</span>,<span class="dv">0</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb8-193"><a href="#cb8-193"></a></span>
+<span id="cb8-194"><a href="#cb8-194"></a><span class="co"># ── Panel B: flujos normalizados ──</span></span>
+<span id="cb8-195"><a href="#cb8-195"></a>flujos_norm <span class="op">=</span> [v <span class="op">/</span> <span class="bu">max</span>(flujos_base) <span class="cf">for</span> v <span class="kw">in</span> flujos_base]</span>
+<span id="cb8-196"><a href="#cb8-196"></a>colores_b   <span class="op">=</span> [<span class="st">"#117A65"</span> <span class="cf">if</span> v <span class="op">&gt;</span> <span class="fl">0.5</span> <span class="cf">else</span> <span class="st">"#B7950B"</span> <span class="cf">for</span> v <span class="kw">in</span> flujos_norm]</span>
+<span id="cb8-197"><a href="#cb8-197"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].barh(reacciones, flujos_norm, color<span class="op">=</span>colores_b, height<span class="op">=</span><span class="fl">0.6</span>)</span>
+<span id="cb8-198"><a href="#cb8-198"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].axvline(<span class="fl">0.5</span>, color<span class="op">=</span><span class="st">"#922B21"</span>, linestyle<span class="op">=</span><span class="st">":"</span>, linewidth<span class="op">=</span><span class="fl">1.2</span>)</span>
+<span id="cb8-199"><a href="#cb8-199"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].set_xlabel(<span class="st">"Flujo relativo (normalizado)"</span>)</span>
+<span id="cb8-200"><a href="#cb8-200"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].set_title(<span class="st">"B — Flujos normalizados"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb8-201"><a href="#cb8-201"></a>axes[<span class="dv">0</span>,<span class="dv">1</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb8-202"><a href="#cb8-202"></a></span>
+<span id="cb8-203"><a href="#cb8-203"></a><span class="co"># ── Panel C: perfil temporal ficticio ──</span></span>
+<span id="cb8-204"><a href="#cb8-204"></a>tiempo <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">12</span>, <span class="dv">100</span>)</span>
+<span id="cb8-205"><a href="#cb8-205"></a>conc   <span class="op">=</span> <span class="dv">10</span> <span class="op">*</span> np.exp(<span class="op">-</span><span class="fl">0.3</span> <span class="op">*</span> tiempo) <span class="op">+</span> <span class="fl">0.5</span></span>
+<span id="cb8-206"><a href="#cb8-206"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].plot(tiempo, conc, color<span class="op">=</span><span class="st">"#1B4F72"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-207"><a href="#cb8-207"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].fill_between(tiempo, conc <span class="op">*</span> <span class="fl">0.9</span>, conc <span class="op">*</span> <span class="fl">1.1</span>,</span>
+<span id="cb8-208"><a href="#cb8-208"></a>                         alpha<span class="op">=</span><span class="fl">0.2</span>, color<span class="op">=</span><span class="st">"#1B4F72"</span>, label<span class="op">=</span><span class="st">"± 10% IC"</span>)</span>
+<span id="cb8-209"><a href="#cb8-209"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].set_xlabel(<span class="st">"Tiempo (h)"</span>)</span>
+<span id="cb8-210"><a href="#cb8-210"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].set_ylabel(<span class="st">"[Glucosa] (mM)"</span>)</span>
+<span id="cb8-211"><a href="#cb8-211"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].set_title(<span class="st">"C — Consumo de glucosa"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb8-212"><a href="#cb8-212"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].legend(fontsize<span class="op">=</span><span class="dv">8</span>)</span>
+<span id="cb8-213"><a href="#cb8-213"></a>axes[<span class="dv">1</span>,<span class="dv">0</span>].spines[[<span class="st">"top"</span>, <span class="st">"right"</span>]].set_visible(<span class="va">False</span>)</span>
+<span id="cb8-214"><a href="#cb8-214"></a></span>
+<span id="cb8-215"><a href="#cb8-215"></a><span class="co"># ── Panel D: diagrama de pastel por subsistema ──</span></span>
+<span id="cb8-216"><a href="#cb8-216"></a>labels_pie <span class="op">=</span> [<span class="st">"Glucólisis"</span>, <span class="st">"Ciclo TCA"</span>, <span class="st">"Pent-Fosfato"</span>, <span class="st">"Otros"</span>]</span>
+<span id="cb8-217"><a href="#cb8-217"></a>sizes_pie  <span class="op">=</span> [<span class="dv">38</span>, <span class="dv">28</span>, <span class="dv">17</span>, <span class="dv">17</span>]</span>
+<span id="cb8-218"><a href="#cb8-218"></a>colors_pie <span class="op">=</span> [<span class="st">"#1B4F72"</span>, <span class="st">"#117A65"</span>, <span class="st">"#B7950B"</span>, <span class="st">"#5C5C6E"</span>]</span>
+<span id="cb8-219"><a href="#cb8-219"></a>axes[<span class="dv">1</span>,<span class="dv">1</span>].pie(sizes_pie, labels<span class="op">=</span>labels_pie, colors<span class="op">=</span>colors_pie,</span>
+<span id="cb8-220"><a href="#cb8-220"></a>              autopct<span class="op">=</span><span class="st">"</span><span class="sc">%1.1f%%</span><span class="st">"</span>, startangle<span class="op">=</span><span class="dv">90</span>,</span>
+<span id="cb8-221"><a href="#cb8-221"></a>              wedgeprops<span class="op">=</span>{<span class="st">"edgecolor"</span>: <span class="st">"white"</span>, <span class="st">"linewidth"</span>: <span class="fl">1.5</span>})</span>
+<span id="cb8-222"><a href="#cb8-222"></a>axes[<span class="dv">1</span>,<span class="dv">1</span>].set_title(<span class="st">"D — Distribución por subsistema"</span>, fontweight<span class="op">=</span><span class="st">"bold"</span>)</span>
+<span id="cb8-223"><a href="#cb8-223"></a></span>
+<span id="cb8-224"><a href="#cb8-224"></a>plt.suptitle(<span class="st">"Panel integrado — Análisis de flujos metabólicos"</span>, fontsize<span class="op">=</span><span class="dv">13</span>, y<span class="op">=</span><span class="fl">1.01</span>)</span>
+<span id="cb8-225"><a href="#cb8-225"></a>plt.tight_layout()</span>
+<span id="cb8-226"><a href="#cb8-226"></a>plt.savefig(<span class="st">"panel_integrado.pdf"</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">"tight"</span>)</span>
+<span id="cb8-227"><a href="#cb8-227"></a>plt.show()</span>
+<span id="cb8-228"><a href="#cb8-228"></a><span class="in">```</span></span>
+<span id="cb8-229"><a href="#cb8-229"></a></span>
+<span id="cb8-230"><a href="#cb8-230"></a>---</span>
+<span id="cb8-231"><a href="#cb8-231"></a></span>
+<span id="cb8-232"><a href="#cb8-232"></a><span class="fu">## 6.4 Exportación para Publicación</span></span>
+<span id="cb8-233"><a href="#cb8-233"></a></span>
+<span id="cb8-234"><a href="#cb8-234"></a><span class="in">```python</span></span>
+<span id="cb8-235"><a href="#cb8-235"></a><span class="co"># Configuración global de estilo para figuras de publicación</span></span>
+<span id="cb8-236"><a href="#cb8-236"></a><span class="im">import</span> matplotlib <span class="im">as</span> mpl</span>
+<span id="cb8-237"><a href="#cb8-237"></a></span>
+<span id="cb8-238"><a href="#cb8-238"></a>mpl.rcParams.update({</span>
+<span id="cb8-239"><a href="#cb8-239"></a>    <span class="st">"font.family"</span>       : <span class="st">"sans-serif"</span>,</span>
+<span id="cb8-240"><a href="#cb8-240"></a>    <span class="st">"font.size"</span>         : <span class="dv">10</span>,</span>
+<span id="cb8-241"><a href="#cb8-241"></a>    <span class="st">"axes.titlesize"</span>    : <span class="dv">11</span>,</span>
+<span id="cb8-242"><a href="#cb8-242"></a>    <span class="st">"axes.labelsize"</span>    : <span class="dv">10</span>,</span>
+<span id="cb8-243"><a href="#cb8-243"></a>    <span class="st">"xtick.labelsize"</span>   : <span class="dv">9</span>,</span>
+<span id="cb8-244"><a href="#cb8-244"></a>    <span class="st">"ytick.labelsize"</span>   : <span class="dv">9</span>,</span>
+<span id="cb8-245"><a href="#cb8-245"></a>    <span class="st">"legend.fontsize"</span>   : <span class="dv">9</span>,</span>
+<span id="cb8-246"><a href="#cb8-246"></a>    <span class="st">"figure.dpi"</span>        : <span class="dv">150</span>,</span>
+<span id="cb8-247"><a href="#cb8-247"></a>    <span class="st">"savefig.dpi"</span>       : <span class="dv">300</span>,</span>
+<span id="cb8-248"><a href="#cb8-248"></a>    <span class="st">"savefig.bbox"</span>      : <span class="st">"tight"</span>,</span>
+<span id="cb8-249"><a href="#cb8-249"></a>    <span class="st">"axes.spines.top"</span>   : <span class="va">False</span>,</span>
+<span id="cb8-250"><a href="#cb8-250"></a>    <span class="st">"axes.spines.right"</span> : <span class="va">False</span>,</span>
+<span id="cb8-251"><a href="#cb8-251"></a>    <span class="st">"axes.linewidth"</span>    : <span class="fl">0.8</span>,</span>
+<span id="cb8-252"><a href="#cb8-252"></a>    <span class="st">"grid.alpha"</span>        : <span class="fl">0.3</span>,</span>
+<span id="cb8-253"><a href="#cb8-253"></a>})</span>
+<span id="cb8-254"><a href="#cb8-254"></a></span>
+<span id="cb8-255"><a href="#cb8-255"></a><span class="co"># Exportar en múltiples formatos desde una sola figura:</span></span>
+<span id="cb8-256"><a href="#cb8-256"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb8-257"><a href="#cb8-257"></a>ax.plot([<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>], [<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">3</span>,<span class="dv">5</span>], color<span class="op">=</span><span class="st">"#1B4F72"</span>, linewidth<span class="op">=</span><span class="dv">2</span>)</span>
+<span id="cb8-258"><a href="#cb8-258"></a>ax.set_title(<span class="st">"Figura de ejemplo para publicación"</span>)</span>
+<span id="cb8-259"><a href="#cb8-259"></a></span>
+<span id="cb8-260"><a href="#cb8-260"></a><span class="co"># PNG — para presentaciones y web (compresión sin pérdida con alta resolución):</span></span>
+<span id="cb8-261"><a href="#cb8-261"></a>fig.savefig(<span class="st">"figura_publicacion.png"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"png"</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="cb8-262"><a href="#cb8-262"></a></span>
+<span id="cb8-263"><a href="#cb8-263"></a><span class="co"># PDF — para revistas (vectorial, escala sin pérdida):</span></span>
+<span id="cb8-264"><a href="#cb8-264"></a>fig.savefig(<span class="st">"figura_publicacion.pdf"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"pdf"</span>)</span>
+<span id="cb8-265"><a href="#cb8-265"></a></span>
+<span id="cb8-266"><a href="#cb8-266"></a><span class="co"># SVG — para edición posterior en Inkscape/Illustrator:</span></span>
+<span id="cb8-267"><a href="#cb8-267"></a>fig.savefig(<span class="st">"figura_publicacion.svg"</span>, <span class="bu">format</span><span class="op">=</span><span class="st">"svg"</span>)</span>
+<span id="cb8-268"><a href="#cb8-268"></a></span>
+<span id="cb8-269"><a href="#cb8-269"></a><span class="bu">print</span>(<span class="st">"Figuras exportadas: .png (300dpi), .pdf (vectorial), .svg (editable)"</span>)</span>
+<span id="cb8-270"><a href="#cb8-270"></a><span class="in">```</span></span>
+<span id="cb8-271"><a href="#cb8-271"></a></span>
+<span id="cb8-272"><a href="#cb8-272"></a>---</span>
+<span id="cb8-273"><a href="#cb8-273"></a></span>
+<span id="cb8-274"><a href="#cb8-274"></a><span class="fu">## 6.5 🔬 Ejercicio Integrador: Visualizar Distribución de Flujos FBA</span></span>
+<span id="cb8-275"><a href="#cb8-275"></a></span>
+<span id="cb8-276"><a href="#cb8-276"></a>::: {.ejercicio-header}</span>
+<span id="cb8-277"><a href="#cb8-277"></a>Ejercicio 6.1 — Nivel: <span class="co">[</span><span class="ot">Medio</span><span class="co">]</span>{.badge-nivel .medio}</span>
+<span id="cb8-278"><a href="#cb8-278"></a>:::</span>
+<span id="cb8-279"><a href="#cb8-279"></a></span>
+<span id="cb8-280"><a href="#cb8-280"></a>::: {.ejercicio-body}</span>
+<span id="cb8-281"><a href="#cb8-281"></a>Con los datos de flujos de los ejercicios anteriores, construye una figura de dos paneles que muestre:</span>
+<span id="cb8-282"><a href="#cb8-282"></a></span>
+<span id="cb8-283"><a href="#cb8-283"></a><span class="ss">1. </span>**Panel izquierdo**: gráfica de barras horizontales con los 10 flujos de mayor magnitud, coloreados por signo (positivo = verde, negativo = rojo).</span>
+<span id="cb8-284"><a href="#cb8-284"></a><span class="ss">2. </span>**Panel derecho**: histograma de todos los flujos con marcadores para la media y la mediana.</span>
+<span id="cb8-285"><a href="#cb8-285"></a></span>
+<span id="cb8-286"><a href="#cb8-286"></a>Exporta la figura en PDF con resolución de 300 dpi. La figura debe incluir título general, etiquetas de ejes, y una nota al pie indicando el modelo y la condición de simulación.</span>
+<span id="cb8-287"><a href="#cb8-287"></a></span>
+<span id="cb8-288"><a href="#cb8-288"></a><span class="in">```python</span></span>
+<span id="cb8-289"><a href="#cb8-289"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb8-290"><a href="#cb8-290"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-291"><a href="#cb8-291"></a></span>
+<span id="cb8-292"><a href="#cb8-292"></a>np.random.seed(<span class="dv">42</span>)</span>
+<span id="cb8-293"><a href="#cb8-293"></a>rxn_ids <span class="op">=</span> [<span class="ss">f"RXN_</span><span class="sc">{</span>i<span class="sc">:03d}</span><span class="ss">"</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">30</span>)]</span>
+<span id="cb8-294"><a href="#cb8-294"></a>flujos  <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">30</span>)</span>
+<span id="cb8-295"><a href="#cb8-295"></a></span>
+<span id="cb8-296"><a href="#cb8-296"></a><span class="co"># ── Tu código aquí ──</span></span>
+<span id="cb8-297"><a href="#cb8-297"></a><span class="co"># Pista: usa plt.subplots(1, 2), barh() con colores condicionales y hist()</span></span>
+<span id="cb8-298"><a href="#cb8-298"></a><span class="in">```</span></span>
+<span id="cb8-299"><a href="#cb8-299"></a>:::</span>
+<span id="cb8-300"><a href="#cb8-300"></a></span>
+<span id="cb8-301"><a href="#cb8-301"></a>---</span>
+<span id="cb8-302"><a href="#cb8-302"></a></span>
+<span id="cb8-303"><a href="#cb8-303"></a><span class="fu">## 📚 Para Profundizar</span></span>
+<span id="cb8-304"><a href="#cb8-304"></a></span>
+<span id="cb8-305"><a href="#cb8-305"></a><span class="ss">- </span>**VanderPlas, J.** (2016). *Python Data Science Handbook*, Cap. 4: "Visualization with Matplotlib". — Acceso abierto online.</span>
+<span id="cb8-306"><a href="#cb8-306"></a><span class="ss">- </span>**McKinney, W.** (2022). *Python for Data Analysis*, 3ª ed. O'Reilly. — Capítulo 9: "Plotting and Visualization".</span>
+<span id="cb8-307"><a href="#cb8-307"></a><span class="ss">- </span>**Documentación oficial Matplotlib**: <span class="co">[</span><span class="ot">https://matplotlib.org/stable/</span><span class="co">](https://matplotlib.org/stable/)</span></span>
+<span id="cb8-308"><a href="#cb8-308"></a><span class="ss">- </span>**Gallery de Matplotlib**: <span class="co">[</span><span class="ot">https://matplotlib.org/stable/gallery/index.html</span><span class="co">](https://matplotlib.org/stable/gallery/index.html)</span> — referencia visual de todos los tipos de gráficas.</span></code></pre></div><button title="Copiar código" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© [Año] [Tu nombre] — Licencia CC BY 4.0</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/[tu-usuario]/manual-fba-python/edit/main/chapters/06-visualizacion.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/[tu-usuario]/manual-fba-python/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Generado con <a href="https://quarto.org">Quarto</a> &amp; <a href="https://cobrapy.readthedocs.io">CobraPy</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

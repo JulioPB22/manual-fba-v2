@@ -1,0 +1,872 @@
+[
+  {
+    "objectID": "indice-general.html",
+    "href": "indice-general.html",
+    "title": "3  Índice General",
+    "section": "",
+    "text": "Índice General",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Índice General</span>"
+    ]
+  },
+  {
+    "objectID": "indice-general.html#parte-i-preparación-herramientas-y-fundamentos-de-python-para-bioinformáticos",
+    "href": "indice-general.html#parte-i-preparación-herramientas-y-fundamentos-de-python-para-bioinformáticos",
+    "title": "3  Índice General",
+    "section": "3.1 Parte I — Preparación, Herramientas y Fundamentos de Python para Bioinformáticos",
+    "text": "3.1 Parte I — Preparación, Herramientas y Fundamentos de Python para Bioinformáticos\nCapítulo 1. Instalación de Python e Introducción al Entorno de Desarrollo\n\n1.1 ¿Por qué Python para bioinformática y biología computacional?\n1.2 Instalación de Python 3.11+ en Windows, macOS y Linux\n1.3 Entornos de desarrollo integrados: Jupyter, Google Colab y VS Code\n1.4 Tipos de archivo: .py, notebooks .ipynb y documentos .qmd\n1.5 Organización de proyectos y entornos virtuales\n1.6 Ejercicio integrador: primer script biotecnológico\n\nCapítulo 2. Tipos de Datos y Estructuras en Python\n\n2.1 El modelo de objetos de Python: variables, referencias y tipos\n2.2 Tipos escalares: enteros, flotantes, booleanos y cadenas\n2.3 Secuencias: listas, tuplas y su uso en datos biológicos\n2.4 Mapas y conjuntos: diccionarios y sets\n2.5 List comprehensions y expresiones generadoras\n2.6 Ejercicio integrador: representar una secuencia de ADN y sus propiedades\n\nCapítulo 3. NumPy — Vectores y Matrices para Biología Computacional\n\n3.1 El ndarray: estructura fundamental del cómputo numérico\n3.2 Creación, indexado y segmentado de arreglos\n3.3 Operaciones vectorizadas y broadcasting\n3.4 Álgebra lineal con NumPy: producto matricial, transpuesta y rango\n3.5 La matriz estequiométrica \\(S\\): representación computacional del metabolismo\n3.6 Ejercicio integrador: construir y analizar una red metabólica simple\n\nCapítulo 4. Pandas — DataFrames para Análisis Biológico\n\n4.1 Series y DataFrames: estructuras tabulares con semántica biológica\n4.2 Lectura y escritura de archivos: CSV, TSV, Excel\n4.3 Indexado, filtrado y selección de datos\n4.4 Operaciones de agrupamiento y estadísticas descriptivas\n4.5 Joins y concatenación de tablas de reacciones y metabolitos\n4.6 Ejercicio integrador: analizar una tabla de reacciones del modelo E. coli\n\nCapítulo 5. Estructuras de Control de Flujo y Funciones\n\n5.1 Condicionales: if, elif, else\n5.2 Ciclos iterativos: for y while\n5.3 Funciones: definición, argumentos y valores de retorno\n5.4 Funciones de orden superior y expresiones lambda\n5.5 Manejo de excepciones: try, except, finally\n5.6 Ejercicio integrador: función de análisis de secuencias FASTA\n\nCapítulo 6. Visualización Científica con Matplotlib\n\n6.1 Arquitectura de Matplotlib: figura, ejes y artistas\n6.2 Gráficas de línea, dispersión, barras e histogramas\n6.3 Personalización: etiquetas, leyendas, escalas y colores\n6.4 Exportación de figuras en alta resolución para publicación\n6.5 Introducción a Seaborn para visualización estadística\n6.6 Ejercicio integrador: visualizar distribución de flujos metabólicos",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Índice General</span>"
+    ]
+  },
+  {
+    "objectID": "indice-general.html#parte-ii-sistemas-biológicos-y-modelado",
+    "href": "indice-general.html#parte-ii-sistemas-biológicos-y-modelado",
+    "title": "3  Índice General",
+    "section": "3.2 Parte II — Sistemas Biológicos y Modelado",
+    "text": "3.2 Parte II — Sistemas Biológicos y Modelado\nCapítulo 7. ¿Qué es un Sistema Biológico y por qué Modelar?\nCapítulo 8. Tipos de Modelos en Biología\nCapítulo 9. Redes Biológicas y Teoría de Grafos\nCapítulo 10. Metabolismo y su Representación Matemática",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Índice General</span>"
+    ]
+  },
+  {
+    "objectID": "indice-general.html#parte-iii-flux-balance-analysis-fba-con-cobrapy",
+    "href": "indice-general.html#parte-iii-flux-balance-analysis-fba-con-cobrapy",
+    "title": "3  Índice General",
+    "section": "3.3 Parte III — Flux Balance Analysis (FBA) con CobraPy",
+    "text": "3.3 Parte III — Flux Balance Analysis (FBA) con CobraPy\nCapítulo 11. Fundamentos Teóricos del FBA\nCapítulo 12. Formulación Matemática Paso a Paso\nCapítulo 13. Introducción Práctica a CobraPy\nCapítulo 14. Análisis e Interpretación de Resultados\nCapítulo 15. Casos Prácticos con el Modelo de E. coli\nCapítulo 16. Visualización de Redes Metabólicas\nCapítulo 17. Errores Comunes y Cómo Interpretarlos\nCapítulo 18. Proyecto Final Integrador",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Índice General</span>"
+    ]
+  },
+  {
+    "objectID": "indice-general.html#apéndices",
+    "href": "indice-general.html#apéndices",
+    "title": "3  Índice General",
+    "section": "3.4 Apéndices",
+    "text": "3.4 Apéndices\nApéndice A. Guías de Instalación Detallada (Python, Librerías, CobraPy)\nApéndice B. Datasets de Ejemplo: Descripción y Fuentes\nApéndice C. Glosario de Términos\nApéndice D. Cómo Citar las Herramientas Utilizadas en Investigación",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Índice General</span>"
+    ]
+  },
+  {
+    "objectID": "indice-general.html#referencias-bibliográficas",
+    "href": "indice-general.html#referencias-bibliográficas",
+    "title": "3  Índice General",
+    "section": "3.5 Referencias Bibliográficas",
+    "text": "3.5 Referencias Bibliográficas",
+    "crumbs": [
+      "<span class='chapter-number'>3</span>  <span class='chapter-title'>Índice General</span>"
+    ]
+  },
+  {
+    "objectID": "prologo.html",
+    "href": "prologo.html",
+    "title": "2  Prólogo al Estudiante",
+    "section": "",
+    "text": "Prólogo al Estudiante\nLa biología contemporánea ha experimentado una transición paradigmática, evolucionando desde una disciplina predominantemente cualitativa y descriptiva hacia una ciencia cuantitativa intensiva en datos. Este cambio, impulsado por el advenimiento de las tecnologías de secuenciación de alto rendimiento (NGS) y la espectrometría de masas, ha generado volúmenes de información que superan la capacidad de análisis manual. En este nuevo ecosistema, la capacidad para modelar sistemas biológicos in silico no es simplemente una habilidad auxiliar, sino un requisito fundamental para el investigador moderno. El lenguaje de programación Python se ha establecido como la lingua franca de este dominio, desplazando a predecesores como Perl y complementando a R, gracias a su sintaxis legible, su tipado dinámico y, crucialmente, a un vasto ecosistema de bibliotecas científicas robustas.\nEste manual tiene como propósito dotar al ingeniero biotecnológico y al ingeniero metabólico de una comprensión profunda y rigurosa de las herramientas computacionales necesarias para el Análisis de Balance de Flujos (FBA) y la reconstrucción de redes metabólicas utilizando CobraPy. Sin embargo, antes de abordar la complejidad del modelado basado en restricciones, es imperativo establecer una base sólida en los fundamentos del lenguaje Python, la computación numérica con NumPy y la manipulación de datos estructurados con Pandas. La ingeniería de software rigurosa, la reproducibilidad y el manejo adecuado de formatos biológicos estandarizados constituyen los cimientos sobre los que se construyen los modelos predictivos fiables.\nA lo largo de este manual, diseccionaremos los componentes del lenguaje con precisión académica, integrando definiciones formales extraídas de la literatura técnica seminal —incluyendo las obras de Grus, McKinney y Bruce— con aplicaciones prácticas directas en el contexto biotecnológico. Desde la gestión de la memoria en la manipulación de secuencias de ADN hasta la vectorización de operaciones matriciales para la estequiometría, cada concepto será explorado no solo en su sintaxis, sino en su implicación computacional y biológica.",
+    "crumbs": [
+      "<span class='chapter-number'>2</span>  <span class='chapter-title'>Prólogo al Estudiante</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-instalacion.html",
+    "href": "chapters/01-instalacion.html",
+    "title": "4  Instalación de Python e Introducción al Entorno de Desarrollo",
+    "section": "",
+    "text": "Objetivos de aprendizaje\nAl finalizar este capítulo serás capaz de:",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Instalación de Python e Introducción al Entorno de Desarrollo</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-instalacion.html#motivación-biológica",
+    "href": "chapters/01-instalacion.html#motivación-biológica",
+    "title": "4  Instalación de Python e Introducción al Entorno de Desarrollo",
+    "section": "4.1 🧬 Motivación biológica",
+    "text": "4.1 🧬 Motivación biológica\nAntes de escribir una sola línea de código, vale la pena preguntarse: ¿por qué Python y no Excel, R o MATLAB para trabajar con datos biológicos? La respuesta no es trivial. Excel carece de reproducibilidad y falla ante conjuntos de datos que superan el millón de filas —cifra modesta para un experimento de RNA-seq moderno—. R es un lenguaje estadístico excelente, pero su curva de aprendizaje en programación general es pronunciada y su rendimiento en operaciones matriciales de gran escala es inferior al de Python con NumPy. MATLAB, por su parte, es propietario y su ecosistema de biología de sistemas, aunque robusto, no alcanza la amplitud de la comunidad Python.\nPython ofrece algo que ninguno de los anteriores garantiza por igual: un ecosistema abierto, reproducible y transversal. La misma instalación que utilizas para parsear archivos FASTA te permite, capítulos después, formular y resolver un problema de programación lineal con CobraPy para predecir la tasa de crecimiento de Escherichia coli bajo distintas condiciones nutricionales. Esa continuidad es el argumento definitivo.\n\n\n\n\n\n\nNota🧬 Contexto Histórico\n\n\n\nPython fue creado por Guido van Rossum y su primera versión pública apareció en 1991. Su adopción en ciencia computacional se aceleró a partir de 2008 con la liberación de NumPy 1.0 y la posterior creación de Pandas (2009) por Wes McKinney. Hoy, según el índice TIOBE y las encuestas anuales de Stack Overflow, Python es consistentemente el lenguaje de programación más utilizado en el mundo, con una penetración especialmente dominante en ciencia de datos, aprendizaje automático y bioinformática computacional (McKinney, 2022).",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Instalación de Python e Introducción al Entorno de Desarrollo</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-instalacion.html#instalación-de-python-3.11",
+    "href": "chapters/01-instalacion.html#instalación-de-python-3.11",
+    "title": "4  Instalación de Python e Introducción al Entorno de Desarrollo",
+    "section": "4.2 1.1 Instalación de Python 3.11+",
+    "text": "4.2 1.1 Instalación de Python 3.11+\n\n4.2.1 Windows\n\nDirígete a https://www.python.org/downloads/ y descarga el instalador de Python 3.11 o superior para Windows (64-bit).\nEjecuta el instalador. Crítico: marca la casilla “Add Python to PATH” antes de hacer clic en Install Now. Omitir este paso es el error más frecuente entre usuarios nuevos.\nVerifica la instalación abriendo el Símbolo del sistema (cmd) o PowerShell:\n\npython --version\n# Salida esperada: Python 3.11.x\npip --version\n# Salida esperada: pip 23.x from C:\\...\\site-packages\\pip (python 3.11)\n\n\n4.2.2 macOS\nmacOS incluye Python 2.7 de sistema, que está obsoleto y no debe usarse. Instala Python 3 mediante Homebrew:\n# Instalar Homebrew si no lo tienes:\n/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"\n\n# Instalar Python 3.11:\nbrew install python@3.11\n\n# Verificar:\npython3 --version\n\n\n4.2.3 Linux (Ubuntu/Debian)\nsudo apt update\nsudo apt install python3.11 python3.11-venv python3-pip -y\npython3.11 --version\n\n\n\n\n\n\nAdvertencia⚠️ Error Común — Conflicto de versiones\n\n\n\nEn sistemas Linux, python puede apuntar a Python 2 mientras que python3 apunta a Python 3. Siempre verifica con python3 --version. Si trabajas en un proyecto que requiere Python 3 exclusivamente, considera crear un alias en tu .bashrc:\nalias python=python3\nalias pip=pip3",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Instalación de Python e Introducción al Entorno de Desarrollo</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-instalacion.html#entornos-virtuales-aislando-las-dependencias",
+    "href": "chapters/01-instalacion.html#entornos-virtuales-aislando-las-dependencias",
+    "title": "4  Instalación de Python e Introducción al Entorno de Desarrollo",
+    "section": "4.3 1.2 Entornos Virtuales: aislando las dependencias",
+    "text": "4.3 1.2 Entornos Virtuales: aislando las dependencias\nUn entorno virtual es una instalación de Python independiente y aislada del sistema. Cuando instalas CobraPy en tu entorno virtual, no afectas ninguna otra instalación de Python en tu computadora. Esta práctica es esencial en proyectos científicos porque garantiza que el manual sea reproducible: si especificas exactamente qué versiones de qué librerías usar, cualquier persona puede recrear tu entorno de trabajo.\n# Crear el entorno virtual (solo una vez por proyecto):\npython -m venv .venv-fba\n\n# Activar el entorno:\n# Windows:\n.venv-fba\\Scripts\\activate\n# macOS / Linux:\nsource .venv-fba/bin/activate\n\n# El prompt cambiará a: (.venv-fba) usuario@maquina:~$\n\n# Instalar las dependencias del manual:\npip install jupyter numpy pandas matplotlib seaborn cobrapy biopython\n\n# Guardar las versiones exactas para reproducibilidad:\npip freeze &gt; requirements.txt\nEl archivo requirements.txt generado lucirá así (con versiones exactas):\ncobrapy==0.26.3\nnumpy==1.26.4\npandas==2.2.1\nmatplotlib==3.8.3\n...\nCualquier colaborador puede instalar exactamente las mismas versiones con:\npip install -r requirements.txt",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Instalación de Python e Introducción al Entorno de Desarrollo</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-instalacion.html#entornos-de-desarrollo-jupyter-colab-y-vs-code",
+    "href": "chapters/01-instalacion.html#entornos-de-desarrollo-jupyter-colab-y-vs-code",
+    "title": "4  Instalación de Python e Introducción al Entorno de Desarrollo",
+    "section": "4.4 1.3 Entornos de Desarrollo: Jupyter, Colab y VS Code",
+    "text": "4.4 1.3 Entornos de Desarrollo: Jupyter, Colab y VS Code\n\n4.4.1 Jupyter Notebook / JupyterLab\nJupyter es el estándar de facto para computación científica interactiva. Un notebook combina en un solo documento: celdas de código ejecutable, texto enriquecido con Markdown, ecuaciones en LaTeX y salidas gráficas. Es el entorno preferido para exploración de datos y prototipado.\n# Iniciar Jupyter Lab (recomendado sobre Notebook clásico):\njupyter lab\n# Se abrirá automáticamente en tu navegador en http://localhost:8888\n\n\n\n\n\n\nTip📐 Anatomía de un Notebook\n\n\n\nUn archivo .ipynb es, internamente, un documento JSON que almacena el código fuente de cada celda, los metadatos del kernel (intérprete Python) y las salidas —incluyendo gráficas como texto base64—. Esto permite compartir resultados reproducibles sin que el receptor necesite ejecutar el código. Sin embargo, los archivos .ipynb no son amigables con Git porque los cambios en metadatos generan diffs ilegibles. Para este manual, se usa el formato .qmd de Quarto, que resuelve este problema.\n\n\n\n\n4.4.2 Google Colab\nGoogle Colaboratory es un entorno Jupyter alojado en la nube que no requiere instalación local. Proporciona acceso gratuito a GPU/TPU, lo que lo hace valioso para tareas de aprendizaje automático. Sus limitaciones son la pérdida de archivos al cerrar la sesión y la dependencia de conexión a internet.\nPara usar los ejemplos de este manual en Colab, basta con copiar las celdas de código. Cuando sea necesario instalar paquetes no disponibles por defecto:\n# En Colab, las instalaciones son por sesión (se pierden al reiniciar):\n!pip install cobrapy --quiet\n\n\n4.4.3 Visual Studio Code\nVS Code es el entorno recomendado para el trabajo serio con este manual. Combina la ejecución interactiva de celdas (con la extensión Jupyter) con las ventajas de un editor de código completo: autocompletado inteligente, depuración, control de versiones integrado con Git y soporte nativo para Quarto. Los archivos .qmd se ejecutan y previsualizan directamente en VS Code con la extensión oficial de Quarto.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Instalación de Python e Introducción al Entorno de Desarrollo</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-instalacion.html#tipos-de-archivo-.py-.ipynb-y-.qmd",
+    "href": "chapters/01-instalacion.html#tipos-de-archivo-.py-.ipynb-y-.qmd",
+    "title": "4  Instalación de Python e Introducción al Entorno de Desarrollo",
+    "section": "4.5 1.4 Tipos de Archivo: .py, .ipynb y .qmd",
+    "text": "4.5 1.4 Tipos de Archivo: .py, .ipynb y .qmd\n\n\n\n\n\n\n\n\nFormato\nDescripción\nUso recomendado\n\n\n\n\n.py\nScript Python plano\nMódulos, funciones reutilizables, pipelines\n\n\n.ipynb\nJupyter Notebook\nExploración de datos, prototipado\n\n\n.qmd\nQuarto Markdown\nDocumentos técnicos, este manual, publicaciones\n\n\n\nLos archivos .qmd son la columna vertebral de este manual. Mezclan texto académico en Markdown, ecuaciones en LaTeX, y bloques de código Python que se ejecutan en tiempo de renderización:\n---\ntitle: \"Mi análisis metabólico\"\n---\n\n## Introducción\nAquí va el texto...\n\n```{python}\nimport numpy as np\nS = np.array([[-1, 1], [1, -1]])\nprint(S)\n```",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Instalación de Python e Introducción al Entorno de Desarrollo</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-instalacion.html#organización-del-proyecto",
+    "href": "chapters/01-instalacion.html#organización-del-proyecto",
+    "title": "4  Instalación de Python e Introducción al Entorno de Desarrollo",
+    "section": "4.6 1.5 Organización del Proyecto",
+    "text": "4.6 1.5 Organización del Proyecto\nUna estructura de directorios clara es tan importante como el código mismo. Para este manual, adoptamos la siguiente convención:\nmanual-fba/\n├── _quarto.yml          # Configuración del libro\n├── prologo.qmd\n├── indice-general.qmd\n├── chapters/            # Un .qmd por capítulo\n├── assets/\n│   ├── css/             # Estilos personalizados\n│   └── data/            # Datasets de ejemplo\n├── references.bib       # Bibliografía BibTeX\n├── requirements.txt     # Dependencias Python\n└── .gitignore           # Archivos ignorados por Git\n\n\n\n\n\n\nImportante💻 Convención de nombrado de archivos\n\n\n\nNombra los archivos .qmd con el prefijo numérico de su capítulo: 01-instalacion.qmd, 02-tipos-datos.qmd, etc. Esto garantiza que el sistema operativo los liste en orden cronológico y que Git los gestione de forma predecible. Usa guiones medios en lugar de espacios o guiones bajos: es la convención universal de URLs y sistemas de archivos modernos.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Instalación de Python e Introducción al Entorno de Desarrollo</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-instalacion.html#ejercicio-integrador-primer-script-biotecnológico",
+    "href": "chapters/01-instalacion.html#ejercicio-integrador-primer-script-biotecnológico",
+    "title": "4  Instalación de Python e Introducción al Entorno de Desarrollo",
+    "section": "4.7 1.6 🔬 Ejercicio Integrador: Primer Script Biotecnológico",
+    "text": "4.7 1.6 🔬 Ejercicio Integrador: Primer Script Biotecnológico\n\nEjercicio 1.1 — Nivel: Básico\n\n\nEl siguiente script integra los conceptos de este capítulo en un contexto biológico real. Analiza una secuencia de ADN y calcula propiedades básicas. Ejecútalo desde VS Code, Jupyter o la terminal.\n# ─────────────────────────────────────────────────────────────────\n# Script: analisis_secuencia.py\n# Descripción: Análisis básico de una secuencia de ADN codificante\n# Dependencias: ninguna (solo librería estándar de Python)\n# ─────────────────────────────────────────────────────────────────\n\ndef analizar_secuencia(seq: str, nombre: str = \"Secuencia\") -&gt; dict:\n    \"\"\"\n    Calcula propiedades básicas de una secuencia de ADN.\n    \n    Parámetros\n    ----------\n    seq  : str  — Secuencia de ADN en mayúsculas (A, T, G, C)\n    nombre : str — Nombre descriptivo de la secuencia\n    \n    Retorna\n    -------\n    dict con longitud, contenido GC, composición y codones de inicio\n    \"\"\"\n    seq = seq.upper().replace(\" \", \"\").replace(\"\\n\", \"\")\n    \n    longitud = len(seq)\n    conteo   = {base: seq.count(base) for base in \"ATGC\"}\n    gc_content = (conteo[\"G\"] + conteo[\"C\"]) / longitud * 100\n    \n    # Buscar codones de inicio ATG\n    posiciones_atg = [i for i in range(len(seq) - 2) if seq[i:i+3] == \"ATG\"]\n    \n    return {\n        \"nombre\"       : nombre,\n        \"longitud\"     : longitud,\n        \"composicion\"  : conteo,\n        \"gc_content\"   : round(gc_content, 2),\n        \"codones_inicio\": posiciones_atg,\n    }\n\n\ndef imprimir_reporte(resultado: dict) -&gt; None:\n    \"\"\"Imprime un reporte formateado del análisis.\"\"\"\n    print(f\"\\n{'='*50}\")\n    print(f\"  REPORTE: {resultado['nombre']}\")\n    print(f\"{'='*50}\")\n    print(f\"  Longitud        : {resultado['longitud']} bp\")\n    print(f\"  Contenido GC    : {resultado['gc_content']} %\")\n    print(f\"  Composición     : {resultado['composicion']}\")\n    print(f\"  Codones ATG     : {len(resultado['codones_inicio'])} encontrado(s)\")\n    print(f\"  Posiciones ATG  : {resultado['codones_inicio']}\")\n    print(f\"{'='*50}\\n\")\n\n\n# ─── Fragmento del gen lacZ de E. coli (glucosidasa β-galactosidasa) ───\nseq_lacZ = \"\"\"\nATGACCATGATTACGCCAAGCTTGCATGCCTGCAGGTCGACGGATCCCCGGGAATTCGAG\nCTCGGTACCCGGGGATCCTCTAGAGTCGACCTGCAGGCATGCAAGCTTGGCGTAATCAT\n\"\"\"\n\nresultado = analizar_secuencia(seq_lacZ, nombre=\"lacZ - E. coli (fragmento)\")\nimprimir_reporte(resultado)\nSalida esperada:\n==================================================\n  REPORTE: lacZ - E. coli (fragmento)\n==================================================\n  Longitud        : 120 bp\n  Contenido GC    : 52.5 %\n  Composición     : {'A': 25, 'T': 32, 'G': 33, 'C': 30}\n  Codones ATG     : 2 encontrado(s)\n  Posiciones ATG  : [0, 10]\n==================================================\nPreguntas para reflexión: 1. ¿Por qué el contenido GC de un gen es biológicamente relevante? 2. Modifica la función para que también detecte codones de paro (TAA, TAG, TGA). 3. ¿Qué cambiarías en la función para hacerla compatible con secuencias de ARN?",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Instalación de Python e Introducción al Entorno de Desarrollo</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/01-instalacion.html#para-profundizar",
+    "href": "chapters/01-instalacion.html#para-profundizar",
+    "title": "4  Instalación de Python e Introducción al Entorno de Desarrollo",
+    "section": "4.8 📚 Para Profundizar",
+    "text": "4.8 📚 Para Profundizar\n\nGrus, J. (2019). Data Science from Scratch, 2ª ed. O’Reilly. — Capítulos 1–2 para fundamentos del entorno Python.\nMcKinney, W. (2022). Python for Data Analysis, 3ª ed. O’Reilly. — Capítulo 1: introducción al ecosistema científico.\nDocumentación oficial de Python: https://docs.python.org/3/\nQuarto — Getting Started: https://quarto.org/docs/get-started/\nReal Python — Virtual Environments: https://realpython.com/python-virtual-environments-a-primer/\n\n\n\n\n\n\n\nMcKinney, W. (2022). Python for Data Analysis (3.ª ed.). O’Reilly Media.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>4</span>  <span class='chapter-title'>Instalación de Python e Introducción al Entorno de Desarrollo</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-tipos-datos.html",
+    "href": "chapters/02-tipos-datos.html",
+    "title": "5  Tipos de Datos y Estructuras en Python",
+    "section": "",
+    "text": "Objetivos de aprendizaje\nAl finalizar este capítulo serás capaz de:",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tipos de Datos y Estructuras en Python</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-tipos-datos.html#motivación-biológica",
+    "href": "chapters/02-tipos-datos.html#motivación-biológica",
+    "title": "5  Tipos de Datos y Estructuras en Python",
+    "section": "5.1 🧬 Motivación biológica",
+    "text": "5.1 🧬 Motivación biológica\nAntes de hablar de matrices estequiométricas o de vectores de flujo, toda estructura de datos en biología comienza con la representación elemental de la información: un nucleótido es una cadena de texto; una concentración de metabolito es un número flotante; la presencia o ausencia de un gen en un organismo es un booleano. Comprender con precisión cómo Python almacena, interpreta y opera sobre estos tipos primitivos no es un trámite introductorio: es la diferencia entre escribir código correcto y código que parece correcto pero acumula errores de redondeo o colisiones de identidad silenciosas.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tipos de Datos y Estructuras en Python</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-tipos-datos.html#el-modelo-de-objetos-de-python",
+    "href": "chapters/02-tipos-datos.html#el-modelo-de-objetos-de-python",
+    "title": "5  Tipos de Datos y Estructuras en Python",
+    "section": "5.2 2.1 El Modelo de Objetos de Python",
+    "text": "5.2 2.1 El Modelo de Objetos de Python\nEn Python, todo es un objeto. Esto no es una simplificación didáctica sino una descripción técnica precisa: cada valor, función, módulo y clase es una instancia de algún tipo definido en el lenguaje (Grus, 2019). Cada objeto tiene tres atributos fundamentales:\n\nTipo (type): define qué operaciones son válidas sobre el objeto.\nValor: el contenido representado.\nIdentidad (id): la dirección de memoria donde reside el objeto.\n\n# Ilustración del modelo de objetos\nconcentracion = 1.25e-3   # valor en mol/L\n\nprint(f\"Tipo      : {type(concentracion)}\")   # &lt;class 'float'&gt;\nprint(f\"Valor     : {concentracion}\")          # 0.00125\nprint(f\"Identidad : {id(concentracion)}\")      # e.g. 140234567890112\n\n\n\n\n\n\nTip📐 Tipado Dinámico vs. Estático\n\n\n\nPython utiliza tipado dinámico: el tipo de una variable no se declara en el código, sino que se infiere en tiempo de ejecución a partir del valor asignado. Esto contrasta con lenguajes de tipado estático como C o Java, donde el tipo debe declararse explícitamente. La ventaja es expresividad y rapidez de desarrollo; el riesgo es que errores de tipo solo se detectan al ejecutar, no al compilar. Por ello, en código de producción científica se recomienda usar anotaciones de tipo (type hints) para documentar la intención:\ndef calcular_gc(secuencia: str) -&gt; float:\n    g = secuencia.count(\"G\")\n    c = secuencia.count(\"C\")\n    return (g + c) / len(secuencia) * 100",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tipos de Datos y Estructuras en Python</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-tipos-datos.html#tipos-escalares",
+    "href": "chapters/02-tipos-datos.html#tipos-escalares",
+    "title": "5  Tipos de Datos y Estructuras en Python",
+    "section": "5.3 2.2 Tipos Escalares",
+    "text": "5.3 2.2 Tipos Escalares\n\n5.3.1 Enteros (int)\nPython 3 maneja enteros de precisión arbitraria: no existe un límite superior predefinido para el tamaño de un entero (a diferencia de C donde int es tipicamente 32 bits). Esto es relevante en bioinformática cuando se trabaja con identificadores de posiciones genómicas de organismos grandes.\n# Posiciones en el genoma de E. coli K-12 (4.6 Mbp ≈ 4,600,000 pares de bases)\ninicio_gen_lacZ  = 361249\nfin_gen_lacZ     = 364968\nlongitud_lacZ    = fin_gen_lacZ - inicio_gen_lacZ\n\nprint(f\"Longitud del gen lacZ: {longitud_lacZ} bp\")   # 3719 bp\n\n# Operaciones aritméticas con enteros\nnum_reacciones   = 2712   # modelo iJO1366 de E. coli\nnum_metabolitos  = 1805\ngrados_libertad  = num_reacciones - num_metabolitos\nprint(f\"Grados de libertad del sistema: {grados_libertad}\")  # 907\n\n\n5.3.2 Flotantes (float)\nLos números flotantes en Python implementan el estándar IEEE 754 de doble precisión (64 bits). Esto implica que ciertos números decimales no tienen representación exacta en binario, fenómeno crítico en cómputo científico:\n# El problema clásico de precisión flotante\nprint(0.1 + 0.2)           # 0.30000000000000004\nprint(0.1 + 0.2 == 0.3)    # False (!)\n\n# Solución para comparaciones: usar tolerancia\nimport math\nprint(math.isclose(0.1 + 0.2, 0.3, rel_tol=1e-9))  # True\n\n# En cálculos metabólicos, los flujos se expresan en mmol/gDW/h\nflux_glucosa  = -10.5    # consumo (negativo por convención)\nflux_biomasa  =   0.874  # producción\nprint(f\"Tasa de crecimiento: {flux_biomasa:.4f} h⁻¹\")\n\n\n\n\n\n\nAdvertencia⚠️ Error Común — Comparación de flotantes\n\n\n\nNunca uses == para comparar flotantes en código científico. Usa math.isclose() o numpy.isclose() con una tolerancia apropiada para tu dominio. En FBA, los flujos inferiores a 1e-7 mmol/gDW/h suelen considerarse cero por convención numérica.\n\n\n\n\n5.3.3 Booleanos (bool)\n# Propiedades binarias de genes y reacciones\ngen_presente     = True\nreaccion_activa  = False\nes_reversible    = True\n\n# Álgebra booleana en consultas biológicas\ngen_esencial = gen_presente and reaccion_activa\nprint(f\"¿Gen esencial según criterio?: {gen_esencial}\")  # False\n\n# Los booleanos son subclase de int en Python\nprint(int(True), int(False))    # 1 0\n# Útil para contar genes activos en una lista:\ngenes = [True, False, True, True, False]\nprint(f\"Genes activos: {sum(genes)}\")   # 3\n\n\n5.3.4 Cadenas de texto (str)\nLas cadenas son inmutables en Python: una vez creadas no pueden modificarse in-place. Toda operación sobre una cadena crea un nuevo objeto. Esto es eficiente para compartir datos de secuencia entre funciones sin riesgo de mutación accidental.\n# Representación de una secuencia de aminoácidos (proteína LacZ, fragmento)\nproteina_lacZ = \"MTMITPSLHACRSTGSRIEFGPINSNKESVKR\"\n\n# Operaciones fundamentales sobre cadenas\nprint(f\"Longitud           : {len(proteina_lacZ)} aa\")\nprint(f\"Aminoácido 1       : {proteina_lacZ[0]}\")         # M (Met, inicio)\nprint(f\"Últimos 5 aa       : {proteina_lacZ[-5:]}\")        # VKRAA\nprint(f\"¿Empieza con Met?  : {proteina_lacZ.startswith('M')}\")\n\n# Transcripción simplificada (ADN → ARN)\nadn = \"ATGACCATGATTACGCCA\"\narn = adn.replace(\"T\", \"U\")\nprint(f\"ADN: {adn}\")\nprint(f\"ARN: {arn}\")\n\n# Complemento inverso (útil en bioinformática)\ncomplemento = {\"A\": \"T\", \"T\": \"A\", \"G\": \"C\", \"C\": \"G\"}\ncomp_inv = \"\".join(complemento[b] for b in reversed(adn))\nprint(f\"Complemento inverso: {comp_inv}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tipos de Datos y Estructuras en Python</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-tipos-datos.html#secuencias-listas-y-tuplas",
+    "href": "chapters/02-tipos-datos.html#secuencias-listas-y-tuplas",
+    "title": "5  Tipos de Datos y Estructuras en Python",
+    "section": "5.4 2.3 Secuencias: Listas y Tuplas",
+    "text": "5.4 2.3 Secuencias: Listas y Tuplas\n\n5.4.1 Listas (list)\nLas listas son colecciones ordenadas y mutables de objetos heterogéneos. Son la estructura de datos más versátil de Python y el punto de entrada natural para representar colecciones biológicas.\n# Lista de metabolitos en la glucólisis\nmetabolitos_glucolisis = [\n    \"Glucosa\", \"Glucosa-6-fosfato\", \"Fructosa-6-fosfato\",\n    \"Fructosa-1,6-bisfosfato\", \"DHAP\", \"Gliceraldehído-3-P\",\n    \"1,3-BPG\", \"3-fosfoglicerato\", \"2-fosfoglicerato\",\n    \"Fosfoenolpiruvato\", \"Piruvato\"\n]\n\n# Indexado y segmentado (slicing)\nprint(f\"Primer metabolito    : {metabolitos_glucolisis[0]}\")\nprint(f\"Último metabolito    : {metabolitos_glucolisis[-1]}\")\nprint(f\"Intermediarios 3-5   : {metabolitos_glucolisis[2:5]}\")\n\n# Operaciones de mutación\nmetabolitos_glucolisis.append(\"ATP\")    # agregar al final\nmetabolitos_glucolisis.insert(0, \"ADP\") # insertar en posición 0\nprint(f\"Con cofactores: {len(metabolitos_glucolisis)} elementos\")\n\n# Ordenamiento\nmetabolitos_glucolisis.sort()\nprint(f\"Primer en orden alfabético: {metabolitos_glucolisis[0]}\")\n\n\n5.4.2 Tuplas (tuple)\nLas tuplas son colecciones ordenadas e inmutables. Su inmutabilidad las hace apropiadas para representar datos que no deben modificarse: constantes bioquímicas, coordenadas genómicas, rangos de flujo.\n# Restricciones de flujo (lower_bound, upper_bound) en mmol/gDW/h\n# Convención CobraPy: reacciones reversibles [-1000, 1000]\nrestriccion_glucosa  = (-10.0,   0.0)   # intercambio de glucosa (consumo)\nrestriccion_oxigeno  = (-20.0,   0.0)   # intercambio de oxígeno\nrestriccion_biomasa  = (  0.0, 1000.0)  # reacción de biomasa (solo producción)\n\n# Las tuplas soportan desempaquetado (unpacking)\nlb_glc, ub_glc = restriccion_glucosa\nprint(f\"Glucosa: [{lb_glc}, {ub_glc}] mmol/gDW/h\")\n\n# Tuplas como claves de diccionario (las listas no pueden serlo)\nmapa_reacciones = {\n    (\"PFK\", \"E. coli\"): \"b3916\",\n    (\"PFK\", \"S. cerevisiae\"): \"YGR240C\",\n}\nprint(mapa_reacciones[(\"PFK\", \"E. coli\")])   # b3916",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tipos de Datos y Estructuras en Python</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-tipos-datos.html#mapas-y-conjuntos-diccionarios-y-sets",
+    "href": "chapters/02-tipos-datos.html#mapas-y-conjuntos-diccionarios-y-sets",
+    "title": "5  Tipos de Datos y Estructuras en Python",
+    "section": "5.5 2.4 Mapas y Conjuntos: Diccionarios y Sets",
+    "text": "5.5 2.4 Mapas y Conjuntos: Diccionarios y Sets\n\n5.5.1 Diccionarios (dict)\nLos diccionarios son colecciones de pares clave–valor con acceso en tiempo constante O(1). Son la estructura más natural para representar modelos metabólicos simplificados, anotaciones génicas y tablas de lookup.\n# Representación de una reacción metabólica como diccionario\nreaccion_pfk = {\n    \"id\"          : \"PFK\",\n    \"nombre\"      : \"Phosphofructokinase\",\n    \"ec_number\"   : \"2.7.1.11\",\n    \"subsistema\"  : \"Glycolysis/Gluconeogenesis\",\n    \"reversible\"  : False,\n    \"genes\"       : [\"b3916\", \"b1723\"],\n    \"estequiometria\": {\n        \"atp_c\"  : -1,   # ATP consumido\n        \"f6p_c\"  : -1,   # Fructosa-6-P consumida\n        \"adp_c\"  :  1,   # ADP producido\n        \"fdp_c\"  :  1,   # Fructosa-1,6-BP producida\n        \"h_c\"    :  1,   # H+ producido\n    }\n}\n\n# Acceso a valores\nprint(f\"Reacción    : {reaccion_pfk['id']} — {reaccion_pfk['nombre']}\")\nprint(f\"EC Number   : {reaccion_pfk['ec_number']}\")\nprint(f\"Genes       : {', '.join(reaccion_pfk['genes'])}\")\n\n# Iterar sobre estequiometría\nprint(\"\\nEstequiometría:\")\nfor metabolito, coef in reaccion_pfk[\"estequiometria\"].items():\n    signo = \"consumido\" if coef &lt; 0 else \"producido\"\n    print(f\"  {metabolito:8s}: {coef:+d}  ({signo})\")\n\n\n5.5.2 Conjuntos (set)\nLos conjuntos son colecciones no ordenadas de elementos únicos. Implementan las operaciones de la teoría de conjuntos: unión, intersección, diferencia. Son ideales para comparar listas de genes, metabolitos o vías metabólicas entre organismos.\n# Genes esenciales en condición aeróbica vs. anaeróbica (datos ficticios ilustrativos)\ngenes_esenciales_aerobico   = {\"b0767\", \"b1602\", \"b3916\", \"b2779\", \"b0720\", \"b3236\"}\ngenes_esenciales_anaerobico = {\"b3916\", \"b2779\", \"b1415\", \"b0720\", \"b3513\"}\n\n# Genes esenciales en ambas condiciones (core essentials):\ncore_essential = genes_esenciales_aerobico & genes_esenciales_anaerobico\nprint(f\"Genes esenciales en ambas condiciones: {core_essential}\")\n\n# Genes esenciales solo en aerobiosis:\nsolo_aerobico = genes_esenciales_aerobico - genes_esenciales_anaerobico\nprint(f\"Solo en aerobiosis: {solo_aerobico}\")\n\n# Todos los genes esenciales (unión):\ntodos_esenciales = genes_esenciales_aerobico | genes_esenciales_anaerobico\nprint(f\"Total de genes esenciales: {len(todos_esenciales)}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tipos de Datos y Estructuras en Python</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-tipos-datos.html#list-comprehensions-y-expresiones-generadoras",
+    "href": "chapters/02-tipos-datos.html#list-comprehensions-y-expresiones-generadoras",
+    "title": "5  Tipos de Datos y Estructuras en Python",
+    "section": "5.6 2.5 List Comprehensions y Expresiones Generadoras",
+    "text": "5.6 2.5 List Comprehensions y Expresiones Generadoras\nLas list comprehensions son una construcción sintáctica de Python que permite construir listas de forma concisa y legible a partir de iterables. Son preferibles a los bucles for explícitos cuando la transformación es simple, porque comunican la intención del código más claramente.\nSintaxis general:\n[expresion for elemento in iterable if condicion]\n# Datos de ejemplo: tabla de flujos (reacción: flujo en mmol/gDW/h)\nflujos = {\n    \"PFK\": 5.21, \"PGI\": 5.21, \"TPI\": 4.86,\n    \"ENO\": 4.95, \"PYK\": 1.06, \"CS\" : 0.00,\n    \"ACONa\": 0.00, \"ICDHyr\": 0.00,\n    \"O2t\": -12.4, \"Biomass\": 0.874\n}\n\n# ── Caso 1: extraer reacciones activas (flujo &gt; 0.01) ──\nactivas = [rxn for rxn, v in flujos.items() if abs(v) &gt; 0.01]\nprint(f\"Reacciones activas: {activas}\")\n\n# ── Caso 2: normalizar flujos a escala [0, 1] ──\nmax_flujo  = max(abs(v) for v in flujos.values())\nnormalizados = {rxn: round(v / max_flujo, 4) for rxn, v in flujos.items()}\nprint(f\"\\nFlujos normalizados (muestra): { {k: normalizados[k] for k in list(normalizados)[:3]} }\")\n\n# ── Caso 3: filtrar metabolitos con fórmula molecular ──\nmetabolitos_raw = [\"C6H12O6\", \"H2O\", \"CO2\", \"C3H4O3\", \"ATP\", \"C21H28N7O17P3\"]\ncon_carbono = [m for m in metabolitos_raw if \"C\" in m and m != \"CO2\"]\nprint(f\"\\nMetabolitos orgánicos (excl. CO2): {con_carbono}\")\n\n# ── Caso 4: generar codones de un fragmento de ARN ──\narn = \"AUGACCAUGAUUACGCCA\"\ncodones = [arn[i:i+3] for i in range(0, len(arn) - 2, 3)]\nprint(f\"\\nCodones: {codones}\")\n\n\n\n\n\n\nTip📐 List Comprehension vs. Bucle for — ¿Cuándo usar cada uno?\n\n\n\nLas list comprehensions son más rápidas que los bucles for equivalentes (hasta ~35%) porque internamente utilizan instrucciones bytecode optimizadas. Sin embargo, prioriza la legibilidad: si la expresión requiere más de dos condiciones anidadas o lógica compleja, un bucle for explícito comunica mejor la intención. La regla de oro: si no puedes leer la comprehension en voz alta como una oración, reescríbela como bucle.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tipos de Datos y Estructuras en Python</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-tipos-datos.html#ejercicio-integrador-secuencia-de-adn-y-sus-propiedades",
+    "href": "chapters/02-tipos-datos.html#ejercicio-integrador-secuencia-de-adn-y-sus-propiedades",
+    "title": "5  Tipos de Datos y Estructuras en Python",
+    "section": "5.7 2.6 🔬 Ejercicio Integrador: Secuencia de ADN y sus Propiedades",
+    "text": "5.7 2.6 🔬 Ejercicio Integrador: Secuencia de ADN y sus Propiedades\n\nEjercicio 2.1 — Nivel: Básico\n\n\n# ─────────────────────────────────────────────────────────────────\n# Ejercicio: Análisis de un gen hipotético con todas las\n# estructuras de datos vistas en este capítulo.\n# ─────────────────────────────────────────────────────────────────\n\n# 1. Representa el gen como una cadena\ngen_hipotetico = \"ATGCGTAACCTGATCGAATGCAAATGCTTAG\"\n\n# 2. Calcula la composición nucleotídica con un diccionario\ncomposicion = {base: gen_hipotetico.count(base) for base in \"ACGT\"}\nprint(f\"Composición: {composicion}\")\n\n# 3. Encuentra las posiciones de todos los codones ATG (inicio)\nposiciones_inicio = [i for i in range(0, len(gen_hipotetico)-2, 3)\n                     if gen_hipotetico[i:i+3] == \"ATG\"]\nprint(f\"Codones de inicio en marco (+1): {posiciones_inicio}\")\n\n# 4. Extrae los codones como tuplas (inmutables)\ncodones = tuple(gen_hipotetico[i:i+3] for i in range(0, len(gen_hipotetico)-2, 3))\nprint(f\"Codones: {codones}\")\n\n# 5. ¿Cuántos codones de paro hay?\ncodones_paro = {\"TAA\", \"TAG\", \"TGA\"}\nn_paro = sum(1 for c in codones if c in codones_paro)\nprint(f\"Codones de paro encontrados: {n_paro}\")\nPreguntas de extensión: 1. Modifica la búsqueda de posiciones ATG para que no se limite al marco de lectura +1 (examina los tres marcos posibles). 2. ¿Por qué se usó tuple en el paso 4 y no list? ¿Qué garantía ofrece esto en el contexto de un análisis reproducible?",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tipos de Datos y Estructuras en Python</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/02-tipos-datos.html#para-profundizar",
+    "href": "chapters/02-tipos-datos.html#para-profundizar",
+    "title": "5  Tipos de Datos y Estructuras en Python",
+    "section": "5.8 📚 Para Profundizar",
+    "text": "5.8 📚 Para Profundizar\n\nGrus, J. (2019). Data Science from Scratch. O’Reilly. — Capítulo 2: “A Crash Course in Python”, sección sobre estructuras de datos.\nBruce, P. et al. (2020). Practical Statistics for Data Scientists, 2ª ed. O’Reilly. — Apéndice sobre Python para estadísticos.\nMcKinney, W. (2022). Python for Data Analysis, 3ª ed. O’Reilly. — Capítulo 3: “Built-In Data Structures, Functions, and Files”.\nDocumentación Python — Tipos incorporados: https://docs.python.org/3/library/stdtypes.html\n\n\n\n\n\n\n\nGrus, J. (2019). Data Science from Scratch (2.ª ed.). O’Reilly Media.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>5</span>  <span class='chapter-title'>Tipos de Datos y Estructuras en Python</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-numpy.html",
+    "href": "chapters/03-numpy.html",
+    "title": "6  NumPy — Vectores y Matrices para Biología Computacional",
+    "section": "",
+    "text": "Objetivos de aprendizaje\nAl finalizar este capítulo serás capaz de:",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>NumPy — Vectores y Matrices para Biología Computacional</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-numpy.html#motivación-biológica",
+    "href": "chapters/03-numpy.html#motivación-biológica",
+    "title": "6  NumPy — Vectores y Matrices para Biología Computacional",
+    "section": "6.1 🧬 Motivación biológica",
+    "text": "6.1 🧬 Motivación biológica\nLa biología de sistemas cuantitativa descansa sobre una estructura matemática central: la matriz estequiométrica \\(S\\). Esta matriz, de dimensiones \\(m \\times n\\) donde \\(m\\) es el número de metabolitos y \\(n\\) el número de reacciones, codifica toda la topología de la red metabólica. Cada columna es una reacción; cada fila, un metabolito; cada entrada \\(S_{ij}\\), el coeficiente estequiométrico del metabolito \\(i\\) en la reacción \\(j\\) (negativo si es sustrato, positivo si es producto).\nCuando el modelo de E. coli a escala de genoma iJO1366 (Orth et al., 2011) contiene 1,805 metabolitos y 2,712 reacciones, \\(S\\) tiene dimensiones 1,805 × 2,712 y más de cuatro millones de entradas. Manejar esa información con listas de Python sería imprácticamente lento. NumPy resuelve este problema con arreglos almacenados en bloques contiguos de memoria C, permitiendo operaciones sobre millones de valores en microsegundos.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>NumPy — Vectores y Matrices para Biología Computacional</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-numpy.html#el-ndarray-estructura-fundamental",
+    "href": "chapters/03-numpy.html#el-ndarray-estructura-fundamental",
+    "title": "6  NumPy — Vectores y Matrices para Biología Computacional",
+    "section": "6.2 3.1 El ndarray: Estructura Fundamental",
+    "text": "6.2 3.1 El ndarray: Estructura Fundamental\nimport numpy as np\n\n# Verificar versión instalada\nprint(f\"NumPy versión: {np.__version__}\")\n\n# Crear un arreglo 1-D (vector de flujos)\nv = np.array([5.21, 5.21, 4.86, 4.95, 1.06, 0.874])\nprint(f\"Vector v    : {v}\")\nprint(f\"Forma       : {v.shape}\")       # (6,) → 6 elementos, 1 dimensión\nprint(f\"Tipo        : {v.dtype}\")       # float64 (64 bits, doble precisión)\nprint(f\"N-dimensiones: {v.ndim}\")       # 1\nprint(f\"N-elementos : {v.size}\")        # 6\nprint(f\"Bytes total : {v.nbytes}\")      # 48 (6 × 8 bytes)\n\n\n\n\n\n\nTip📐 ndarray vs. Lista de Python\n\n\n\nUna lista de Python almacena punteros a objetos heterogéneos dispersos en memoria. Un ndarray almacena valores del mismo tipo en un bloque contiguo de memoria. La diferencia en rendimiento es de 10–100× para operaciones numéricas. Además, NumPy compila internamente las operaciones en C o Fortran, lo que lo hace competitivo con MATLAB para álgebra lineal.\n\n\n\n6.2.1 Arreglos 2-D: matrices\n# Crear una matriz 3×3 (3 metabolitos, 3 reacciones — glucólisis simplificada)\n# Convención: filas = metabolitos, columnas = reacciones\n# Coeficiente negativo = sustrato, positivo = producto\n\nS_simple = np.array([\n#    R1    R2    R3\n    [-1,    0,    0],   # Glucosa\n    [ 1,   -1,    0],   # G6P\n    [ 0,    1,   -1],   # F6P\n])\n\nprint(f\"S_simple:\\n{S_simple}\")\nprint(f\"Forma: {S_simple.shape}\")      # (3, 3)\nprint(f\"Rango: {np.linalg.matrix_rank(S_simple)}\")  # 3",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>NumPy — Vectores y Matrices para Biología Computacional</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-numpy.html#creación-de-arreglos",
+    "href": "chapters/03-numpy.html#creación-de-arreglos",
+    "title": "6  NumPy — Vectores y Matrices para Biología Computacional",
+    "section": "6.3 3.2 Creación de Arreglos",
+    "text": "6.3 3.2 Creación de Arreglos\n# ── Arreglos de inicialización ──\nceros   = np.zeros((4, 3))          # matriz de ceros 4×3\nunos    = np.ones((2, 5))           # matriz de unos 2×5\nidentidad = np.eye(4)               # matriz identidad 4×4\n\n# ── Arreglos de rango ──\ntiempo = np.linspace(0, 24, 49)     # 49 puntos de 0 a 24 h (simulación)\nconcentraciones_init = np.arange(0, 1.1, 0.1)  # 0.0, 0.1, ..., 1.0\n\n# ── Arreglos aleatorios (útil para perturbaciones) ──\nnp.random.seed(42)                  # semilla para reproducibilidad\nruido = np.random.normal(0, 0.01, size=100)   # ruido gaussiano σ=0.01\n\nprint(f\"Vector tiempo (h): {tiempo[:6]}...\")\nprint(f\"Ruido experimental (primeros 5): {ruido[:5].round(4)}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>NumPy — Vectores y Matrices para Biología Computacional</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-numpy.html#indexado-y-segmentado",
+    "href": "chapters/03-numpy.html#indexado-y-segmentado",
+    "title": "6  NumPy — Vectores y Matrices para Biología Computacional",
+    "section": "6.4 3.3 Indexado y Segmentado",
+    "text": "6.4 3.3 Indexado y Segmentado\n# Matriz estequiométrica extendida (5 metabolitos × 4 reacciones)\nS = np.array([\n#    HK     PGI    PFK    ENO\n    [-1,    0,    0,    0 ],   # Glucosa       (met 0)\n    [ 1,   -1,    0,    0 ],   # G6P           (met 1)\n    [ 0,    1,   -1,    0 ],   # F6P           (met 2)\n    [ 0,    0,    1,   -1 ],   # FBP           (met 3)\n    [ 0,    0,    0,    1 ],   # PEP           (met 4)\n], dtype=float)\n\nmetabolitos = [\"Glucosa\", \"G6P\", \"F6P\", \"FBP\", \"PEP\"]\nreacciones  = [\"HK\", \"PGI\", \"PFK\", \"ENO\"]\n\n# ── Acceso a elementos individuales ──\nprint(f\"Coef. G6P en PGI: {S[1, 1]}\")            # -1.0\nprint(f\"Columna HK (todos sus metabolitos):\")\nfor i, coef in enumerate(S[:, 0]):\n    if coef != 0:\n        print(f\"  {metabolitos[i]:10s}: {coef:+.0f}\")\n\n# ── Indexado booleano — metabolitos que participan en PFK ──\nmascara_pfk  = S[:, 2] != 0\nmets_en_pfk  = [metabolitos[i] for i in np.where(mascara_pfk)[0]]\nprint(f\"\\nMetabolitos en PFK: {mets_en_pfk}\")\n\n# ── Submatriz — primeras 3 reacciones, últimos 3 metabolitos ──\nsubS = S[2:, :3]\nprint(f\"\\nSubmatriz [met 2-4, rxn 0-2]:\\n{subS}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>NumPy — Vectores y Matrices para Biología Computacional</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-numpy.html#operaciones-vectorizadas-y-broadcasting",
+    "href": "chapters/03-numpy.html#operaciones-vectorizadas-y-broadcasting",
+    "title": "6  NumPy — Vectores y Matrices para Biología Computacional",
+    "section": "6.5 3.4 Operaciones Vectorizadas y Broadcasting",
+    "text": "6.5 3.4 Operaciones Vectorizadas y Broadcasting\nUna de las características más poderosas de NumPy es la vectorización: la aplicación de operaciones matemáticas a todos los elementos de un arreglo sin escribir bucles explícitos. El broadcasting extiende este concepto a arreglos de formas distintas.\n# ── Operaciones element-wise ──\nflujos = np.array([5.21, 5.21, 4.86, 1.06, 0.874])\n\n# Normalizar flujos al máximo (muy común en análisis de redes)\nflujos_norm = flujos / np.max(flujos)\nprint(f\"Flujos normalizados: {flujos_norm.round(4)}\")\n\n# Calcular el logaritmo de la magnitud (análisis de escala)\nimport numpy as np\nmagnitudes = np.abs(flujos)\nlog_magnitudes = np.log10(magnitudes + 1e-10)  # +1e-10 evita log(0)\nprint(f\"Log10 de magnitudes: {log_magnitudes.round(3)}\")\n\n# ── Broadcasting: escalar sobre matriz ──\n# Multiplicar toda la matriz S por -1 (cambiar convención de signos)\nS_alt_convencion = -1 * S\nprint(f\"\\nConvención invertida (primeros 2 met × 2 rxn):\\n{S_alt_convencion[:2, :2]}\")\n\n# ── Broadcasting: vector sobre matriz (normalización por columna) ──\n# Dividir cada columna de S por la suma de sus valores absolutos\nnormas_columnas = np.sum(np.abs(S), axis=0)   # suma por columna (axis=0)\nS_normalizada   = S / normas_columnas          # broadcasting automático\nprint(f\"\\nNormas de columnas (reacciones): {normas_columnas}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>NumPy — Vectores y Matrices para Biología Computacional</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-numpy.html#álgebra-lineal-el-núcleo-del-fba",
+    "href": "chapters/03-numpy.html#álgebra-lineal-el-núcleo-del-fba",
+    "title": "6  NumPy — Vectores y Matrices para Biología Computacional",
+    "section": "6.6 3.5 Álgebra Lineal: El Núcleo del FBA",
+    "text": "6.6 3.5 Álgebra Lineal: El Núcleo del FBA\n# ── Producto matricial: S @ v ──\n# En estado estacionario: S · v = 0  (balance de masa)\n# Verificamos con un vector de flujos de ejemplo\n\nv_ejemplo = np.array([1.0, 1.0, 1.0, 1.0])   # flujos iguales para todas las rxn\nbalance = S @ v_ejemplo\nprint(f\"S · v = {balance}\")\n# Si no es cero, el sistema no está en estado estacionario para estos flujos\n\n# ── Transpuesta ──\nprint(f\"\\nS  (forma original): {S.shape}\")\nprint(f\"Sᵀ (transpuesta)  : {S.T.shape}\")\n\n# ── Rango de la matriz ──\nrango = np.linalg.matrix_rank(S)\ngrados_libertad = S.shape[1] - rango\nprint(f\"\\nRango de S    : {rango}\")\nprint(f\"Dimensión nula: {grados_libertad} (grados de libertad del sistema)\")\n\n# ── Espacio nulo aproximado (solución particular de S·v=0) ──\n# Usando descomposición SVD (valor singular)\nU, sigma, Vt = np.linalg.svd(S)\n# Las últimas (n - rango) filas de Vt forman la base del espacio nulo\nnulo_aprox = Vt[rango:, :]\nprint(f\"\\nVectores de la base nula (forma): {nulo_aprox.shape}\")\nprint(f\"Verificación S · nulo[0]ᵀ ≈ 0: {np.abs(S @ nulo_aprox[0]).max():.2e}\")\n\n\n\n\n\n\nTip📐 El Espacio Nulo y el FBA\n\n\n\nEl conjunto de todos los vectores de flujo \\(v\\) que satisfacen \\(S \\cdot v = 0\\) forma el espacio nulo (o null space) de \\(S\\). Este espacio define el universo de distribuciones de flujo biológicamente factibles bajo el supuesto de estado estacionario. El Análisis de Balance de Flujos (FBA) consiste en encontrar el punto óptimo dentro de este espacio que maximice una función objetivo —típicamente la producción de biomasa. Esta conexión entre NumPy y CobraPy es el puente que atraviesa toda la Parte II y III del manual.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>NumPy — Vectores y Matrices para Biología Computacional</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-numpy.html#ejercicio-integrador-matriz-estequiométrica-completa",
+    "href": "chapters/03-numpy.html#ejercicio-integrador-matriz-estequiométrica-completa",
+    "title": "6  NumPy — Vectores y Matrices para Biología Computacional",
+    "section": "6.7 3.6 🔬 Ejercicio Integrador: Matriz Estequiométrica Completa",
+    "text": "6.7 3.6 🔬 Ejercicio Integrador: Matriz Estequiométrica Completa\n\nEjercicio 3.1 — Nivel: Básico\n\n\nimport numpy as np\n\n# Red metabólica: glucólisis central de E. coli (7 reacciones, 8 metabolitos)\n#\n# Reacciones:\n#   R1  (HK)   : glc_D + atp → g6p + adp + h    (hexoquinasa)\n#   R2  (PGI)  : g6p ⇌ f6p                       (fosfoglucoisomerasa)\n#   R3  (PFK)  : f6p + atp → fdp + adp + h       (fosofructoquinasa)\n#   R4  (FBA)  : fdp → dhap + g3p                (aldolasa)\n#   R5  (TPI)  : dhap ⇌ g3p                      (triosa fosfato isomerasa)\n#   R6  (GAPD) : g3p + nad + pi → 13dpg + nadh + h (GAPDH)\n#   R7  (EX)   : atp →                           (demanda de ATP, salida)\n#\n# Metabolitos: glc_D, atp, g6p, adp, f6p, fdp, dhap, g3p\n\nmetabolitos = [\"glc_D\", \"atp\",  \"g6p\", \"adp\", \"f6p\", \"fdp\", \"dhap\", \"g3p\"]\nreacciones  = [\"HK\",    \"PGI\",  \"PFK\", \"FBA\", \"TPI\", \"GAPD\",\"EX\"]\n\nS = np.array([\n#     HK   PGI  PFK  FBA  TPI  GAPD  EX\n     [-1,   0,   0,   0,   0,   0,   0],   # glc_D\n     [-1,   0,  -1,   0,   0,   0,  -1],   # atp\n     [ 1,  -1,   0,   0,   0,   0,   0],   # g6p\n     [ 1,   0,   1,   0,   0,   0,   0],   # adp\n     [ 0,   1,  -1,   0,   0,   0,   0],   # f6p\n     [ 0,   0,   1,  -1,   0,   0,   0],   # fdp\n     [ 0,   0,   0,   1,  -1,   0,   0],   # dhap\n     [ 0,   0,   0,   1,   1,  -1,   0],   # g3p\n], dtype=float)\n\n# ── Análisis de la matriz ──\nprint(f\"Dimensiones de S: {S.shape}  ({S.shape[0]} met × {S.shape[1]} rxn)\")\nprint(f\"Rango de S       : {np.linalg.matrix_rank(S)}\")\nprint(f\"Grados de libertad: {S.shape[1] - np.linalg.matrix_rank(S)}\")\n\n# ── Verificación: ¿qué metabolitos son internos (balance cerrado)? ──\n# Un metabolito interno tiene al menos un sustrato Y al menos un producto\nfor i, met in enumerate(metabolitos):\n    tiene_sustrato = any(S[i, j] &lt; 0 for j in range(S.shape[1]))\n    tiene_producto = any(S[i, j] &gt; 0 for j in range(S.shape[1]))\n    tipo = \"interno\" if (tiene_sustrato and tiene_producto) else \"límite/intercambio\"\n    print(f\"  {met:8s}: {tipo}\")\n\n\nEjercicio 3.2 — Nivel: Medio\n\n\nUsando la matriz \\(S\\) del ejercicio anterior:\n\nAplica la descomposición SVD y determina el rango numérico de \\(S\\).\nConstruye un vector de flujos \\(v\\) tal que \\(S \\cdot v \\approx 0\\) (estado estacionario).\nCalcula la norma del residual \\(\\|S \\cdot v\\|_2\\) y verifica que sea menor a \\(10^{-10}\\).\n\nPista: El vector solución es parte del espacio nulo de \\(S\\) y puede obtenerse de las últimas filas de \\(V^T\\) en la SVD.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>NumPy — Vectores y Matrices para Biología Computacional</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/03-numpy.html#para-profundizar",
+    "href": "chapters/03-numpy.html#para-profundizar",
+    "title": "6  NumPy — Vectores y Matrices para Biología Computacional",
+    "section": "6.8 📚 Para Profundizar",
+    "text": "6.8 📚 Para Profundizar\n\nVanderPlas, J. (2016). Python Data Science Handbook, Cap. 2: “Introduction to NumPy”. Disponible en acceso abierto: https://jakevdp.github.io/PythonDataScienceHandbook/\nPalsson, B.Ø. (2015). Systems Biology: Constraint-based Reconstruction and Analysis. Cambridge University Press. — Capítulos 3–4 para la teoría de la matriz estequiométrica.\nOrth, J.D., Thiele, I. & Palsson, B.Ø. (2010). What is flux balance analysis? Nature Biotechnology, 28, 245–248. — Introducción accesible al vínculo entre álgebra lineal y FBA.\nDocumentación oficial NumPy — Álgebra lineal: https://numpy.org/doc/stable/reference/routines.linalg.html\n\n\n\n\n\n\n\nOrth, J. D., Conrad, T. M., Na, J., Lerman, J. A., Nam, H., Feist, A. M., & Palsson, B. Ø. (2011). A comprehensive genome-scale reconstruction of Escherichia coli metabolism—2011. Molecular Systems Biology, 7, 535. https://doi.org/10.1038/msb.2011.65",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>6</span>  <span class='chapter-title'>NumPy — Vectores y Matrices para Biología Computacional</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-pandas.html",
+    "href": "chapters/04-pandas.html",
+    "title": "7  Pandas — DataFrames para Análisis Biológico",
+    "section": "",
+    "text": "Objetivos de aprendizaje\nAl finalizar este capítulo serás capaz de:",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Pandas — DataFrames para Análisis Biológico</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-pandas.html#motivación-biológica",
+    "href": "chapters/04-pandas.html#motivación-biológica",
+    "title": "7  Pandas — DataFrames para Análisis Biológico",
+    "section": "7.1 🧬 Motivación biológica",
+    "text": "7.1 🧬 Motivación biológica\nLas bases de datos de modelos metabólicos —BiGG, KEGG, MetaNetX— distribuyen su información en formatos tabulares: archivos .tsv con columnas de identificadores, fórmulas moleculares, coeficientes estequiométricos, subsistemas y anotaciones genómicas. Un modelo a escala de genoma típico puede tener miles de filas. Pandas es la herramienta que permite transformar esos archivos en estructuras de datos manipulables, filtrarlos por subsistema metabólico, unirlos con bases de datos externas y exportarlos en nuevos formatos con una docena de líneas de código.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Pandas — DataFrames para Análisis Biológico</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-pandas.html#series-y-dataframes",
+    "href": "chapters/04-pandas.html#series-y-dataframes",
+    "title": "7  Pandas — DataFrames para Análisis Biológico",
+    "section": "7.2 4.1 Series y DataFrames",
+    "text": "7.2 4.1 Series y DataFrames\n\n7.2.1 Series: el vector etiquetado\nUna Series de Pandas es un arreglo unidimensional con un índice —etiquetas para cada valor. A diferencia de un arreglo NumPy, las Series tienen semántica incorporada: el índice puede ser texto, lo que permite acceso por nombre en lugar de posición.\nimport pandas as pd\nimport numpy as np\n\n# Serie de flujos con nombre de reacción como índice\nflujos = pd.Series(\n    data  = [5.21, 5.21, 4.86, 4.95, 1.06, 0.0, 0.874],\n    index = [\"PGI\", \"PFK\", \"TPI\", \"ENO\", \"PYK\", \"CS\", \"Biomass\"],\n    name  = \"flujo_mmol_gDW_h\"\n)\n\nprint(flujos)\nprint(f\"\\nFlujo de Biomass : {flujos['Biomass']:.4f} h⁻¹\")\nprint(f\"Flujo medio      : {flujos.mean():.4f}\")\nprint(f\"Reacciones activas: {(flujos.abs() &gt; 0.01).sum()}\")\n\n\n7.2.2 DataFrame: la tabla con semántica biológica\nUn DataFrame es una tabla bidimensional con índice de filas y nombres de columnas. Puede pensarse como una colección de Series que comparten el mismo índice, o como el equivalente Python de una hoja de cálculo estructurada.\n# Tabla de reacciones de la glucólisis central\ndatos_reacciones = {\n    \"id\"         : [\"PGI\", \"PFK\", \"FBA\", \"TPI\", \"GAPD\", \"PGK\", \"ENO\", \"PYK\"],\n    \"nombre\"     : [\"Phosphoglucose isomerase\", \"Phosphofructokinase\",\n                    \"Fructose-bisphosphate aldolase\", \"Triose-phosphate isomerase\",\n                    \"Glyceraldehyde-3-phosphate dehydrogenase\", \"Phosphoglycerate kinase\",\n                    \"Enolase\", \"Pyruvate kinase\"],\n    \"subsistema\" : [\"Glycolysis\"]*8,\n    \"reversible\" : [True, False, False, True, False, False, False, False],\n    \"flujo\"      : [5.21, 4.86, 4.86, 4.86, 9.72, 9.72, 9.72, 9.72],\n    \"ec_number\"  : [\"5.3.1.9\", \"2.7.1.11\", \"4.1.2.13\", \"5.3.1.1\",\n                    \"1.2.1.12\", \"2.7.2.3\", \"4.2.1.11\", \"2.7.1.40\"],\n}\n\ndf = pd.DataFrame(datos_reacciones)\nprint(df.to_string(index=False))\nprint(f\"\\nForma: {df.shape}  ({df.shape[0]} reacciones × {df.shape[1]} columnas)\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Pandas — DataFrames para Análisis Biológico</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-pandas.html#lectura-y-escritura-de-archivos",
+    "href": "chapters/04-pandas.html#lectura-y-escritura-de-archivos",
+    "title": "7  Pandas — DataFrames para Análisis Biológico",
+    "section": "7.3 4.2 Lectura y Escritura de Archivos",
+    "text": "7.3 4.2 Lectura y Escritura de Archivos\n# ── Leer CSV (ejemplo: tabla de metabolitos del modelo E. coli core) ──\n# En un proyecto real, este archivo vendría de BiGG Database\n# Aquí creamos un DataFrame de ejemplo y lo guardamos primero:\n\ndf_metabolitos = pd.DataFrame({\n    \"id\"      : [\"glc_D_e\", \"pyr_c\", \"atp_c\", \"adp_c\", \"h2o_c\", \"co2_c\"],\n    \"nombre\"  : [\"D-Glucose\", \"Pyruvate\", \"ATP\", \"ADP\", \"Water\", \"CO2\"],\n    \"formula\" : [\"C6H12O6\", \"C3H4O3\", \"C10H12N5O13P3\", \"C10H12N5O10P2\", \"H2O\", \"CO2\"],\n    \"carga\"   : [0, -1, -4, -3, 0, 0],\n    \"compartimento\": [\"e\", \"c\", \"c\", \"c\", \"c\", \"c\"]\n})\n\n# Guardar como CSV\ndf_metabolitos.to_csv(\"metabolitos_ejemplo.csv\", index=False)\n\n# Leer de vuelta\ndf_leido = pd.read_csv(\"metabolitos_ejemplo.csv\")\nprint(df_leido.dtypes)\nprint(f\"\\nPrimeras filas:\\n{df_leido.head(3)}\")\n\n# ── Leer TSV (formato común en BiGG y KEGG) ──\n# pd.read_csv(\"archivo.tsv\", sep=\"\\t\")\n\n# ── Leer Excel ──\n# df_excel = pd.read_excel(\"modelo.xlsx\", sheet_name=\"reacciones\")\n\n# ── Control de tipos al leer ──\ndf_tipado = pd.read_csv(\"metabolitos_ejemplo.csv\",\n                         dtype={\"carga\": np.int8})  # ahorro de memoria\nprint(f\"\\nTipo de columna 'carga': {df_tipado['carga'].dtype}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Pandas — DataFrames para Análisis Biológico</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-pandas.html#indexado-filtrado-y-selección",
+    "href": "chapters/04-pandas.html#indexado-filtrado-y-selección",
+    "title": "7  Pandas — DataFrames para Análisis Biológico",
+    "section": "7.4 4.3 Indexado, Filtrado y Selección",
+    "text": "7.4 4.3 Indexado, Filtrado y Selección\n# ── Selección de columnas ──\nprint(df[[\"id\", \"nombre\", \"flujo\"]])          # lista de columnas\nprint(df[\"flujo\"])                             # Serie de una columna\n\n# ── Filtrado con condiciones booleanas ──\n# Reacciones con flujo &gt; 5 mmol/gDW/h\nactivas_altas = df[df[\"flujo\"] &gt; 5.0]\nprint(f\"\\nReacciones con flujo alto ({len(activas_altas)}):\")\nprint(activas_altas[[\"id\", \"flujo\"]].to_string(index=False))\n\n# ── Múltiples condiciones ──\n# Reacciones irreversibles con flujo &gt; 5\nirreversibles_activas = df[(~df[\"reversible\"]) & (df[\"flujo\"] &gt; 5.0)]\nprint(f\"\\nIrreversibles activas: {irreversibles_activas['id'].tolist()}\")\n\n# ── Selección por etiqueta (loc) y posición (iloc) ──\n# loc: etiquetas del índice y nombres de columna\ndf_indexed = df.set_index(\"id\")\nprint(f\"\\nFlujo de ENO: {df_indexed.loc['ENO', 'flujo']}\")\n\n# iloc: enteros de posición (como NumPy)\nprint(f\"Primera fila, segunda columna: {df.iloc[0, 1]}\")\n\n# ── Método query() — sintaxis expresiva para filtros complejos ──\nresultado = df.query(\"flujo &gt; 5 and not reversible\")\nprint(f\"\\nQuery — irreversibles con flujo&gt;5: {resultado['id'].tolist()}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Pandas — DataFrames para Análisis Biológico</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-pandas.html#operaciones-de-agrupamiento-y-estadísticas",
+    "href": "chapters/04-pandas.html#operaciones-de-agrupamiento-y-estadísticas",
+    "title": "7  Pandas — DataFrames para Análisis Biológico",
+    "section": "7.5 4.4 Operaciones de Agrupamiento y Estadísticas",
+    "text": "7.5 4.4 Operaciones de Agrupamiento y Estadísticas\n# Tabla extendida con múltiples subsistemas para ilustrar groupby\ndatos_ext = {\n    \"id\"        : [\"PGI\",\"PFK\",\"CS\",\"ACONT\",\"ICDHyr\",\"AKGDH\",\"MDH\",\"ENO\",\"PYK\"],\n    \"subsistema\": [\"Glycolysis\",\"Glycolysis\",\"TCA\",\"TCA\",\"TCA\",\"TCA\",\"TCA\",\n                   \"Glycolysis\",\"Glycolysis\"],\n    \"flujo\"     : [5.21, 4.86, 3.12, 3.12, 3.12, 3.10, 3.09, 9.72, 9.72],\n    \"reversible\": [True,False,False,True,True,False,True,False,False],\n}\ndf_ext = pd.DataFrame(datos_ext)\n\n# ── GroupBy: estadísticas por subsistema ──\nresumen = df_ext.groupby(\"subsistema\")[\"flujo\"].agg(\n    n_reacciones = \"count\",\n    flujo_medio  = \"mean\",\n    flujo_total  = \"sum\",\n    flujo_max    = \"max\"\n).round(3)\nprint(\"Resumen por subsistema:\")\nprint(resumen)\n\n# ── Value counts: frecuencia de reversibilidad ──\nprint(f\"\\nReversibilidad:\\n{df_ext['reversible'].value_counts()}\")\n\n# ── Estadísticas descriptivas ──\nprint(f\"\\nEstadísticas de flujos:\\n{df_ext['flujo'].describe().round(3)}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Pandas — DataFrames para Análisis Biológico</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-pandas.html#joins-y-unión-de-tablas",
+    "href": "chapters/04-pandas.html#joins-y-unión-de-tablas",
+    "title": "7  Pandas — DataFrames para Análisis Biológico",
+    "section": "7.6 4.5 Joins y Unión de Tablas",
+    "text": "7.6 4.5 Joins y Unión de Tablas\nEn biología computacional, frecuentemente necesitamos combinar tablas de fuentes distintas: flujos de CobraPy con anotaciones de genes de una base de datos, o metabolitos de BiGG con propiedades fisicoquímicas de ChEBI.\n# Tabla 1: flujos de FBA\ndf_flujos = pd.DataFrame({\n    \"rxn_id\"  : [\"PGI\", \"PFK\", \"ENO\", \"CS\", \"ICDHyr\"],\n    \"flujo\"   : [5.21,  4.86, 9.72, 3.12,   3.12],\n})\n\n# Tabla 2: anotación de genes (de BiGG / NCBI)\ndf_genes = pd.DataFrame({\n    \"rxn_id\"    : [\"PGI\", \"PFK\", \"ENO\", \"CS\"],\n    \"gene_id\"   : [\"b4025\", \"b3916\", \"b2779\", \"b0720\"],\n    \"locus_tag\" : [\"pgi\", \"pfkA\", \"eno\", \"gltA\"],\n})\n\n# ── Inner join: solo reacciones presentes en ambas tablas ──\ndf_inner = pd.merge(df_flujos, df_genes, on=\"rxn_id\", how=\"inner\")\nprint(\"Inner join:\")\nprint(df_inner.to_string(index=False))\n\n# ── Left join: conserva todas las reacciones con flujo ──\ndf_left = pd.merge(df_flujos, df_genes, on=\"rxn_id\", how=\"left\")\nprint(\"\\nLeft join (ICDHyr sin anotación aparece como NaN):\")\nprint(df_left.to_string(index=False))\n\n# ── Rellenar valores faltantes ──\ndf_left[\"gene_id\"]   = df_left[\"gene_id\"].fillna(\"sin_anotacion\")\ndf_left[\"locus_tag\"] = df_left[\"locus_tag\"].fillna(\"—\")\nprint(\"\\nTras fillna:\")\nprint(df_left.to_string(index=False))",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Pandas — DataFrames para Análisis Biológico</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-pandas.html#ejercicio-integrador-tabla-de-reacciones-del-modelo-e.-coli",
+    "href": "chapters/04-pandas.html#ejercicio-integrador-tabla-de-reacciones-del-modelo-e.-coli",
+    "title": "7  Pandas — DataFrames para Análisis Biológico",
+    "section": "7.7 4.6 🔬 Ejercicio Integrador: Tabla de Reacciones del Modelo E. coli",
+    "text": "7.7 4.6 🔬 Ejercicio Integrador: Tabla de Reacciones del Modelo E. coli\n\nEjercicio 4.1 — Nivel: Básico\n\n\nimport pandas as pd\nimport numpy as np\n\n# Tabla de reacciones del modelo E. coli core (subconjunto de 10 reacciones)\ndatos = {\n    \"rxn_id\"    : [\"PGI\",\"PFK\",\"FBA\",\"TPI\",\"GAPD\",\"PGK\",\"PGM\",\"ENO\",\"PYK\",\"CS\"],\n    \"subsistema\": [\"Glycolysis\"]*9 + [\"TCA cycle\"],\n    \"lb\"        : [-1000,-1000,0,   -1000,0,   -1000,-1000,0,   0,   0  ],\n    \"ub\"        : [ 1000, 1000,1000, 1000,1000, 1000, 1000,1000,1000,1000],\n    \"flujo_fba\" : [5.21, 4.86,4.86,  4.86,9.72,  9.72, 9.72,9.72,9.72,3.12],\n}\ndf_rxn = pd.DataFrame(datos)\n\n# ── Tarea 1: agregar columna de reversibilidad ──\ndf_rxn[\"reversible\"] = df_rxn[\"lb\"] &lt; 0\nprint(\"Con columna de reversibilidad:\")\nprint(df_rxn[[\"rxn_id\",\"subsistema\",\"reversible\",\"flujo_fba\"]].head())\n\n# ── Tarea 2: identificar reacciones inactivas (flujo ≈ 0) ──\ndf_rxn[\"activa\"] = df_rxn[\"flujo_fba\"].abs() &gt; 1e-6\nprint(f\"\\nReacciones activas: {df_rxn['activa'].sum()} / {len(df_rxn)}\")\n\n# ── Tarea 3: exportar solo las activas para revisión ──\ndf_activas = df_rxn[df_rxn[\"activa\"]].reset_index(drop=True)\ndf_activas.to_csv(\"reacciones_activas.csv\", index=False)\nprint(f\"Archivo 'reacciones_activas.csv' generado con {len(df_activas)} reacciones.\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Pandas — DataFrames para Análisis Biológico</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/04-pandas.html#para-profundizar",
+    "href": "chapters/04-pandas.html#para-profundizar",
+    "title": "7  Pandas — DataFrames para Análisis Biológico",
+    "section": "7.8 📚 Para Profundizar",
+    "text": "7.8 📚 Para Profundizar\n\nMcKinney, W. (2022). Python for Data Analysis, 3ª ed. O’Reilly. — Capítulos 5–8 cubren Pandas en profundidad. Escrito por el creador de Pandas.\nDocumentación oficial Pandas: https://pandas.pydata.org/docs/ — la referencia más actualizada.\nBiGG Database — Para descargar tablas reales de modelos: http://bigg.ucsd.edu",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>7</span>  <span class='chapter-title'>Pandas — DataFrames para Análisis Biológico</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-control-flujo.html",
+    "href": "chapters/05-control-flujo.html",
+    "title": "8  Estructuras de Control de Flujo y Funciones",
+    "section": "",
+    "text": "Objetivos de aprendizaje\nAl finalizar este capítulo serás capaz de:",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Estructuras de Control de Flujo y Funciones</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-control-flujo.html#motivación-biológica",
+    "href": "chapters/05-control-flujo.html#motivación-biológica",
+    "title": "8  Estructuras de Control de Flujo y Funciones",
+    "section": "8.1 🧬 Motivación biológica",
+    "text": "8.1 🧬 Motivación biológica\nEl control de flujo no es un concepto abstracto: es la diferencia entre un script que analiza un archivo FASTA de diez secuencias y uno que analiza diez mil. Los bucles for sobre listas de metabolitos, los condicionales que clasifican reacciones por subsistema, las funciones que encapsulan el cálculo del contenido GC —todos estos son patrones que aparecerán repetidamente en los capítulos de FBA. Dominarlos ahora significa que, cuando lleguemos a CobraPy, podremos concentrarnos en la biología del modelo en lugar de en la mecánica del código.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Estructuras de Control de Flujo y Funciones</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-control-flujo.html#condicionales-if-elif-else",
+    "href": "chapters/05-control-flujo.html#condicionales-if-elif-else",
+    "title": "8  Estructuras de Control de Flujo y Funciones",
+    "section": "8.2 5.1 Condicionales: if, elif, else",
+    "text": "8.2 5.1 Condicionales: if, elif, else\n# Clasificación de reacciones por magnitud de flujo\n# (criterio basado en Orth et al., 2010)\n\ndef clasificar_flujo(flujo: float, umbral_bajo: float = 0.1,\n                      umbral_alto: float = 5.0) -&gt; str:\n    \"\"\"\n    Clasifica un flujo metabólico en tres categorías.\n    \n    Parámetros\n    ----------\n    flujo       : float — valor del flujo en mmol/gDW/h\n    umbral_bajo : float — umbral inferior de actividad (default 0.1)\n    umbral_alto : float — umbral de alta actividad (default 5.0)\n    \n    Retorna\n    -------\n    str — 'inactiva', 'baja actividad' o 'alta actividad'\n    \"\"\"\n    magnitud = abs(flujo)\n    \n    if magnitud &lt; umbral_bajo:\n        return \"inactiva\"\n    elif magnitud &lt; umbral_alto:\n        return \"baja actividad\"\n    else:\n        return \"alta actividad\"\n\n\n# Aplicación a un dict de flujos\nflujos_ejemplo = {\n    \"PFK\": 4.86, \"CS\": 0.0, \"ATPM\": 8.39, \"ENO\": 9.72,\n    \"FHL\": 0.05, \"PPC\": 2.50\n}\n\nfor rxn, v in flujos_ejemplo.items():\n    categoria = clasificar_flujo(v)\n    print(f\"  {rxn:6s} ({v:6.2f} mmol/gDW/h): {categoria}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Estructuras de Control de Flujo y Funciones</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-control-flujo.html#ciclos-iterativos-for-y-while",
+    "href": "chapters/05-control-flujo.html#ciclos-iterativos-for-y-while",
+    "title": "8  Estructuras de Control de Flujo y Funciones",
+    "section": "8.3 5.2 Ciclos Iterativos: for y while",
+    "text": "8.3 5.2 Ciclos Iterativos: for y while\n\n8.3.1 Bucles for y el estilo pythónico\nPython favorece la iteración sobre objetos directamente, sin índices explícitos cuando es posible. Las funciones enumerate() y zip() son herramientas esenciales:\nmetabolitos  = [\"Glucosa\", \"G6P\", \"F6P\", \"FBP\", \"PEP\", \"Piruvato\"]\ncompartimentos = [\"e\",     \"c\",   \"c\",   \"c\",   \"c\",   \"c\"  ]\n\n# ── enumerate: índice + valor ──\nprint(\"Metabolitos con índice:\")\nfor i, met in enumerate(metabolitos):\n    print(f\"  [{i}] {met}\")\n\n# ── zip: dos listas en paralelo ──\nprint(\"\\nMetabolitos y compartimentos:\")\nfor met, comp in zip(metabolitos, compartimentos):\n    print(f\"  {met:12s} → compartimento '{comp}'\")\n\n# ── Iteración sobre diccionario ──\nestequiometria_pfk = {\"atp_c\": -1, \"f6p_c\": -1, \"adp_c\": 1, \"fdp_c\": 1, \"h_c\": 1}\nprint(\"\\nPFK — Estequiometría:\")\nfor met, coef in estequiometria_pfk.items():\n    rol = \"sustrato\" if coef &lt; 0 else \"producto\"\n    print(f\"  {met:8s} [{coef:+d}]  → {rol}\")\n\n\n8.3.2 Bucles while — iteración condicional\n# Simulación simplificada de convergencia iterativa\n# (precursor conceptual del solver de FBA)\n\nimport math\n\ndef iteracion_punto_fijo(x_init: float, tol: float = 1e-8,\n                          max_iter: int = 1000) -&gt; tuple:\n    \"\"\"\n    Itera x ← sqrt(x + 1) hasta convergencia.\n    Ilustra el patrón while con criterio de tolerancia.\n    \"\"\"\n    x = x_init\n    iteraciones = 0\n    \n    while iteraciones &lt; max_iter:\n        x_nuevo = math.sqrt(x + 1)\n        delta    = abs(x_nuevo - x)\n        x        = x_nuevo\n        iteraciones += 1\n        \n        if delta &lt; tol:\n            return x, iteraciones, \"convergió\"\n    \n    return x, iteraciones, \"no convergió\"\n\n\nvalor, n_iter, estado = iteracion_punto_fijo(x_init=10.0)\nprint(f\"Resultado: {valor:.10f}\")\nprint(f\"Iteraciones: {n_iter}  ({estado})\")\n# El punto fijo de x = sqrt(x+1) es el número de oro φ ≈ 1.6180339887",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Estructuras de Control de Flujo y Funciones</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-control-flujo.html#funciones-definición-y-argumentos",
+    "href": "chapters/05-control-flujo.html#funciones-definición-y-argumentos",
+    "title": "8  Estructuras de Control de Flujo y Funciones",
+    "section": "8.4 5.3 Funciones: Definición y Argumentos",
+    "text": "8.4 5.3 Funciones: Definición y Argumentos\nPython soporta cuatro tipos de argumentos en las funciones:\n# Función con todos los tipos de argumentos\ndef calcular_tasa_especifica(\n    flujo_objetivo: float,          # argumento posicional (requerido)\n    biomasa: float,                 # argumento posicional (requerido)\n    unidades: str = \"mmol/gDW/h\",  # argumento por nombre con default\n    verbose: bool = False,          # argumento por nombre con default\n) -&gt; float:\n    \"\"\"\n    Calcula la tasa específica de producción de un metabolito.\n    \n    Parámetros\n    ----------\n    flujo_objetivo : float — flujo de la reacción de interés\n    biomasa        : float — flujo de la reacción de biomasa (h⁻¹)\n    unidades       : str   — sistema de unidades (solo para impresión)\n    verbose        : bool  — si True, imprime el reporte detallado\n    \n    Retorna\n    -------\n    float — tasa específica en las mismas unidades del flujo\n    \"\"\"\n    if biomasa &lt;= 0:\n        raise ValueError(f\"La biomasa debe ser positiva, recibido: {biomasa}\")\n    \n    tasa = flujo_objetivo / biomasa\n    \n    if verbose:\n        print(f\"  Flujo objetivo  : {flujo_objetivo:.4f} {unidades}\")\n        print(f\"  Tasa de biomasa : {biomasa:.4f} h⁻¹\")\n        print(f\"  Tasa específica : {tasa:.4f} {unidades.replace('/gDW','')} /célula\")\n    \n    return tasa\n\n\n# Llamadas equivalentes:\ntasa = calcular_tasa_especifica(3.12, 0.874)              # posicional\ntasa = calcular_tasa_especifica(flujo_objetivo=3.12, biomasa=0.874, verbose=True)\n\n8.4.1 Funciones que retornan múltiples valores\nEn Python, retornar múltiples valores es idiomático mediante tuplas:\ndef analizar_vector_flujos(v: list) -&gt; tuple:\n    \"\"\"\n    Calcula estadísticas básicas de un vector de flujos.\n    Retorna una tupla con múltiples métricas.\n    \"\"\"\n    import numpy as np\n    v_arr = np.array(v)\n    \n    activos    = v_arr[np.abs(v_arr) &gt; 1e-6]\n    n_activos  = len(activos)\n    flujo_max  = np.max(np.abs(v_arr))\n    flujo_med  = np.mean(np.abs(activos)) if n_activos &gt; 0 else 0.0\n    suma_total = np.sum(np.abs(v_arr))\n    \n    return n_activos, flujo_max, flujo_med, suma_total\n\n\nflujos_test = [5.21, 0.0, 4.86, 9.72, 0.0, 3.12, 0.874]\nn, f_max, f_med, f_sum = analizar_vector_flujos(flujos_test)\nprint(f\"Activas: {n} | Máximo: {f_max:.3f} | Medio: {f_med:.3f} | Suma: {f_sum:.3f}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Estructuras de Control de Flujo y Funciones</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-control-flujo.html#funciones-de-orden-superior-y-lambda",
+    "href": "chapters/05-control-flujo.html#funciones-de-orden-superior-y-lambda",
+    "title": "8  Estructuras de Control de Flujo y Funciones",
+    "section": "8.5 5.4 Funciones de Orden Superior y lambda",
+    "text": "8.5 5.4 Funciones de Orden Superior y lambda\n# ── map: aplica una función a cada elemento ──\nsecuencias_adn = [\"ATGCGT\", \"GCATCG\", \"TTAACC\", \"GCGCGC\"]\n\n# Calcular GC-content de cada secuencia\ndef gc_content(seq: str) -&gt; float:\n    return (seq.count(\"G\") + seq.count(\"C\")) / len(seq) * 100\n\ngc_values = list(map(gc_content, secuencias_adn))\nprint(f\"GC-content: {[round(g, 1) for g in gc_values]}\")\n\n# ── filter: retiene elementos que cumplen una condición ──\n# Conservar solo secuencias con GC &gt; 50%\nricas_gc = list(filter(lambda seq: gc_content(seq) &gt; 50, secuencias_adn))\nprint(f\"Secuencias ricas en GC (&gt;50%): {ricas_gc}\")\n\n# ── lambda con sorted: ordenar metabolitos por fórmula molecular ──\nmetabolitos_datos = [\n    (\"atp_c\", \"C10H12N5O13P3\", -4),\n    (\"glc_D\", \"C6H12O6\", 0),\n    (\"pyr_c\", \"C3H4O3\", -1),\n]\n# Ordenar por número de carbonos (extraído de la fórmula)\nordenados = sorted(metabolitos_datos, key=lambda x: int(x[1].split(\"C\")[1].split(\"H\")[0]))\nprint(f\"\\nOrdenados por carbonos: {[m[0] for m in ordenados]}\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Estructuras de Control de Flujo y Funciones</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-control-flujo.html#manejo-de-excepciones",
+    "href": "chapters/05-control-flujo.html#manejo-de-excepciones",
+    "title": "8  Estructuras de Control de Flujo y Funciones",
+    "section": "8.6 5.5 Manejo de Excepciones",
+    "text": "8.6 5.5 Manejo de Excepciones\nimport os\n\ndef cargar_modelo_sbml(ruta_archivo: str) -&gt; dict:\n    \"\"\"\n    Carga un modelo metabólico desde un archivo SBML.\n    Maneja los errores más comunes de forma informativa.\n    \n    En un proyecto real, usaría cobra.io.read_sbml_model()\n    \"\"\"\n    try:\n        if not os.path.exists(ruta_archivo):\n            raise FileNotFoundError(f\"Archivo no encontrado: '{ruta_archivo}'\")\n        \n        if not ruta_archivo.endswith((\".xml\", \".sbml\")):\n            raise ValueError(f\"Formato no soportado. Se esperaba .xml o .sbml\")\n        \n        # Simulación de carga exitosa\n        print(f\"✓ Modelo cargado: {ruta_archivo}\")\n        return {\"status\": \"ok\", \"ruta\": ruta_archivo}\n    \n    except FileNotFoundError as e:\n        print(f\"[ERROR] {e}\")\n        print(\"  → Verifica la ruta del archivo o descárgalo del repositorio BiGG.\")\n        return {\"status\": \"error\", \"msg\": str(e)}\n    \n    except ValueError as e:\n        print(f\"[ERROR] {e}\")\n        return {\"status\": \"error\", \"msg\": str(e)}\n    \n    finally:\n        # El bloque finally se ejecuta SIEMPRE, independientemente del resultado\n        print(\"  → Proceso de carga finalizado.\")\n\n\n# Pruebas\ncargar_modelo_sbml(\"e_coli_core.xml\")         # FileNotFoundError\ncargar_modelo_sbml(\"modelo.csv\")              # ValueError\n\n\n\n\n\n\nAdvertencia⚠️ Error Común — Excepciones silenciosas\n\n\n\nNunca uses except: sin especificar el tipo de excepción (bare except). Captura silenciosa de todas las excepciones oculta bugs críticos. Siempre especifica la excepción más concreta posible:\n# MAL — captura todo, incluido KeyboardInterrupt:\ntry:\n    result = model.optimize()\nexcept:\n    pass\n\n# BIEN — específico y con manejo informativo:\ntry:\n    result = model.optimize()\nexcept cobra.exceptions.Infeasible:\n    print(\"Modelo inviable bajo las restricciones actuales.\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Estructuras de Control de Flujo y Funciones</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-control-flujo.html#ejercicio-integrador-función-de-análisis-de-archivos-fasta",
+    "href": "chapters/05-control-flujo.html#ejercicio-integrador-función-de-análisis-de-archivos-fasta",
+    "title": "8  Estructuras de Control de Flujo y Funciones",
+    "section": "8.7 5.6 🔬 Ejercicio Integrador: Función de Análisis de Archivos FASTA",
+    "text": "8.7 5.6 🔬 Ejercicio Integrador: Función de Análisis de Archivos FASTA\n\nEjercicio 5.1 — Nivel: Medio\n\n\n# ─────────────────────────────────────────────────────────────────\n# Función completa de análisis de archivos FASTA.\n# Integra: funciones, control de flujo, diccionarios, listas y\n# manejo de excepciones.\n# ─────────────────────────────────────────────────────────────────\n\ndef parsear_fasta(contenido: str) -&gt; list:\n    \"\"\"\n    Parsea una cadena con formato FASTA multi-secuencia.\n    \n    Retorna\n    -------\n    list de dict con claves: 'id', 'descripcion', 'secuencia'\n    \"\"\"\n    secuencias = []\n    seq_actual = None\n    \n    for linea in contenido.strip().split(\"\\n\"):\n        linea = linea.strip()\n        if not linea:\n            continue\n        if linea.startswith(\"&gt;\"):\n            if seq_actual is not None:\n                secuencias.append(seq_actual)\n            partes = linea[1:].split(maxsplit=1)\n            seq_actual = {\n                \"id\"          : partes[0],\n                \"descripcion\" : partes[1] if len(partes) &gt; 1 else \"\",\n                \"secuencia\"   : \"\"\n            }\n        elif seq_actual is not None:\n            seq_actual[\"secuencia\"] += linea.upper()\n    \n    if seq_actual is not None:\n        secuencias.append(seq_actual)\n    \n    return secuencias\n\n\ndef analizar_secuencias(secuencias: list) -&gt; list:\n    \"\"\"Agrega propiedades calculadas a cada secuencia.\"\"\"\n    resultados = []\n    for s in secuencias:\n        seq = s[\"secuencia\"]\n        if not seq:\n            continue\n        analisis = {\n            **s,\n            \"longitud\"     : len(seq),\n            \"gc_content\"   : round((seq.count(\"G\") + seq.count(\"C\")) / len(seq) * 100, 2),\n            \"n_atg\"        : sum(1 for i in range(0, len(seq)-2, 3) if seq[i:i+3] == \"ATG\"),\n            \"es_codificante\": seq.startswith(\"ATG\") and any(\n                seq[i:i+3] in {\"TAA\",\"TAG\",\"TGA\"} for i in range(0, len(seq)-2, 3)\n            )\n        }\n        resultados.append(analisis)\n    return resultados\n\n\n# ── Dataset de ejemplo: genes metabólicos de E. coli ──\nfasta_ejemplo = \"\"\"\n&gt;b0767 pykF | Pyruvate kinase I\nATGCGAGTGTTGAAGTTCGGCGGTACATCAGTGGCAAATGCAGAACGTTTTCTGCGTGT\n&gt;b3916 pfkA | 6-phosphofructokinase isozyme 1\nATGCAAACGCTTTTGCGGGAAACCGTCGCGGCGCTGATCGGCATCGGAGTGAACGGCGAC\n&gt;b2779 eno | Enolase\nATGAGTATCCTGATTGCCAACAAAGCAGAAATTGAATTTGGACCGATCACTAACGAAGCC\n\"\"\"\n\nsecuencias = parsear_fasta(fasta_ejemplo)\nresultados = analizar_secuencias(secuencias)\n\nprint(f\"{'ID':10s} {'Longitud':&gt;10} {'GC%':&gt;8} {'ATGs':&gt;6} {'Codificante':&gt;12}\")\nprint(\"-\" * 52)\nfor r in resultados:\n    print(f\"{r['id']:10s} {r['longitud']:&gt;10} {r['gc_content']:&gt;7}% \"\n          f\"{r['n_atg']:&gt;6} {str(r['es_codificante']):&gt;12}\")\nExtensión sugerida: Modifica la función para que acepte una ruta de archivo FASTA real y lea su contenido con open(). Usa manejo de excepciones para el caso en que el archivo no exista.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Estructuras de Control de Flujo y Funciones</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/05-control-flujo.html#para-profundizar",
+    "href": "chapters/05-control-flujo.html#para-profundizar",
+    "title": "8  Estructuras de Control de Flujo y Funciones",
+    "section": "8.8 📚 Para Profundizar",
+    "text": "8.8 📚 Para Profundizar\n\nGrus, J. (2019). Data Science from Scratch, 2ª ed. O’Reilly. — Capítulo 2: “A Crash Course in Python”, sección de funciones y control de flujo.\nLutz, M. (2013). Learning Python, 5ª ed. O’Reilly. — La referencia más exhaustiva sobre funciones en Python.\nDocumentación Python — Funciones integradas: https://docs.python.org/3/library/functions.html",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>8</span>  <span class='chapter-title'>Estructuras de Control de Flujo y Funciones</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-visualizacion.html",
+    "href": "chapters/06-visualizacion.html",
+    "title": "9  Visualización Científica con Matplotlib",
+    "section": "",
+    "text": "Objetivos de aprendizaje\nAl finalizar este capítulo serás capaz de:",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Visualización Científica con Matplotlib</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-visualizacion.html#motivación-biológica",
+    "href": "chapters/06-visualizacion.html#motivación-biológica",
+    "title": "9  Visualización Científica con Matplotlib",
+    "section": "9.1 🧬 Motivación biológica",
+    "text": "9.1 🧬 Motivación biológica\nLa visualización de flujos metabólicos no es decorativa: es una herramienta epistémica. Una distribución de flujo bien graficada permite identificar cuellos de botella, detectar reacciones inactivas y comparar fenotipos metabólicos entre condiciones en segundos, algo que una tabla de números haría en minutos con mayor margen de error. Aprender Matplotlib con contexto metabólico desde este capítulo significa que cuando llegues a la Parte III, ya tendrás el lenguaje visual necesario para interpretar los resultados de CobraPy.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Visualización Científica con Matplotlib</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-visualizacion.html#arquitectura-de-matplotlib",
+    "href": "chapters/06-visualizacion.html#arquitectura-de-matplotlib",
+    "title": "9  Visualización Científica con Matplotlib",
+    "section": "9.2 6.1 Arquitectura de Matplotlib",
+    "text": "9.2 6.1 Arquitectura de Matplotlib\nMatplotlib organiza sus gráficas en una jerarquía de objetos:\n\nFigure: el lienzo completo (la “hoja de papel”).\nAxes: el área de graficación dentro de la Figure (los “ejes”). Una Figure puede contener múltiples Axes.\nArtists: todo lo que se dibuja sobre los Axes: líneas, barras, texto, imágenes.\n\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# ── Modo orientado a objetos (recomendado para código científico) ──\nfig, ax = plt.subplots(figsize=(8, 4))   # Figure + 1 Axes\n\nax.plot([1, 2, 3], [4, 5, 6])            # agregar un artista (línea)\nax.set_title(\"Mi primera figura\")\nax.set_xlabel(\"Tiempo (h)\")\nax.set_ylabel(\"Concentración (mM)\")\n\nplt.tight_layout()\nplt.savefig(\"figura_base.png\", dpi=150)\nplt.show()\n\n# ── Diferencia con el modo funcional (pyplot) ──\n# plt.plot(), plt.xlabel(), etc. — menos control, no recomendado para\n# figuras complejas ni multi-panel\n\n\n\n\n\n\nTip📐 OOP vs. pyplot\n\n\n\nEl modo orientado a objetos (fig, ax = plt.subplots()) es el estándar para código reproducible. El modo pyplot (plt.plot()) es conveniente para exploración rápida en notebooks. En este manual usaremos siempre el modo OOP para garantizar que las figuras sean reproducibles y fáciles de modificar.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Visualización Científica con Matplotlib</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-visualizacion.html#gráficas-fundamentales-con-contexto-metabólico",
+    "href": "chapters/06-visualizacion.html#gráficas-fundamentales-con-contexto-metabólico",
+    "title": "9  Visualización Científica con Matplotlib",
+    "section": "9.3 6.2 Gráficas Fundamentales con Contexto Metabólico",
+    "text": "9.3 6.2 Gráficas Fundamentales con Contexto Metabólico\n\n9.3.1 Gráfica de barras: distribución de flujos por subsistema\nimport matplotlib.pyplot as plt\nimport numpy as np\n\n# Datos: flujo promedio por subsistema metabólico\nsubsistemas = [\"Glycolysis\", \"TCA cycle\", \"Pentose-P\", \"Amino acid\", \"Nucleotide\"]\nflujos_med  = [7.42, 3.12, 1.85, 0.94, 0.23]\ncolores     = [\"#1B4F72\", \"#117A65\", \"#B7950B\", \"#5C5C6E\", \"#922B21\"]\n\nfig, ax = plt.subplots(figsize=(8, 4.5))\n\nbarras = ax.bar(subsistemas, flujos_med, color=colores,\n                edgecolor=\"white\", linewidth=0.8, width=0.65)\n\n# Etiquetas sobre las barras\nfor barra, valor in zip(barras, flujos_med):\n    ax.text(barra.get_x() + barra.get_width() / 2,\n            barra.get_height() + 0.08,\n            f\"{valor:.2f}\",\n            ha=\"center\", va=\"bottom\", fontsize=9, color=\"#1C1C1E\")\n\nax.set_title(\"Flujo promedio por subsistema metabólico\\n(modelo E. coli core — condición aeróbica)\",\n             fontsize=12, pad=12)\nax.set_ylabel(\"Flujo promedio (mmol/gDW/h)\", fontsize=10)\nax.set_ylim(0, max(flujos_med) * 1.2)\nax.spines[[\"top\", \"right\"]].set_visible(False)\nax.tick_params(axis=\"x\", rotation=15)\n\nplt.tight_layout()\nplt.savefig(\"flujos_subsistemas.pdf\", dpi=300, bbox_inches=\"tight\")\nplt.show()\n\n\n9.3.2 Gráfica de dispersión: correlación flujo aeróbico vs. anaeróbico\nnp.random.seed(42)\nn_rxn = 40\nflujos_aerobico   = np.abs(np.random.normal(5, 3, n_rxn))\nflujos_anaerobico = flujos_aerobico * np.random.uniform(0.2, 1.8, n_rxn)\n\n# Clasificar puntos por categoría de cambio\ndelta = flujos_anaerobico - flujos_aerobico\ncolores_pts = np.where(delta &gt; 1, \"#117A65\",    # aumenta en anaerobiosis\n               np.where(delta &lt; -1, \"#922B21\",   # disminuye en anaerobiosis\n               \"#5C5C6E\"))                        # sin cambio significativo\n\nfig, ax = plt.subplots(figsize=(6, 5.5))\n\nax.scatter(flujos_aerobico, flujos_anaerobico,\n           c=colores_pts, alpha=0.75, s=60, edgecolors=\"white\", linewidth=0.5)\n\n# Línea de referencia y = x (sin cambio)\nlim_max = max(flujos_aerobico.max(), flujos_anaerobico.max()) * 1.05\nax.plot([0, lim_max], [0, lim_max], \"--\", color=\"#B7950B\",\n        linewidth=1.2, label=\"Sin cambio (y = x)\")\n\n# Leyenda manual con parches de color\nimport matplotlib.patches as mpatches\nlegend_elements = [\n    mpatches.Patch(color=\"#117A65\", label=\"↑ Anaerobiosis\"),\n    mpatches.Patch(color=\"#922B21\", label=\"↓ Anaerobiosis\"),\n    mpatches.Patch(color=\"#5C5C6E\", label=\"Sin cambio\"),\n]\nax.legend(handles=legend_elements, fontsize=9, frameon=False)\n\nax.set_xlabel(\"Flujo aeróbico (mmol/gDW/h)\", fontsize=10)\nax.set_ylabel(\"Flujo anaeróbico (mmol/gDW/h)\", fontsize=10)\nax.set_title(\"Comparación de flujos: aeróbico vs. anaeróbico\", fontsize=11)\nax.spines[[\"top\", \"right\"]].set_visible(False)\n\nplt.tight_layout()\nplt.savefig(\"scatter_condiciones.png\", dpi=300, bbox_inches=\"tight\")\nplt.show()\n\n\n9.3.3 Histograma y distribución de flujos\nnp.random.seed(7)\n# Simular distribución de flujos de un modelo FBA\ntodos_flujos = np.concatenate([\n    np.zeros(60),                          # ~60% de reacciones inactivas\n    np.abs(np.random.exponential(3, 40)),  # reacciones activas (dist. exponencial)\n])\n\nfig, axes = plt.subplots(1, 2, figsize=(10, 4))\n\n# Panel izquierdo: histograma completo\naxes[0].hist(todos_flujos, bins=25, color=\"#1B4F72\", alpha=0.8, edgecolor=\"white\")\naxes[0].axvline(np.median(todos_flujos[todos_flujos &gt; 0]), color=\"#922B21\",\n                linestyle=\"--\", linewidth=1.5, label=f\"Mediana activas\")\naxes[0].set_xlabel(\"Flujo (mmol/gDW/h)\")\naxes[0].set_ylabel(\"Frecuencia (N reacciones)\")\naxes[0].set_title(\"Distribución completa de flujos\")\naxes[0].spines[[\"top\", \"right\"]].set_visible(False)\naxes[0].legend(fontsize=9)\n\n# Panel derecho: solo reacciones activas en escala log\nactivos = todos_flujos[todos_flujos &gt; 1e-6]\naxes[1].hist(activos, bins=20, color=\"#117A65\", alpha=0.85, edgecolor=\"white\",\n             log=True)\naxes[1].set_xlabel(\"Flujo (mmol/gDW/h)\")\naxes[1].set_ylabel(\"Frecuencia (escala logarítmica)\")\naxes[1].set_title(f\"Reacciones activas (N={len(activos)})\")\naxes[1].spines[[\"top\", \"right\"]].set_visible(False)\n\nplt.suptitle(\"Análisis estadístico de la distribución de flujos FBA\",\n             fontsize=12, y=1.02)\nplt.tight_layout()\nplt.savefig(\"histograma_flujos.png\", dpi=300, bbox_inches=\"tight\")\nplt.show()",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Visualización Científica con Matplotlib</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-visualizacion.html#figuras-multi-panel-y-anotaciones",
+    "href": "chapters/06-visualizacion.html#figuras-multi-panel-y-anotaciones",
+    "title": "9  Visualización Científica con Matplotlib",
+    "section": "9.4 6.3 Figuras Multi-Panel y Anotaciones",
+    "text": "9.4 6.3 Figuras Multi-Panel y Anotaciones\nfig, axes = plt.subplots(2, 2, figsize=(10, 8))\n\nreacciones = [\"PFK\", \"TPI\", \"ENO\", \"PYK\", \"CS\", \"ACONa\", \"ICDHyr\", \"MDH\"]\nflujos_base = [4.86, 4.86, 9.72, 9.72, 3.12, 3.12, 3.12, 3.09]\n\n# ── Panel A: flujos absolutos ──\naxes[0,0].barh(reacciones, flujos_base, color=\"#1B4F72\", height=0.6)\naxes[0,0].set_xlabel(\"Flujo (mmol/gDW/h)\")\naxes[0,0].set_title(\"A — Flujos absolutos\", fontweight=\"bold\")\naxes[0,0].spines[[\"top\", \"right\"]].set_visible(False)\n\n# ── Panel B: flujos normalizados ──\nflujos_norm = [v / max(flujos_base) for v in flujos_base]\ncolores_b   = [\"#117A65\" if v &gt; 0.5 else \"#B7950B\" for v in flujos_norm]\naxes[0,1].barh(reacciones, flujos_norm, color=colores_b, height=0.6)\naxes[0,1].axvline(0.5, color=\"#922B21\", linestyle=\":\", linewidth=1.2)\naxes[0,1].set_xlabel(\"Flujo relativo (normalizado)\")\naxes[0,1].set_title(\"B — Flujos normalizados\", fontweight=\"bold\")\naxes[0,1].spines[[\"top\", \"right\"]].set_visible(False)\n\n# ── Panel C: perfil temporal ficticio ──\ntiempo = np.linspace(0, 12, 100)\nconc   = 10 * np.exp(-0.3 * tiempo) + 0.5\naxes[1,0].plot(tiempo, conc, color=\"#1B4F72\", linewidth=2)\naxes[1,0].fill_between(tiempo, conc * 0.9, conc * 1.1,\n                         alpha=0.2, color=\"#1B4F72\", label=\"± 10% IC\")\naxes[1,0].set_xlabel(\"Tiempo (h)\")\naxes[1,0].set_ylabel(\"[Glucosa] (mM)\")\naxes[1,0].set_title(\"C — Consumo de glucosa\", fontweight=\"bold\")\naxes[1,0].legend(fontsize=8)\naxes[1,0].spines[[\"top\", \"right\"]].set_visible(False)\n\n# ── Panel D: diagrama de pastel por subsistema ──\nlabels_pie = [\"Glucólisis\", \"Ciclo TCA\", \"Pent-Fosfato\", \"Otros\"]\nsizes_pie  = [38, 28, 17, 17]\ncolors_pie = [\"#1B4F72\", \"#117A65\", \"#B7950B\", \"#5C5C6E\"]\naxes[1,1].pie(sizes_pie, labels=labels_pie, colors=colors_pie,\n              autopct=\"%1.1f%%\", startangle=90,\n              wedgeprops={\"edgecolor\": \"white\", \"linewidth\": 1.5})\naxes[1,1].set_title(\"D — Distribución por subsistema\", fontweight=\"bold\")\n\nplt.suptitle(\"Panel integrado — Análisis de flujos metabólicos\", fontsize=13, y=1.01)\nplt.tight_layout()\nplt.savefig(\"panel_integrado.pdf\", dpi=300, bbox_inches=\"tight\")\nplt.show()",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Visualización Científica con Matplotlib</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-visualizacion.html#exportación-para-publicación",
+    "href": "chapters/06-visualizacion.html#exportación-para-publicación",
+    "title": "9  Visualización Científica con Matplotlib",
+    "section": "9.5 6.4 Exportación para Publicación",
+    "text": "9.5 6.4 Exportación para Publicación\n# Configuración global de estilo para figuras de publicación\nimport matplotlib as mpl\n\nmpl.rcParams.update({\n    \"font.family\"       : \"sans-serif\",\n    \"font.size\"         : 10,\n    \"axes.titlesize\"    : 11,\n    \"axes.labelsize\"    : 10,\n    \"xtick.labelsize\"   : 9,\n    \"ytick.labelsize\"   : 9,\n    \"legend.fontsize\"   : 9,\n    \"figure.dpi\"        : 150,\n    \"savefig.dpi\"       : 300,\n    \"savefig.bbox\"      : \"tight\",\n    \"axes.spines.top\"   : False,\n    \"axes.spines.right\" : False,\n    \"axes.linewidth\"    : 0.8,\n    \"grid.alpha\"        : 0.3,\n})\n\n# Exportar en múltiples formatos desde una sola figura:\nfig, ax = plt.subplots(figsize=(6, 4))\nax.plot([1,2,3,4], [2,4,3,5], color=\"#1B4F72\", linewidth=2)\nax.set_title(\"Figura de ejemplo para publicación\")\n\n# PNG — para presentaciones y web (compresión sin pérdida con alta resolución):\nfig.savefig(\"figura_publicacion.png\", format=\"png\", dpi=300)\n\n# PDF — para revistas (vectorial, escala sin pérdida):\nfig.savefig(\"figura_publicacion.pdf\", format=\"pdf\")\n\n# SVG — para edición posterior en Inkscape/Illustrator:\nfig.savefig(\"figura_publicacion.svg\", format=\"svg\")\n\nprint(\"Figuras exportadas: .png (300dpi), .pdf (vectorial), .svg (editable)\")",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Visualización Científica con Matplotlib</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-visualizacion.html#ejercicio-integrador-visualizar-distribución-de-flujos-fba",
+    "href": "chapters/06-visualizacion.html#ejercicio-integrador-visualizar-distribución-de-flujos-fba",
+    "title": "9  Visualización Científica con Matplotlib",
+    "section": "9.6 6.5 🔬 Ejercicio Integrador: Visualizar Distribución de Flujos FBA",
+    "text": "9.6 6.5 🔬 Ejercicio Integrador: Visualizar Distribución de Flujos FBA\n\nEjercicio 6.1 — Nivel: Medio\n\n\nCon los datos de flujos de los ejercicios anteriores, construye una figura de dos paneles que muestre:\n\nPanel izquierdo: gráfica de barras horizontales con los 10 flujos de mayor magnitud, coloreados por signo (positivo = verde, negativo = rojo).\nPanel derecho: histograma de todos los flujos con marcadores para la media y la mediana.\n\nExporta la figura en PDF con resolución de 300 dpi. La figura debe incluir título general, etiquetas de ejes, y una nota al pie indicando el modelo y la condición de simulación.\nimport matplotlib.pyplot as plt\nimport numpy as np\n\nnp.random.seed(42)\nrxn_ids = [f\"RXN_{i:03d}\" for i in range(30)]\nflujos  = np.random.normal(0, 5, 30)\n\n# ── Tu código aquí ──\n# Pista: usa plt.subplots(1, 2), barh() con colores condicionales y hist()",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Visualización Científica con Matplotlib</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/06-visualizacion.html#para-profundizar",
+    "href": "chapters/06-visualizacion.html#para-profundizar",
+    "title": "9  Visualización Científica con Matplotlib",
+    "section": "9.7 📚 Para Profundizar",
+    "text": "9.7 📚 Para Profundizar\n\nVanderPlas, J. (2016). Python Data Science Handbook, Cap. 4: “Visualization with Matplotlib”. — Acceso abierto online.\nMcKinney, W. (2022). Python for Data Analysis, 3ª ed. O’Reilly. — Capítulo 9: “Plotting and Visualization”.\nDocumentación oficial Matplotlib: https://matplotlib.org/stable/\nGallery de Matplotlib: https://matplotlib.org/stable/gallery/index.html — referencia visual de todos los tipos de gráficas.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>9</span>  <span class='chapter-title'>Visualización Científica con Matplotlib</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/07-paquetes-buenas-practicas.html",
+    "href": "chapters/07-paquetes-buenas-practicas.html",
+    "title": "10  07-paquetes-buenas-practicas",
+    "section": "",
+    "text": "11 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte I — Fundamentos de Python para Bioinformáticos",
+      "<span class='chapter-number'>10</span>  <span class='chapter-title'>07-paquetes-buenas-practicas</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/08-sistemas-biologicos.html",
+    "href": "chapters/08-sistemas-biologicos.html",
+    "title": "11  08-sistemas-biologicos",
+    "section": "",
+    "text": "12 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte II — Sistemas Biológicos y Modelado",
+      "<span class='chapter-number'>11</span>  <span class='chapter-title'>08-sistemas-biologicos</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/09-tipos-modelos.html",
+    "href": "chapters/09-tipos-modelos.html",
+    "title": "12  09-tipos-modelos",
+    "section": "",
+    "text": "13 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte II — Sistemas Biológicos y Modelado",
+      "<span class='chapter-number'>12</span>  <span class='chapter-title'>09-tipos-modelos</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/10-redes-grafos.html",
+    "href": "chapters/10-redes-grafos.html",
+    "title": "13  10-redes-grafos",
+    "section": "",
+    "text": "14 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte II — Sistemas Biológicos y Modelado",
+      "<span class='chapter-number'>13</span>  <span class='chapter-title'>10-redes-grafos</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/11-metabolismo-matematica.html",
+    "href": "chapters/11-metabolismo-matematica.html",
+    "title": "14  11-metabolismo-matematica",
+    "section": "",
+    "text": "15 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte II — Sistemas Biológicos y Modelado",
+      "<span class='chapter-number'>14</span>  <span class='chapter-title'>11-metabolismo-matematica</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/12-fundamentos-fba.html",
+    "href": "chapters/12-fundamentos-fba.html",
+    "title": "15  12-fundamentos-fba",
+    "section": "",
+    "text": "16 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte III — Flux Balance Analysis con CobraPy",
+      "<span class='chapter-number'>15</span>  <span class='chapter-title'>12-fundamentos-fba</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/13-formulacion-matematica.html",
+    "href": "chapters/13-formulacion-matematica.html",
+    "title": "16  13-formulacion-matematica",
+    "section": "",
+    "text": "17 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte III — Flux Balance Analysis con CobraPy",
+      "<span class='chapter-number'>16</span>  <span class='chapter-title'>13-formulacion-matematica</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/14-intro-cobrapy.html",
+    "href": "chapters/14-intro-cobrapy.html",
+    "title": "17  14-intro-cobrapy",
+    "section": "",
+    "text": "18 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte III — Flux Balance Analysis con CobraPy",
+      "<span class='chapter-number'>17</span>  <span class='chapter-title'>14-intro-cobrapy</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/15-analisis-resultados.html",
+    "href": "chapters/15-analisis-resultados.html",
+    "title": "18  15-analisis-resultados",
+    "section": "",
+    "text": "19 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte III — Flux Balance Analysis con CobraPy",
+      "<span class='chapter-number'>18</span>  <span class='chapter-title'>15-analisis-resultados</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/16-casos-practicos.html",
+    "href": "chapters/16-casos-practicos.html",
+    "title": "19  16-casos-practicos",
+    "section": "",
+    "text": "20 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte III — Flux Balance Analysis con CobraPy",
+      "<span class='chapter-number'>19</span>  <span class='chapter-title'>16-casos-practicos</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/17-visualizacion-redes.html",
+    "href": "chapters/17-visualizacion-redes.html",
+    "title": "20  17-visualizacion-redes",
+    "section": "",
+    "text": "21 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte III — Flux Balance Analysis con CobraPy",
+      "<span class='chapter-number'>20</span>  <span class='chapter-title'>17-visualizacion-redes</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/18-errores-comunes.html",
+    "href": "chapters/18-errores-comunes.html",
+    "title": "21  18-errores-comunes",
+    "section": "",
+    "text": "22 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte III — Flux Balance Analysis con CobraPy",
+      "<span class='chapter-number'>21</span>  <span class='chapter-title'>18-errores-comunes</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/19-proyecto-final.html",
+    "href": "chapters/19-proyecto-final.html",
+    "title": "22  19-proyecto-final",
+    "section": "",
+    "text": "23 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Parte III — Flux Balance Analysis con CobraPy",
+      "<span class='chapter-number'>22</span>  <span class='chapter-title'>19-proyecto-final</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/A-instalacion-detallada.html",
+    "href": "chapters/A-instalacion-detallada.html",
+    "title": "23  A-instalacion-detallada",
+    "section": "",
+    "text": "24 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Apéndices",
+      "<span class='chapter-number'>23</span>  <span class='chapter-title'>A-instalacion-detallada</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/B-datasets.html",
+    "href": "chapters/B-datasets.html",
+    "title": "24  B-datasets",
+    "section": "",
+    "text": "25 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Apéndices",
+      "<span class='chapter-number'>24</span>  <span class='chapter-title'>B-datasets</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/C-glosario.html",
+    "href": "chapters/C-glosario.html",
+    "title": "25  C-glosario",
+    "section": "",
+    "text": "26 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Apéndices",
+      "<span class='chapter-number'>25</span>  <span class='chapter-title'>C-glosario</span>"
+    ]
+  },
+  {
+    "objectID": "chapters/D-como-citar.html",
+    "href": "chapters/D-como-citar.html",
+    "title": "26  D-como-citar",
+    "section": "",
+    "text": "27 Capítulo en construcción\n\n\n\n\n\n\nImportante🚧 En desarrollo\n\n\n\nEste capítulo se redactará próximamente.",
+    "crumbs": [
+      "Apéndices",
+      "<span class='chapter-number'>26</span>  <span class='chapter-title'>D-como-citar</span>"
+    ]
+  },
+  {
+    "objectID": "references.html",
+    "href": "references.html",
+    "title": "27  Referencias",
+    "section": "",
+    "text": "Referencias\n\n\nGrus, J. (2019). Data science from scratch (2nd ed.). O’Reilly\nMedia.\n\n\nMcKinney, W. (2022). Python for data analysis (3rd ed.).\nO’Reilly Media.\n\n\nOrth, J. D., Conrad, T. M., Na, J., Lerman, J. A., Nam, H., Feist, A.\nM., & Palsson, B. Ø. (2011). A comprehensive genome-scale\nreconstruction of Escherichia coli\nmetabolism—2011. Molecular Systems Biology, 7, 535. https://doi.org/10.1038/msb.2011.65",
+    "crumbs": [
+      "<span class='chapter-number'>27</span>  <span class='chapter-title'>Referencias</span>"
+    ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Análisis de Balance de Flujos Metabólicos con Python",
+    "section": "",
+    "text": "Bienvenida\nEste manual nació de una necesidad concreta: la escasez de material en español que integre de manera progresiva el lenguaje de programación Python con el Análisis de Balance de Flujos (Flux Balance Analysis, FBA).",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Prefacio</span>"
+    ]
+  },
+  {
+    "objectID": "index.html#cómo-usar-este-manual",
+    "href": "index.html#cómo-usar-este-manual",
+    "title": "Análisis de Balance de Flujos Metabólicos con Python",
+    "section": "Cómo usar este manual",
+    "text": "Cómo usar este manual\n\n\n\nSímbolo\nElemento\nPropósito\n\n\n\n\n🧬\nMotivación biológica\n¿Por qué importa?\n\n\n📐\nConcepto\nLa teoría necesaria\n\n\n💻\nCódigo reproducible\nListo para ejecutar\n\n\n🔬\nEjercicio\nPráctica guiada\n\n\n📚\nPara profundizar\nLecturas recomendadas\n\n\n\n\n© Julio Pantoja 2026",
+    "crumbs": [
+      "<span class='chapter-number'>1</span>  <span class='chapter-title'>Prefacio</span>"
+    ]
+  }
+]

@@ -1,0 +1,10 @@
+---
+title: "12-fundamentos-fba"
+---
+
+# Capítulo en construcción
+
+::: {.callout-important}
+## 🚧 En desarrollo
+Este capítulo se redactará próximamente.
+:::

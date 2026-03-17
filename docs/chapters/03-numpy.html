@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Manual en español sobre Flux Balance Analysis (FBA) con Python y CobraPy, orientado a estudiantes de bioinformática, biología computacional e ingeniería biotecnológica de nivel universitario y posgrado.">
+
+<title>6&nbsp; NumPy — Vectores y Matrices para Biología Computacional – Análisis de Balance de Flujos Metabólicos con Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/04-pandas.html" rel="next">
+<link href="../chapters/02-tipos-datos.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-8a36787d37a309c00503ce8984a43a6b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7e29095fd6801b388fb53898fd2568a8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Playfair+Display:ital,wght@0,700;1,400&amp;family=Source+Sans+3:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Análisis de Balance de Flujos Metabólicos con Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Buscar"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navegación de palanca" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/[tu-usuario]/manual-fba-python"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/[tu-usuario]/manual-fba-python" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../Análisis-de-Balance-de-Flujos-Metabólicos-con-Python.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../Análisis-de-Balance-de-Flujos-Metabólicos-con-Python.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-instalacion.html">Parte I — Fundamentos de Python para Bioinformáticos</a></li><li class="breadcrumb-item"><a href="../chapters/03-numpy.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">NumPy — Vectores y Matrices para Biología Computacional</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Prefacio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../prologo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Prólogo al Estudiante</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../indice-general.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Índice General</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Parte I — Fundamentos de Python para Bioinformáticos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-instalacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Instalación de Python e Introducción al Entorno de Desarrollo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-tipos-datos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tipos de Datos y Estructuras en Python</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-numpy.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">NumPy — Vectores y Matrices para Biología Computacional</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-pandas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pandas — DataFrames para Análisis Biológico</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-control-flujo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estructuras de Control de Flujo y Funciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-visualizacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Visualización Científica con Matplotlib</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-paquetes-buenas-practicas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">07-paquetes-buenas-practicas</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Parte II — Sistemas Biológicos y Modelado</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-sistemas-biologicos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">08-sistemas-biologicos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-tipos-modelos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">09-tipos-modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-redes-grafos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">10-redes-grafos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-metabolismo-matematica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">11-metabolismo-matematica</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Parte III — Flux Balance Analysis con CobraPy</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-fundamentos-fba.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">12-fundamentos-fba</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-formulacion-matematica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">13-formulacion-matematica</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-intro-cobrapy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">14-intro-cobrapy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-analisis-resultados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">15-analisis-resultados</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/16-casos-practicos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">16-casos-practicos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/17-visualizacion-redes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">17-visualizacion-redes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/18-errores-comunes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">18-errores-comunes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/19-proyecto-final.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">19-proyecto-final</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/A-instalacion-detallada.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">A-instalacion-detallada</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/B-datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">B-datasets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/C-glosario.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">C-glosario</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/D-como-citar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">D-como-citar</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Referencias</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">En este capítulo</h2>
+   
+  <ul>
+  <li><a href="#motivación-biológica" id="toc-motivación-biológica" class="nav-link active" data-scroll-target="#motivación-biológica"><span class="header-section-number">6.1</span> 🧬 Motivación biológica</a></li>
+  <li><a href="#el-ndarray-estructura-fundamental" id="toc-el-ndarray-estructura-fundamental" class="nav-link" data-scroll-target="#el-ndarray-estructura-fundamental"><span class="header-section-number">6.2</span> 3.1 El <code>ndarray</code>: Estructura Fundamental</a>
+  <ul class="collapse">
+  <li><a href="#arreglos-2-d-matrices" id="toc-arreglos-2-d-matrices" class="nav-link" data-scroll-target="#arreglos-2-d-matrices"><span class="header-section-number">6.2.1</span> Arreglos 2-D: matrices</a></li>
+  </ul></li>
+  <li><a href="#creación-de-arreglos" id="toc-creación-de-arreglos" class="nav-link" data-scroll-target="#creación-de-arreglos"><span class="header-section-number">6.3</span> 3.2 Creación de Arreglos</a></li>
+  <li><a href="#indexado-y-segmentado" id="toc-indexado-y-segmentado" class="nav-link" data-scroll-target="#indexado-y-segmentado"><span class="header-section-number">6.4</span> 3.3 Indexado y Segmentado</a></li>
+  <li><a href="#operaciones-vectorizadas-y-broadcasting" id="toc-operaciones-vectorizadas-y-broadcasting" class="nav-link" data-scroll-target="#operaciones-vectorizadas-y-broadcasting"><span class="header-section-number">6.5</span> 3.4 Operaciones Vectorizadas y Broadcasting</a></li>
+  <li><a href="#álgebra-lineal-el-núcleo-del-fba" id="toc-álgebra-lineal-el-núcleo-del-fba" class="nav-link" data-scroll-target="#álgebra-lineal-el-núcleo-del-fba"><span class="header-section-number">6.6</span> 3.5 Álgebra Lineal: El Núcleo del FBA</a></li>
+  <li><a href="#ejercicio-integrador-matriz-estequiométrica-completa" id="toc-ejercicio-integrador-matriz-estequiométrica-completa" class="nav-link" data-scroll-target="#ejercicio-integrador-matriz-estequiométrica-completa"><span class="header-section-number">6.7</span> 3.6 🔬 Ejercicio Integrador: Matriz Estequiométrica Completa</a></li>
+  <li><a href="#para-profundizar" id="toc-para-profundizar" class="nav-link" data-scroll-target="#para-profundizar"><span class="header-section-number">6.8</span> 📚 Para Profundizar</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/[tu-usuario]/manual-fba-python/edit/main/chapters/03-numpy.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/[tu-usuario]/manual-fba-python/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-instalacion.html">Parte I — Fundamentos de Python para Bioinformáticos</a></li><li class="breadcrumb-item"><a href="../chapters/03-numpy.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">NumPy — Vectores y Matrices para Biología Computacional</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">NumPy — Vectores y Matrices para Biología Computacional</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="objetivos-de-aprendizaje" class="level4 objetivos-box">
+<h4 class="anchored" data-anchor-id="objetivos-de-aprendizaje">Objetivos de aprendizaje</h4>
+<p>Al finalizar este capítulo serás capaz de:</p>
+<ul>
+<li>Crear y manipular arreglos NumPy de una y dos dimensiones con precisión.</li>
+<li>Aplicar indexado avanzado, <em>broadcasting</em> y operaciones vectorizadas.</li>
+<li>Utilizar las funciones de álgebra lineal de NumPy: producto matricial, transpuesta, rango y descomposiciones.</li>
+<li>Construir la <strong>matriz estequiométrica</strong> <span class="math inline">\(S\)</span> de una red metabólica desde código Python.</li>
+<li>Verificar la condición de estado estacionario <span class="math inline">\(S \cdot v = 0\)</span> para un vector de flujos dado.</li>
+</ul>
+</section>
+<section id="motivación-biológica" class="level2" data-number="6.1">
+<h2 data-number="6.1" class="anchored" data-anchor-id="motivación-biológica"><span class="header-section-number">6.1</span> 🧬 Motivación biológica</h2>
+<p>La biología de sistemas cuantitativa descansa sobre una estructura matemática central: la <strong>matriz estequiométrica</strong> <span class="math inline">\(S\)</span>. Esta matriz, de dimensiones <span class="math inline">\(m \times n\)</span> donde <span class="math inline">\(m\)</span> es el número de metabolitos y <span class="math inline">\(n\)</span> el número de reacciones, codifica toda la topología de la red metabólica. Cada columna es una reacción; cada fila, un metabolito; cada entrada <span class="math inline">\(S_{ij}\)</span>, el coeficiente estequiométrico del metabolito <span class="math inline">\(i\)</span> en la reacción <span class="math inline">\(j\)</span> (negativo si es sustrato, positivo si es producto).</p>
+<p>Cuando el modelo de <em>E. coli</em> a escala de genoma iJO1366 <span class="citation" data-cites="orth2011comprehensive">(<a href="../references.html#ref-orth2011comprehensive" role="doc-biblioref">Orth et&nbsp;al., 2011</a>)</span> contiene 1,805 metabolitos y 2,712 reacciones, <span class="math inline">\(S\)</span> tiene dimensiones 1,805 × 2,712 y más de cuatro millones de entradas. Manejar esa información con listas de Python sería imprácticamente lento. NumPy resuelve este problema con arreglos almacenados en bloques contiguos de memoria C, permitiendo operaciones sobre millones de valores en microsegundos.</p>
+<hr>
+</section>
+<section id="el-ndarray-estructura-fundamental" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="el-ndarray-estructura-fundamental"><span class="header-section-number">6.2</span> 3.1 El <code>ndarray</code>: Estructura Fundamental</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2"></a></span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="co"># Verificar versión instalada</span></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="bu">print</span>(<span class="ss">f"NumPy versión: </span><span class="sc">{</span>np<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a><span class="co"># Crear un arreglo 1-D (vector de flujos)</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a>v <span class="op">=</span> np.array([<span class="fl">5.21</span>, <span class="fl">5.21</span>, <span class="fl">4.86</span>, <span class="fl">4.95</span>, <span class="fl">1.06</span>, <span class="fl">0.874</span>])</span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="bu">print</span>(<span class="ss">f"Vector v    : </span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="bu">print</span>(<span class="ss">f"Forma       : </span><span class="sc">{</span>v<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)       <span class="co"># (6,) → 6 elementos, 1 dimensión</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="bu">print</span>(<span class="ss">f"Tipo        : </span><span class="sc">{</span>v<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">"</span>)       <span class="co"># float64 (64 bits, doble precisión)</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="bu">print</span>(<span class="ss">f"N-dimensiones: </span><span class="sc">{</span>v<span class="sc">.</span>ndim<span class="sc">}</span><span class="ss">"</span>)       <span class="co"># 1</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="bu">print</span>(<span class="ss">f"N-elementos : </span><span class="sc">{</span>v<span class="sc">.</span>size<span class="sc">}</span><span class="ss">"</span>)        <span class="co"># 6</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="bu">print</span>(<span class="ss">f"Bytes total : </span><span class="sc">{</span>v<span class="sc">.</span>nbytes<span class="sc">}</span><span class="ss">"</span>)      <span class="co"># 48 (6 × 8 bytes)</span></span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>📐 <code>ndarray</code> vs.&nbsp;Lista de Python
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Una lista de Python almacena <strong>punteros</strong> a objetos heterogéneos dispersos en memoria. Un <code>ndarray</code> almacena <strong>valores</strong> del mismo tipo en un bloque contiguo de memoria. La diferencia en rendimiento es de 10–100× para operaciones numéricas. Además, NumPy compila internamente las operaciones en C o Fortran, lo que lo hace competitivo con MATLAB para álgebra lineal.</p>
+</div>
+</div>
+<section id="arreglos-2-d-matrices" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="arreglos-2-d-matrices"><span class="header-section-number">6.2.1</span> Arreglos 2-D: matrices</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="co"># Crear una matriz 3×3 (3 metabolitos, 3 reacciones — glucólisis simplificada)</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="co"># Convención: filas = metabolitos, columnas = reacciones</span></span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="co"># Coeficiente negativo = sustrato, positivo = producto</span></span>
+<span id="cb2-4"><a href="#cb2-4"></a></span>
+<span id="cb2-5"><a href="#cb2-5"></a>S_simple <span class="op">=</span> np.array([</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="co">#    R1    R2    R3</span></span>
+<span id="cb2-7"><a href="#cb2-7"></a>    [<span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span>,    <span class="dv">0</span>],   <span class="co"># Glucosa</span></span>
+<span id="cb2-8"><a href="#cb2-8"></a>    [ <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span>],   <span class="co"># G6P</span></span>
+<span id="cb2-9"><a href="#cb2-9"></a>    [ <span class="dv">0</span>,    <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span>],   <span class="co"># F6P</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>])</span>
+<span id="cb2-11"><a href="#cb2-11"></a></span>
+<span id="cb2-12"><a href="#cb2-12"></a><span class="bu">print</span>(<span class="ss">f"S_simple:</span><span class="ch">\n</span><span class="sc">{</span>S_simple<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13"></a><span class="bu">print</span>(<span class="ss">f"Forma: </span><span class="sc">{</span>S_simple<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)      <span class="co"># (3, 3)</span></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="bu">print</span>(<span class="ss">f"Rango: </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>matrix_rank(S_simple)<span class="sc">}</span><span class="ss">"</span>)  <span class="co"># 3</span></span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="creación-de-arreglos" class="level2" data-number="6.3">
+<h2 data-number="6.3" class="anchored" data-anchor-id="creación-de-arreglos"><span class="header-section-number">6.3</span> 3.2 Creación de Arreglos</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># ── Arreglos de inicialización ──</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>ceros   <span class="op">=</span> np.zeros((<span class="dv">4</span>, <span class="dv">3</span>))          <span class="co"># matriz de ceros 4×3</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a>unos    <span class="op">=</span> np.ones((<span class="dv">2</span>, <span class="dv">5</span>))           <span class="co"># matriz de unos 2×5</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>identidad <span class="op">=</span> np.eye(<span class="dv">4</span>)               <span class="co"># matriz identidad 4×4</span></span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="co"># ── Arreglos de rango ──</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>tiempo <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">24</span>, <span class="dv">49</span>)     <span class="co"># 49 puntos de 0 a 24 h (simulación)</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>concentraciones_init <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="fl">1.1</span>, <span class="fl">0.1</span>)  <span class="co"># 0.0, 0.1, ..., 1.0</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co"># ── Arreglos aleatorios (útil para perturbaciones) ──</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>np.random.seed(<span class="dv">42</span>)                  <span class="co"># semilla para reproducibilidad</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>ruido <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.01</span>, size<span class="op">=</span><span class="dv">100</span>)   <span class="co"># ruido gaussiano σ=0.01</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a></span>
+<span id="cb3-14"><a href="#cb3-14"></a><span class="bu">print</span>(<span class="ss">f"Vector tiempo (h): </span><span class="sc">{</span>tiempo[:<span class="dv">6</span>]<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb3-15"><a href="#cb3-15"></a><span class="bu">print</span>(<span class="ss">f"Ruido experimental (primeros 5): </span><span class="sc">{</span>ruido[:<span class="dv">5</span>]<span class="sc">.</span><span class="bu">round</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="indexado-y-segmentado" class="level2" data-number="6.4">
+<h2 data-number="6.4" class="anchored" data-anchor-id="indexado-y-segmentado"><span class="header-section-number">6.4</span> 3.3 Indexado y Segmentado</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Matriz estequiométrica extendida (5 metabolitos × 4 reacciones)</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>S <span class="op">=</span> np.array([</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#    HK     PGI    PFK    ENO</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    [<span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span>,    <span class="dv">0</span>,    <span class="dv">0</span> ],   <span class="co"># Glucosa       (met 0)</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>    [ <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span>,    <span class="dv">0</span> ],   <span class="co"># G6P           (met 1)</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>    [ <span class="dv">0</span>,    <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span> ],   <span class="co"># F6P           (met 2)</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>    [ <span class="dv">0</span>,    <span class="dv">0</span>,    <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span> ],   <span class="co"># FBP           (met 3)</span></span>
+<span id="cb4-8"><a href="#cb4-8"></a>    [ <span class="dv">0</span>,    <span class="dv">0</span>,    <span class="dv">0</span>,    <span class="dv">1</span> ],   <span class="co"># PEP           (met 4)</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a>metabolitos <span class="op">=</span> [<span class="st">"Glucosa"</span>, <span class="st">"G6P"</span>, <span class="st">"F6P"</span>, <span class="st">"FBP"</span>, <span class="st">"PEP"</span>]</span>
+<span id="cb4-12"><a href="#cb4-12"></a>reacciones  <span class="op">=</span> [<span class="st">"HK"</span>, <span class="st">"PGI"</span>, <span class="st">"PFK"</span>, <span class="st">"ENO"</span>]</span>
+<span id="cb4-13"><a href="#cb4-13"></a></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co"># ── Acceso a elementos individuales ──</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="bu">print</span>(<span class="ss">f"Coef. G6P en PGI: </span><span class="sc">{</span>S[<span class="dv">1</span>, <span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)            <span class="co"># -1.0</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="bu">print</span>(<span class="ss">f"Columna HK (todos sus metabolitos):"</span>)</span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="cf">for</span> i, coef <span class="kw">in</span> <span class="bu">enumerate</span>(S[:, <span class="dv">0</span>]):</span>
+<span id="cb4-18"><a href="#cb4-18"></a>    <span class="cf">if</span> coef <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb4-19"><a href="#cb4-19"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>metabolitos[i]<span class="sc">:10s}</span><span class="ss">: </span><span class="sc">{</span>coef<span class="sc">:+.0f}</span><span class="ss">"</span>)</span>
+<span id="cb4-20"><a href="#cb4-20"></a></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co"># ── Indexado booleano — metabolitos que participan en PFK ──</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>mascara_pfk  <span class="op">=</span> S[:, <span class="dv">2</span>] <span class="op">!=</span> <span class="dv">0</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a>mets_en_pfk  <span class="op">=</span> [metabolitos[i] <span class="cf">for</span> i <span class="kw">in</span> np.where(mascara_pfk)[<span class="dv">0</span>]]</span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Metabolitos en PFK: </span><span class="sc">{</span>mets_en_pfk<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-25"><a href="#cb4-25"></a></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="co"># ── Submatriz — primeras 3 reacciones, últimos 3 metabolitos ──</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a>subS <span class="op">=</span> S[<span class="dv">2</span>:, :<span class="dv">3</span>]</span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Submatriz [met 2-4, rxn 0-2]:</span><span class="ch">\n</span><span class="sc">{</span>subS<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="operaciones-vectorizadas-y-broadcasting" class="level2" data-number="6.5">
+<h2 data-number="6.5" class="anchored" data-anchor-id="operaciones-vectorizadas-y-broadcasting"><span class="header-section-number">6.5</span> 3.4 Operaciones Vectorizadas y Broadcasting</h2>
+<p>Una de las características más poderosas de NumPy es la <strong>vectorización</strong>: la aplicación de operaciones matemáticas a todos los elementos de un arreglo sin escribir bucles explícitos. El <em>broadcasting</em> extiende este concepto a arreglos de formas distintas.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="co"># ── Operaciones element-wise ──</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>flujos <span class="op">=</span> np.array([<span class="fl">5.21</span>, <span class="fl">5.21</span>, <span class="fl">4.86</span>, <span class="fl">1.06</span>, <span class="fl">0.874</span>])</span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co"># Normalizar flujos al máximo (muy común en análisis de redes)</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>flujos_norm <span class="op">=</span> flujos <span class="op">/</span> np.<span class="bu">max</span>(flujos)</span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="bu">print</span>(<span class="ss">f"Flujos normalizados: </span><span class="sc">{</span>flujos_norm<span class="sc">.</span><span class="bu">round</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-7"><a href="#cb5-7"></a></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co"># Calcular el logaritmo de la magnitud (análisis de escala)</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-10"><a href="#cb5-10"></a>magnitudes <span class="op">=</span> np.<span class="bu">abs</span>(flujos)</span>
+<span id="cb5-11"><a href="#cb5-11"></a>log_magnitudes <span class="op">=</span> np.log10(magnitudes <span class="op">+</span> <span class="fl">1e-10</span>)  <span class="co"># +1e-10 evita log(0)</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="bu">print</span>(<span class="ss">f"Log10 de magnitudes: </span><span class="sc">{</span>log_magnitudes<span class="sc">.</span><span class="bu">round</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-13"><a href="#cb5-13"></a></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co"># ── Broadcasting: escalar sobre matriz ──</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="co"># Multiplicar toda la matriz S por -1 (cambiar convención de signos)</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a>S_alt_convencion <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">*</span> S</span>
+<span id="cb5-17"><a href="#cb5-17"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Convención invertida (primeros 2 met × 2 rxn):</span><span class="ch">\n</span><span class="sc">{</span>S_alt_convencion[:<span class="dv">2</span>, :<span class="dv">2</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb5-18"><a href="#cb5-18"></a></span>
+<span id="cb5-19"><a href="#cb5-19"></a><span class="co"># ── Broadcasting: vector sobre matriz (normalización por columna) ──</span></span>
+<span id="cb5-20"><a href="#cb5-20"></a><span class="co"># Dividir cada columna de S por la suma de sus valores absolutos</span></span>
+<span id="cb5-21"><a href="#cb5-21"></a>normas_columnas <span class="op">=</span> np.<span class="bu">sum</span>(np.<span class="bu">abs</span>(S), axis<span class="op">=</span><span class="dv">0</span>)   <span class="co"># suma por columna (axis=0)</span></span>
+<span id="cb5-22"><a href="#cb5-22"></a>S_normalizada   <span class="op">=</span> S <span class="op">/</span> normas_columnas          <span class="co"># broadcasting automático</span></span>
+<span id="cb5-23"><a href="#cb5-23"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Normas de columnas (reacciones): </span><span class="sc">{</span>normas_columnas<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="álgebra-lineal-el-núcleo-del-fba" class="level2" data-number="6.6">
+<h2 data-number="6.6" class="anchored" data-anchor-id="álgebra-lineal-el-núcleo-del-fba"><span class="header-section-number">6.6</span> 3.5 Álgebra Lineal: El Núcleo del FBA</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># ── Producto matricial: S @ v ──</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a><span class="co"># En estado estacionario: S · v = 0  (balance de masa)</span></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co"># Verificamos con un vector de flujos de ejemplo</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a></span>
+<span id="cb6-5"><a href="#cb6-5"></a>v_ejemplo <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>])   <span class="co"># flujos iguales para todas las rxn</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a>balance <span class="op">=</span> S <span class="op">@</span> v_ejemplo</span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="bu">print</span>(<span class="ss">f"S · v = </span><span class="sc">{</span>balance<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co"># Si no es cero, el sistema no está en estado estacionario para estos flujos</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co"># ── Transpuesta ──</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">S  (forma original): </span><span class="sc">{</span>S<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="bu">print</span>(<span class="ss">f"Sᵀ (transpuesta)  : </span><span class="sc">{</span>S<span class="sc">.</span>T<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-13"><a href="#cb6-13"></a></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co"># ── Rango de la matriz ──</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a>rango <span class="op">=</span> np.linalg.matrix_rank(S)</span>
+<span id="cb6-16"><a href="#cb6-16"></a>grados_libertad <span class="op">=</span> S.shape[<span class="dv">1</span>] <span class="op">-</span> rango</span>
+<span id="cb6-17"><a href="#cb6-17"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Rango de S    : </span><span class="sc">{</span>rango<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="bu">print</span>(<span class="ss">f"Dimensión nula: </span><span class="sc">{</span>grados_libertad<span class="sc">}</span><span class="ss"> (grados de libertad del sistema)"</span>)</span>
+<span id="cb6-19"><a href="#cb6-19"></a></span>
+<span id="cb6-20"><a href="#cb6-20"></a><span class="co"># ── Espacio nulo aproximado (solución particular de S·v=0) ──</span></span>
+<span id="cb6-21"><a href="#cb6-21"></a><span class="co"># Usando descomposición SVD (valor singular)</span></span>
+<span id="cb6-22"><a href="#cb6-22"></a>U, sigma, Vt <span class="op">=</span> np.linalg.svd(S)</span>
+<span id="cb6-23"><a href="#cb6-23"></a><span class="co"># Las últimas (n - rango) filas de Vt forman la base del espacio nulo</span></span>
+<span id="cb6-24"><a href="#cb6-24"></a>nulo_aprox <span class="op">=</span> Vt[rango:, :]</span>
+<span id="cb6-25"><a href="#cb6-25"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Vectores de la base nula (forma): </span><span class="sc">{</span>nulo_aprox<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-26"><a href="#cb6-26"></a><span class="bu">print</span>(<span class="ss">f"Verificación S · nulo[0]ᵀ ≈ 0: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">abs</span>(S <span class="op">@</span> nulo_aprox[<span class="dv">0</span>])<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2e}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>📐 El Espacio Nulo y el FBA
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>El conjunto de todos los vectores de flujo <span class="math inline">\(v\)</span> que satisfacen <span class="math inline">\(S \cdot v = 0\)</span> forma el <strong>espacio nulo</strong> (o <em>null space</em>) de <span class="math inline">\(S\)</span>. Este espacio define el universo de distribuciones de flujo biológicamente factibles bajo el supuesto de estado estacionario. El Análisis de Balance de Flujos (FBA) consiste en encontrar el punto óptimo dentro de este espacio que maximice una función objetivo —típicamente la producción de biomasa. Esta conexión entre NumPy y CobraPy es el puente que atraviesa toda la Parte II y III del manual.</p>
+</div>
+</div>
+<hr>
+</section>
+<section id="ejercicio-integrador-matriz-estequiométrica-completa" class="level2" data-number="6.7">
+<h2 data-number="6.7" class="anchored" data-anchor-id="ejercicio-integrador-matriz-estequiométrica-completa"><span class="header-section-number">6.7</span> 3.6 🔬 Ejercicio Integrador: Matriz Estequiométrica Completa</h2>
+<div class="ejercicio-header">
+<p>Ejercicio 3.1 — Nivel: <span class="badge-nivel basico">Básico</span></p>
+</div>
+<div class="ejercicio-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co"># Red metabólica: glucólisis central de E. coli (7 reacciones, 8 metabolitos)</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co"># Reacciones:</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#   R1  (HK)   : glc_D + atp → g6p + adp + h    (hexoquinasa)</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#   R2  (PGI)  : g6p ⇌ f6p                       (fosfoglucoisomerasa)</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#   R3  (PFK)  : f6p + atp → fdp + adp + h       (fosofructoquinasa)</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#   R4  (FBA)  : fdp → dhap + g3p                (aldolasa)</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="co">#   R5  (TPI)  : dhap ⇌ g3p                      (triosa fosfato isomerasa)</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#   R6  (GAPD) : g3p + nad + pi → 13dpg + nadh + h (GAPDH)</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co">#   R7  (EX)   : atp →                           (demanda de ATP, salida)</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="co">#</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="co"># Metabolitos: glc_D, atp, g6p, adp, f6p, fdp, dhap, g3p</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a></span>
+<span id="cb7-16"><a href="#cb7-16"></a>metabolitos <span class="op">=</span> [<span class="st">"glc_D"</span>, <span class="st">"atp"</span>,  <span class="st">"g6p"</span>, <span class="st">"adp"</span>, <span class="st">"f6p"</span>, <span class="st">"fdp"</span>, <span class="st">"dhap"</span>, <span class="st">"g3p"</span>]</span>
+<span id="cb7-17"><a href="#cb7-17"></a>reacciones  <span class="op">=</span> [<span class="st">"HK"</span>,    <span class="st">"PGI"</span>,  <span class="st">"PFK"</span>, <span class="st">"FBA"</span>, <span class="st">"TPI"</span>, <span class="st">"GAPD"</span>,<span class="st">"EX"</span>]</span>
+<span id="cb7-18"><a href="#cb7-18"></a></span>
+<span id="cb7-19"><a href="#cb7-19"></a>S <span class="op">=</span> np.array([</span>
+<span id="cb7-20"><a href="#cb7-20"></a><span class="co">#     HK   PGI  PFK  FBA  TPI  GAPD  EX</span></span>
+<span id="cb7-21"><a href="#cb7-21"></a>     [<span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># glc_D</span></span>
+<span id="cb7-22"><a href="#cb7-22"></a>     [<span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,  <span class="op">-</span><span class="dv">1</span>],   <span class="co"># atp</span></span>
+<span id="cb7-23"><a href="#cb7-23"></a>     [ <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># g6p</span></span>
+<span id="cb7-24"><a href="#cb7-24"></a>     [ <span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># adp</span></span>
+<span id="cb7-25"><a href="#cb7-25"></a>     [ <span class="dv">0</span>,   <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># f6p</span></span>
+<span id="cb7-26"><a href="#cb7-26"></a>     [ <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># fdp</span></span>
+<span id="cb7-27"><a href="#cb7-27"></a>     [ <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># dhap</span></span>
+<span id="cb7-28"><a href="#cb7-28"></a>     [ <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">1</span>,   <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>],   <span class="co"># g3p</span></span>
+<span id="cb7-29"><a href="#cb7-29"></a>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb7-30"><a href="#cb7-30"></a></span>
+<span id="cb7-31"><a href="#cb7-31"></a><span class="co"># ── Análisis de la matriz ──</span></span>
+<span id="cb7-32"><a href="#cb7-32"></a><span class="bu">print</span>(<span class="ss">f"Dimensiones de S: </span><span class="sc">{</span>S<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>S<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> met × </span><span class="sc">{</span>S<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> rxn)"</span>)</span>
+<span id="cb7-33"><a href="#cb7-33"></a><span class="bu">print</span>(<span class="ss">f"Rango de S       : </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>matrix_rank(S)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-34"><a href="#cb7-34"></a><span class="bu">print</span>(<span class="ss">f"Grados de libertad: </span><span class="sc">{</span>S<span class="sc">.</span>shape[<span class="dv">1</span>] <span class="op">-</span> np<span class="sc">.</span>linalg<span class="sc">.</span>matrix_rank(S)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-35"><a href="#cb7-35"></a></span>
+<span id="cb7-36"><a href="#cb7-36"></a><span class="co"># ── Verificación: ¿qué metabolitos son internos (balance cerrado)? ──</span></span>
+<span id="cb7-37"><a href="#cb7-37"></a><span class="co"># Un metabolito interno tiene al menos un sustrato Y al menos un producto</span></span>
+<span id="cb7-38"><a href="#cb7-38"></a><span class="cf">for</span> i, met <span class="kw">in</span> <span class="bu">enumerate</span>(metabolitos):</span>
+<span id="cb7-39"><a href="#cb7-39"></a>    tiene_sustrato <span class="op">=</span> <span class="bu">any</span>(S[i, j] <span class="op">&lt;</span> <span class="dv">0</span> <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(S.shape[<span class="dv">1</span>]))</span>
+<span id="cb7-40"><a href="#cb7-40"></a>    tiene_producto <span class="op">=</span> <span class="bu">any</span>(S[i, j] <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(S.shape[<span class="dv">1</span>]))</span>
+<span id="cb7-41"><a href="#cb7-41"></a>    tipo <span class="op">=</span> <span class="st">"interno"</span> <span class="cf">if</span> (tiene_sustrato <span class="kw">and</span> tiene_producto) <span class="cf">else</span> <span class="st">"límite/intercambio"</span></span>
+<span id="cb7-42"><a href="#cb7-42"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>met<span class="sc">:8s}</span><span class="ss">: </span><span class="sc">{</span>tipo<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="ejercicio-header">
+<p>Ejercicio 3.2 — Nivel: <span class="badge-nivel medio">Medio</span></p>
+</div>
+<div class="ejercicio-body">
+<p>Usando la matriz <span class="math inline">\(S\)</span> del ejercicio anterior:</p>
+<ol type="1">
+<li>Aplica la descomposición SVD y determina el rango numérico de <span class="math inline">\(S\)</span>.</li>
+<li>Construye un vector de flujos <span class="math inline">\(v\)</span> tal que <span class="math inline">\(S \cdot v \approx 0\)</span> (estado estacionario).</li>
+<li>Calcula la norma del residual <span class="math inline">\(\|S \cdot v\|_2\)</span> y verifica que sea menor a <span class="math inline">\(10^{-10}\)</span>.</li>
+</ol>
+<p><em>Pista:</em> El vector solución es parte del espacio nulo de <span class="math inline">\(S\)</span> y puede obtenerse de las últimas filas de <span class="math inline">\(V^T\)</span> en la SVD.</p>
+</div>
+<hr>
+</section>
+<section id="para-profundizar" class="level2" data-number="6.8">
+<h2 data-number="6.8" class="anchored" data-anchor-id="para-profundizar"><span class="header-section-number">6.8</span> 📚 Para Profundizar</h2>
+<ul>
+<li><strong>VanderPlas, J.</strong> (2016). <em>Python Data Science Handbook</em>, Cap. 2: “Introduction to NumPy”. Disponible en acceso abierto: <a href="https://jakevdp.github.io/PythonDataScienceHandbook/">https://jakevdp.github.io/PythonDataScienceHandbook/</a></li>
+<li><strong>Palsson, B.Ø.</strong> (2015). <em>Systems Biology: Constraint-based Reconstruction and Analysis</em>. Cambridge University Press. — Capítulos 3–4 para la teoría de la matriz estequiométrica.</li>
+<li><strong>Orth, J.D., Thiele, I. &amp; Palsson, B.Ø.</strong> (2010). What is flux balance analysis? <em>Nature Biotechnology</em>, 28, 245–248. — Introducción accesible al vínculo entre álgebra lineal y FBA.</li>
+<li>Documentación oficial NumPy — Álgebra lineal: <a href="https://numpy.org/doc/stable/reference/routines.linalg.html">https://numpy.org/doc/stable/reference/routines.linalg.html</a></li>
+</ul>
+
+
+<!-- -->
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-orth2011comprehensive" class="csl-entry" role="listitem">
+Orth, J. D., Conrad, T. M., Na, J., Lerman, J. A., Nam, H., Feist, A. M., &amp; Palsson, B. Ø. (2011). A comprehensive genome-scale reconstruction of <span>Escherichia coli</span> metabolism—2011. <em>Molecular Systems Biology</em>, <em>7</em>, 535. <a href="https://doi.org/10.1038/msb.2011.65">https://doi.org/10.1038/msb.2011.65</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/02-tipos-datos.html" class="pagination-link" aria-label="Tipos de Datos y Estructuras en Python">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tipos de Datos y Estructuras en Python</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/04-pandas.html" class="pagination-link" aria-label="Pandas — DataFrames para Análisis Biológico">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pandas — DataFrames para Análisis Biológico</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb8-1"><a href="#cb8-1"></a><span class="co">---</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="an">title:</span><span class="co"> "NumPy — Vectores y Matrices para Biología Computacional"</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">---</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a></span>
+<span id="cb8-5"><a href="#cb8-5"></a>::: {.objetivos-box}</span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="fu">#### Objetivos de aprendizaje</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a></span>
+<span id="cb8-8"><a href="#cb8-8"></a>Al finalizar este capítulo serás capaz de:</span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="ss">- </span>Crear y manipular arreglos NumPy de una y dos dimensiones con precisión.</span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="ss">- </span>Aplicar indexado avanzado, *broadcasting* y operaciones vectorizadas.</span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="ss">- </span>Utilizar las funciones de álgebra lineal de NumPy: producto matricial, transpuesta, rango y descomposiciones.</span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="ss">- </span>Construir la **matriz estequiométrica** $S$ de una red metabólica desde código Python.</span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="ss">- </span>Verificar la condición de estado estacionario $S \cdot v = 0$ para un vector de flujos dado.</span>
+<span id="cb8-15"><a href="#cb8-15"></a>:::</span>
+<span id="cb8-16"><a href="#cb8-16"></a></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="fu">## 🧬 Motivación biológica</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a></span>
+<span id="cb8-19"><a href="#cb8-19"></a>La biología de sistemas cuantitativa descansa sobre una estructura matemática central: la **matriz estequiométrica** $S$. Esta matriz, de dimensiones $m \times n$ donde $m$ es el número de metabolitos y $n$ el número de reacciones, codifica toda la topología de la red metabólica. Cada columna es una reacción; cada fila, un metabolito; cada entrada $S_{ij}$, el coeficiente estequiométrico del metabolito $i$ en la reacción $j$ (negativo si es sustrato, positivo si es producto).</span>
+<span id="cb8-20"><a href="#cb8-20"></a></span>
+<span id="cb8-21"><a href="#cb8-21"></a>Cuando el modelo de *E. coli* a escala de genoma iJO1366 <span class="co">[</span><span class="ot">@orth2011comprehensive</span><span class="co">]</span> contiene 1,805 metabolitos y 2,712 reacciones, $S$ tiene dimensiones 1,805 × 2,712 y más de cuatro millones de entradas. Manejar esa información con listas de Python sería imprácticamente lento. NumPy resuelve este problema con arreglos almacenados en bloques contiguos de memoria C, permitiendo operaciones sobre millones de valores en microsegundos.</span>
+<span id="cb8-22"><a href="#cb8-22"></a></span>
+<span id="cb8-23"><a href="#cb8-23"></a>---</span>
+<span id="cb8-24"><a href="#cb8-24"></a></span>
+<span id="cb8-25"><a href="#cb8-25"></a><span class="fu">## 3.1 El `ndarray`: Estructura Fundamental</span></span>
+<span id="cb8-26"><a href="#cb8-26"></a></span>
+<span id="cb8-27"><a href="#cb8-27"></a><span class="in">```python</span></span>
+<span id="cb8-28"><a href="#cb8-28"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-29"><a href="#cb8-29"></a></span>
+<span id="cb8-30"><a href="#cb8-30"></a><span class="co"># Verificar versión instalada</span></span>
+<span id="cb8-31"><a href="#cb8-31"></a><span class="bu">print</span>(<span class="ss">f"NumPy versión: </span><span class="sc">{</span>np<span class="sc">.</span>__version__<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-32"><a href="#cb8-32"></a></span>
+<span id="cb8-33"><a href="#cb8-33"></a><span class="co"># Crear un arreglo 1-D (vector de flujos)</span></span>
+<span id="cb8-34"><a href="#cb8-34"></a>v <span class="op">=</span> np.array([<span class="fl">5.21</span>, <span class="fl">5.21</span>, <span class="fl">4.86</span>, <span class="fl">4.95</span>, <span class="fl">1.06</span>, <span class="fl">0.874</span>])</span>
+<span id="cb8-35"><a href="#cb8-35"></a><span class="bu">print</span>(<span class="ss">f"Vector v    : </span><span class="sc">{</span>v<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-36"><a href="#cb8-36"></a><span class="bu">print</span>(<span class="ss">f"Forma       : </span><span class="sc">{</span>v<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)       <span class="co"># (6,) → 6 elementos, 1 dimensión</span></span>
+<span id="cb8-37"><a href="#cb8-37"></a><span class="bu">print</span>(<span class="ss">f"Tipo        : </span><span class="sc">{</span>v<span class="sc">.</span>dtype<span class="sc">}</span><span class="ss">"</span>)       <span class="co"># float64 (64 bits, doble precisión)</span></span>
+<span id="cb8-38"><a href="#cb8-38"></a><span class="bu">print</span>(<span class="ss">f"N-dimensiones: </span><span class="sc">{</span>v<span class="sc">.</span>ndim<span class="sc">}</span><span class="ss">"</span>)       <span class="co"># 1</span></span>
+<span id="cb8-39"><a href="#cb8-39"></a><span class="bu">print</span>(<span class="ss">f"N-elementos : </span><span class="sc">{</span>v<span class="sc">.</span>size<span class="sc">}</span><span class="ss">"</span>)        <span class="co"># 6</span></span>
+<span id="cb8-40"><a href="#cb8-40"></a><span class="bu">print</span>(<span class="ss">f"Bytes total : </span><span class="sc">{</span>v<span class="sc">.</span>nbytes<span class="sc">}</span><span class="ss">"</span>)      <span class="co"># 48 (6 × 8 bytes)</span></span>
+<span id="cb8-41"><a href="#cb8-41"></a><span class="in">```</span></span>
+<span id="cb8-42"><a href="#cb8-42"></a></span>
+<span id="cb8-43"><a href="#cb8-43"></a>::: {.callout-tip}</span>
+<span id="cb8-44"><a href="#cb8-44"></a><span class="fu">## 📐 `ndarray` vs. Lista de Python</span></span>
+<span id="cb8-45"><a href="#cb8-45"></a></span>
+<span id="cb8-46"><a href="#cb8-46"></a>Una lista de Python almacena **punteros** a objetos heterogéneos dispersos en memoria. Un `ndarray` almacena **valores** del mismo tipo en un bloque contiguo de memoria. La diferencia en rendimiento es de 10–100× para operaciones numéricas. Además, NumPy compila internamente las operaciones en C o Fortran, lo que lo hace competitivo con MATLAB para álgebra lineal.</span>
+<span id="cb8-47"><a href="#cb8-47"></a>:::</span>
+<span id="cb8-48"><a href="#cb8-48"></a></span>
+<span id="cb8-49"><a href="#cb8-49"></a><span class="fu">### Arreglos 2-D: matrices</span></span>
+<span id="cb8-50"><a href="#cb8-50"></a></span>
+<span id="cb8-51"><a href="#cb8-51"></a><span class="in">```python</span></span>
+<span id="cb8-52"><a href="#cb8-52"></a><span class="co"># Crear una matriz 3×3 (3 metabolitos, 3 reacciones — glucólisis simplificada)</span></span>
+<span id="cb8-53"><a href="#cb8-53"></a><span class="co"># Convención: filas = metabolitos, columnas = reacciones</span></span>
+<span id="cb8-54"><a href="#cb8-54"></a><span class="co"># Coeficiente negativo = sustrato, positivo = producto</span></span>
+<span id="cb8-55"><a href="#cb8-55"></a></span>
+<span id="cb8-56"><a href="#cb8-56"></a>S_simple <span class="op">=</span> np.array([</span>
+<span id="cb8-57"><a href="#cb8-57"></a><span class="co">#    R1    R2    R3</span></span>
+<span id="cb8-58"><a href="#cb8-58"></a>    [<span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span>,    <span class="dv">0</span>],   <span class="co"># Glucosa</span></span>
+<span id="cb8-59"><a href="#cb8-59"></a>    [ <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span>],   <span class="co"># G6P</span></span>
+<span id="cb8-60"><a href="#cb8-60"></a>    [ <span class="dv">0</span>,    <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span>],   <span class="co"># F6P</span></span>
+<span id="cb8-61"><a href="#cb8-61"></a>])</span>
+<span id="cb8-62"><a href="#cb8-62"></a></span>
+<span id="cb8-63"><a href="#cb8-63"></a><span class="bu">print</span>(<span class="ss">f"S_simple:</span><span class="ch">\n</span><span class="sc">{</span>S_simple<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-64"><a href="#cb8-64"></a><span class="bu">print</span>(<span class="ss">f"Forma: </span><span class="sc">{</span>S_simple<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)      <span class="co"># (3, 3)</span></span>
+<span id="cb8-65"><a href="#cb8-65"></a><span class="bu">print</span>(<span class="ss">f"Rango: </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>matrix_rank(S_simple)<span class="sc">}</span><span class="ss">"</span>)  <span class="co"># 3</span></span>
+<span id="cb8-66"><a href="#cb8-66"></a><span class="in">```</span></span>
+<span id="cb8-67"><a href="#cb8-67"></a></span>
+<span id="cb8-68"><a href="#cb8-68"></a>---</span>
+<span id="cb8-69"><a href="#cb8-69"></a></span>
+<span id="cb8-70"><a href="#cb8-70"></a><span class="fu">## 3.2 Creación de Arreglos</span></span>
+<span id="cb8-71"><a href="#cb8-71"></a></span>
+<span id="cb8-72"><a href="#cb8-72"></a><span class="in">```python</span></span>
+<span id="cb8-73"><a href="#cb8-73"></a><span class="co"># ── Arreglos de inicialización ──</span></span>
+<span id="cb8-74"><a href="#cb8-74"></a>ceros   <span class="op">=</span> np.zeros((<span class="dv">4</span>, <span class="dv">3</span>))          <span class="co"># matriz de ceros 4×3</span></span>
+<span id="cb8-75"><a href="#cb8-75"></a>unos    <span class="op">=</span> np.ones((<span class="dv">2</span>, <span class="dv">5</span>))           <span class="co"># matriz de unos 2×5</span></span>
+<span id="cb8-76"><a href="#cb8-76"></a>identidad <span class="op">=</span> np.eye(<span class="dv">4</span>)               <span class="co"># matriz identidad 4×4</span></span>
+<span id="cb8-77"><a href="#cb8-77"></a></span>
+<span id="cb8-78"><a href="#cb8-78"></a><span class="co"># ── Arreglos de rango ──</span></span>
+<span id="cb8-79"><a href="#cb8-79"></a>tiempo <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">24</span>, <span class="dv">49</span>)     <span class="co"># 49 puntos de 0 a 24 h (simulación)</span></span>
+<span id="cb8-80"><a href="#cb8-80"></a>concentraciones_init <span class="op">=</span> np.arange(<span class="dv">0</span>, <span class="fl">1.1</span>, <span class="fl">0.1</span>)  <span class="co"># 0.0, 0.1, ..., 1.0</span></span>
+<span id="cb8-81"><a href="#cb8-81"></a></span>
+<span id="cb8-82"><a href="#cb8-82"></a><span class="co"># ── Arreglos aleatorios (útil para perturbaciones) ──</span></span>
+<span id="cb8-83"><a href="#cb8-83"></a>np.random.seed(<span class="dv">42</span>)                  <span class="co"># semilla para reproducibilidad</span></span>
+<span id="cb8-84"><a href="#cb8-84"></a>ruido <span class="op">=</span> np.random.normal(<span class="dv">0</span>, <span class="fl">0.01</span>, size<span class="op">=</span><span class="dv">100</span>)   <span class="co"># ruido gaussiano σ=0.01</span></span>
+<span id="cb8-85"><a href="#cb8-85"></a></span>
+<span id="cb8-86"><a href="#cb8-86"></a><span class="bu">print</span>(<span class="ss">f"Vector tiempo (h): </span><span class="sc">{</span>tiempo[:<span class="dv">6</span>]<span class="sc">}</span><span class="ss">..."</span>)</span>
+<span id="cb8-87"><a href="#cb8-87"></a><span class="bu">print</span>(<span class="ss">f"Ruido experimental (primeros 5): </span><span class="sc">{</span>ruido[:<span class="dv">5</span>]<span class="sc">.</span><span class="bu">round</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-88"><a href="#cb8-88"></a><span class="in">```</span></span>
+<span id="cb8-89"><a href="#cb8-89"></a></span>
+<span id="cb8-90"><a href="#cb8-90"></a>---</span>
+<span id="cb8-91"><a href="#cb8-91"></a></span>
+<span id="cb8-92"><a href="#cb8-92"></a><span class="fu">## 3.3 Indexado y Segmentado</span></span>
+<span id="cb8-93"><a href="#cb8-93"></a></span>
+<span id="cb8-94"><a href="#cb8-94"></a><span class="in">```python</span></span>
+<span id="cb8-95"><a href="#cb8-95"></a><span class="co"># Matriz estequiométrica extendida (5 metabolitos × 4 reacciones)</span></span>
+<span id="cb8-96"><a href="#cb8-96"></a>S <span class="op">=</span> np.array([</span>
+<span id="cb8-97"><a href="#cb8-97"></a><span class="co">#    HK     PGI    PFK    ENO</span></span>
+<span id="cb8-98"><a href="#cb8-98"></a>    [<span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span>,    <span class="dv">0</span>,    <span class="dv">0</span> ],   <span class="co"># Glucosa       (met 0)</span></span>
+<span id="cb8-99"><a href="#cb8-99"></a>    [ <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span>,    <span class="dv">0</span> ],   <span class="co"># G6P           (met 1)</span></span>
+<span id="cb8-100"><a href="#cb8-100"></a>    [ <span class="dv">0</span>,    <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span>,    <span class="dv">0</span> ],   <span class="co"># F6P           (met 2)</span></span>
+<span id="cb8-101"><a href="#cb8-101"></a>    [ <span class="dv">0</span>,    <span class="dv">0</span>,    <span class="dv">1</span>,   <span class="op">-</span><span class="dv">1</span> ],   <span class="co"># FBP           (met 3)</span></span>
+<span id="cb8-102"><a href="#cb8-102"></a>    [ <span class="dv">0</span>,    <span class="dv">0</span>,    <span class="dv">0</span>,    <span class="dv">1</span> ],   <span class="co"># PEP           (met 4)</span></span>
+<span id="cb8-103"><a href="#cb8-103"></a>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb8-104"><a href="#cb8-104"></a></span>
+<span id="cb8-105"><a href="#cb8-105"></a>metabolitos <span class="op">=</span> [<span class="st">"Glucosa"</span>, <span class="st">"G6P"</span>, <span class="st">"F6P"</span>, <span class="st">"FBP"</span>, <span class="st">"PEP"</span>]</span>
+<span id="cb8-106"><a href="#cb8-106"></a>reacciones  <span class="op">=</span> [<span class="st">"HK"</span>, <span class="st">"PGI"</span>, <span class="st">"PFK"</span>, <span class="st">"ENO"</span>]</span>
+<span id="cb8-107"><a href="#cb8-107"></a></span>
+<span id="cb8-108"><a href="#cb8-108"></a><span class="co"># ── Acceso a elementos individuales ──</span></span>
+<span id="cb8-109"><a href="#cb8-109"></a><span class="bu">print</span>(<span class="ss">f"Coef. G6P en PGI: </span><span class="sc">{</span>S[<span class="dv">1</span>, <span class="dv">1</span>]<span class="sc">}</span><span class="ss">"</span>)            <span class="co"># -1.0</span></span>
+<span id="cb8-110"><a href="#cb8-110"></a><span class="bu">print</span>(<span class="ss">f"Columna HK (todos sus metabolitos):"</span>)</span>
+<span id="cb8-111"><a href="#cb8-111"></a><span class="cf">for</span> i, coef <span class="kw">in</span> <span class="bu">enumerate</span>(S[:, <span class="dv">0</span>]):</span>
+<span id="cb8-112"><a href="#cb8-112"></a>    <span class="cf">if</span> coef <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb8-113"><a href="#cb8-113"></a>        <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>metabolitos[i]<span class="sc">:10s}</span><span class="ss">: </span><span class="sc">{</span>coef<span class="sc">:+.0f}</span><span class="ss">"</span>)</span>
+<span id="cb8-114"><a href="#cb8-114"></a></span>
+<span id="cb8-115"><a href="#cb8-115"></a><span class="co"># ── Indexado booleano — metabolitos que participan en PFK ──</span></span>
+<span id="cb8-116"><a href="#cb8-116"></a>mascara_pfk  <span class="op">=</span> S[:, <span class="dv">2</span>] <span class="op">!=</span> <span class="dv">0</span></span>
+<span id="cb8-117"><a href="#cb8-117"></a>mets_en_pfk  <span class="op">=</span> [metabolitos[i] <span class="cf">for</span> i <span class="kw">in</span> np.where(mascara_pfk)[<span class="dv">0</span>]]</span>
+<span id="cb8-118"><a href="#cb8-118"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Metabolitos en PFK: </span><span class="sc">{</span>mets_en_pfk<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-119"><a href="#cb8-119"></a></span>
+<span id="cb8-120"><a href="#cb8-120"></a><span class="co"># ── Submatriz — primeras 3 reacciones, últimos 3 metabolitos ──</span></span>
+<span id="cb8-121"><a href="#cb8-121"></a>subS <span class="op">=</span> S[<span class="dv">2</span>:, :<span class="dv">3</span>]</span>
+<span id="cb8-122"><a href="#cb8-122"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Submatriz [met 2-4, rxn 0-2]:</span><span class="ch">\n</span><span class="sc">{</span>subS<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-123"><a href="#cb8-123"></a><span class="in">```</span></span>
+<span id="cb8-124"><a href="#cb8-124"></a></span>
+<span id="cb8-125"><a href="#cb8-125"></a>---</span>
+<span id="cb8-126"><a href="#cb8-126"></a></span>
+<span id="cb8-127"><a href="#cb8-127"></a><span class="fu">## 3.4 Operaciones Vectorizadas y Broadcasting</span></span>
+<span id="cb8-128"><a href="#cb8-128"></a></span>
+<span id="cb8-129"><a href="#cb8-129"></a>Una de las características más poderosas de NumPy es la **vectorización**: la aplicación de operaciones matemáticas a todos los elementos de un arreglo sin escribir bucles explícitos. El *broadcasting* extiende este concepto a arreglos de formas distintas.</span>
+<span id="cb8-130"><a href="#cb8-130"></a></span>
+<span id="cb8-131"><a href="#cb8-131"></a><span class="in">```python</span></span>
+<span id="cb8-132"><a href="#cb8-132"></a><span class="co"># ── Operaciones element-wise ──</span></span>
+<span id="cb8-133"><a href="#cb8-133"></a>flujos <span class="op">=</span> np.array([<span class="fl">5.21</span>, <span class="fl">5.21</span>, <span class="fl">4.86</span>, <span class="fl">1.06</span>, <span class="fl">0.874</span>])</span>
+<span id="cb8-134"><a href="#cb8-134"></a></span>
+<span id="cb8-135"><a href="#cb8-135"></a><span class="co"># Normalizar flujos al máximo (muy común en análisis de redes)</span></span>
+<span id="cb8-136"><a href="#cb8-136"></a>flujos_norm <span class="op">=</span> flujos <span class="op">/</span> np.<span class="bu">max</span>(flujos)</span>
+<span id="cb8-137"><a href="#cb8-137"></a><span class="bu">print</span>(<span class="ss">f"Flujos normalizados: </span><span class="sc">{</span>flujos_norm<span class="sc">.</span><span class="bu">round</span>(<span class="dv">4</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-138"><a href="#cb8-138"></a></span>
+<span id="cb8-139"><a href="#cb8-139"></a><span class="co"># Calcular el logaritmo de la magnitud (análisis de escala)</span></span>
+<span id="cb8-140"><a href="#cb8-140"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-141"><a href="#cb8-141"></a>magnitudes <span class="op">=</span> np.<span class="bu">abs</span>(flujos)</span>
+<span id="cb8-142"><a href="#cb8-142"></a>log_magnitudes <span class="op">=</span> np.log10(magnitudes <span class="op">+</span> <span class="fl">1e-10</span>)  <span class="co"># +1e-10 evita log(0)</span></span>
+<span id="cb8-143"><a href="#cb8-143"></a><span class="bu">print</span>(<span class="ss">f"Log10 de magnitudes: </span><span class="sc">{</span>log_magnitudes<span class="sc">.</span><span class="bu">round</span>(<span class="dv">3</span>)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-144"><a href="#cb8-144"></a></span>
+<span id="cb8-145"><a href="#cb8-145"></a><span class="co"># ── Broadcasting: escalar sobre matriz ──</span></span>
+<span id="cb8-146"><a href="#cb8-146"></a><span class="co"># Multiplicar toda la matriz S por -1 (cambiar convención de signos)</span></span>
+<span id="cb8-147"><a href="#cb8-147"></a>S_alt_convencion <span class="op">=</span> <span class="op">-</span><span class="dv">1</span> <span class="op">*</span> S</span>
+<span id="cb8-148"><a href="#cb8-148"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Convención invertida (primeros 2 met × 2 rxn):</span><span class="ch">\n</span><span class="sc">{</span>S_alt_convencion[:<span class="dv">2</span>, :<span class="dv">2</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-149"><a href="#cb8-149"></a></span>
+<span id="cb8-150"><a href="#cb8-150"></a><span class="co"># ── Broadcasting: vector sobre matriz (normalización por columna) ──</span></span>
+<span id="cb8-151"><a href="#cb8-151"></a><span class="co"># Dividir cada columna de S por la suma de sus valores absolutos</span></span>
+<span id="cb8-152"><a href="#cb8-152"></a>normas_columnas <span class="op">=</span> np.<span class="bu">sum</span>(np.<span class="bu">abs</span>(S), axis<span class="op">=</span><span class="dv">0</span>)   <span class="co"># suma por columna (axis=0)</span></span>
+<span id="cb8-153"><a href="#cb8-153"></a>S_normalizada   <span class="op">=</span> S <span class="op">/</span> normas_columnas          <span class="co"># broadcasting automático</span></span>
+<span id="cb8-154"><a href="#cb8-154"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Normas de columnas (reacciones): </span><span class="sc">{</span>normas_columnas<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-155"><a href="#cb8-155"></a><span class="in">```</span></span>
+<span id="cb8-156"><a href="#cb8-156"></a></span>
+<span id="cb8-157"><a href="#cb8-157"></a>---</span>
+<span id="cb8-158"><a href="#cb8-158"></a></span>
+<span id="cb8-159"><a href="#cb8-159"></a><span class="fu">## 3.5 Álgebra Lineal: El Núcleo del FBA</span></span>
+<span id="cb8-160"><a href="#cb8-160"></a></span>
+<span id="cb8-161"><a href="#cb8-161"></a><span class="in">```python</span></span>
+<span id="cb8-162"><a href="#cb8-162"></a><span class="co"># ── Producto matricial: S @ v ──</span></span>
+<span id="cb8-163"><a href="#cb8-163"></a><span class="co"># En estado estacionario: S · v = 0  (balance de masa)</span></span>
+<span id="cb8-164"><a href="#cb8-164"></a><span class="co"># Verificamos con un vector de flujos de ejemplo</span></span>
+<span id="cb8-165"><a href="#cb8-165"></a></span>
+<span id="cb8-166"><a href="#cb8-166"></a>v_ejemplo <span class="op">=</span> np.array([<span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>, <span class="fl">1.0</span>])   <span class="co"># flujos iguales para todas las rxn</span></span>
+<span id="cb8-167"><a href="#cb8-167"></a>balance <span class="op">=</span> S <span class="op">@</span> v_ejemplo</span>
+<span id="cb8-168"><a href="#cb8-168"></a><span class="bu">print</span>(<span class="ss">f"S · v = </span><span class="sc">{</span>balance<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-169"><a href="#cb8-169"></a><span class="co"># Si no es cero, el sistema no está en estado estacionario para estos flujos</span></span>
+<span id="cb8-170"><a href="#cb8-170"></a></span>
+<span id="cb8-171"><a href="#cb8-171"></a><span class="co"># ── Transpuesta ──</span></span>
+<span id="cb8-172"><a href="#cb8-172"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">S  (forma original): </span><span class="sc">{</span>S<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-173"><a href="#cb8-173"></a><span class="bu">print</span>(<span class="ss">f"Sᵀ (transpuesta)  : </span><span class="sc">{</span>S<span class="sc">.</span>T<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-174"><a href="#cb8-174"></a></span>
+<span id="cb8-175"><a href="#cb8-175"></a><span class="co"># ── Rango de la matriz ──</span></span>
+<span id="cb8-176"><a href="#cb8-176"></a>rango <span class="op">=</span> np.linalg.matrix_rank(S)</span>
+<span id="cb8-177"><a href="#cb8-177"></a>grados_libertad <span class="op">=</span> S.shape[<span class="dv">1</span>] <span class="op">-</span> rango</span>
+<span id="cb8-178"><a href="#cb8-178"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Rango de S    : </span><span class="sc">{</span>rango<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-179"><a href="#cb8-179"></a><span class="bu">print</span>(<span class="ss">f"Dimensión nula: </span><span class="sc">{</span>grados_libertad<span class="sc">}</span><span class="ss"> (grados de libertad del sistema)"</span>)</span>
+<span id="cb8-180"><a href="#cb8-180"></a></span>
+<span id="cb8-181"><a href="#cb8-181"></a><span class="co"># ── Espacio nulo aproximado (solución particular de S·v=0) ──</span></span>
+<span id="cb8-182"><a href="#cb8-182"></a><span class="co"># Usando descomposición SVD (valor singular)</span></span>
+<span id="cb8-183"><a href="#cb8-183"></a>U, sigma, Vt <span class="op">=</span> np.linalg.svd(S)</span>
+<span id="cb8-184"><a href="#cb8-184"></a><span class="co"># Las últimas (n - rango) filas de Vt forman la base del espacio nulo</span></span>
+<span id="cb8-185"><a href="#cb8-185"></a>nulo_aprox <span class="op">=</span> Vt[rango:, :]</span>
+<span id="cb8-186"><a href="#cb8-186"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Vectores de la base nula (forma): </span><span class="sc">{</span>nulo_aprox<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-187"><a href="#cb8-187"></a><span class="bu">print</span>(<span class="ss">f"Verificación S · nulo[0]ᵀ ≈ 0: </span><span class="sc">{</span>np<span class="sc">.</span><span class="bu">abs</span>(S <span class="op">@</span> nulo_aprox[<span class="dv">0</span>])<span class="sc">.</span><span class="bu">max</span>()<span class="sc">:.2e}</span><span class="ss">"</span>)</span>
+<span id="cb8-188"><a href="#cb8-188"></a><span class="in">```</span></span>
+<span id="cb8-189"><a href="#cb8-189"></a></span>
+<span id="cb8-190"><a href="#cb8-190"></a>::: {.callout-tip}</span>
+<span id="cb8-191"><a href="#cb8-191"></a><span class="fu">## 📐 El Espacio Nulo y el FBA</span></span>
+<span id="cb8-192"><a href="#cb8-192"></a></span>
+<span id="cb8-193"><a href="#cb8-193"></a>El conjunto de todos los vectores de flujo $v$ que satisfacen $S \cdot v = 0$ forma el **espacio nulo** (o *null space*) de $S$. Este espacio define el universo de distribuciones de flujo biológicamente factibles bajo el supuesto de estado estacionario. El Análisis de Balance de Flujos (FBA) consiste en encontrar el punto óptimo dentro de este espacio que maximice una función objetivo —típicamente la producción de biomasa. Esta conexión entre NumPy y CobraPy es el puente que atraviesa toda la Parte II y III del manual.</span>
+<span id="cb8-194"><a href="#cb8-194"></a>:::</span>
+<span id="cb8-195"><a href="#cb8-195"></a></span>
+<span id="cb8-196"><a href="#cb8-196"></a>---</span>
+<span id="cb8-197"><a href="#cb8-197"></a></span>
+<span id="cb8-198"><a href="#cb8-198"></a><span class="fu">## 3.6 🔬 Ejercicio Integrador: Matriz Estequiométrica Completa</span></span>
+<span id="cb8-199"><a href="#cb8-199"></a></span>
+<span id="cb8-200"><a href="#cb8-200"></a>::: {.ejercicio-header}</span>
+<span id="cb8-201"><a href="#cb8-201"></a>Ejercicio 3.1 — Nivel: <span class="co">[</span><span class="ot">Básico</span><span class="co">]</span>{.badge-nivel .basico}</span>
+<span id="cb8-202"><a href="#cb8-202"></a>:::</span>
+<span id="cb8-203"><a href="#cb8-203"></a></span>
+<span id="cb8-204"><a href="#cb8-204"></a>::: {.ejercicio-body}</span>
+<span id="cb8-205"><a href="#cb8-205"></a><span class="in">```python</span></span>
+<span id="cb8-206"><a href="#cb8-206"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb8-207"><a href="#cb8-207"></a></span>
+<span id="cb8-208"><a href="#cb8-208"></a><span class="co"># Red metabólica: glucólisis central de E. coli (7 reacciones, 8 metabolitos)</span></span>
+<span id="cb8-209"><a href="#cb8-209"></a><span class="co">#</span></span>
+<span id="cb8-210"><a href="#cb8-210"></a><span class="co"># Reacciones:</span></span>
+<span id="cb8-211"><a href="#cb8-211"></a><span class="co">#   R1  (HK)   : glc_D + atp → g6p + adp + h    (hexoquinasa)</span></span>
+<span id="cb8-212"><a href="#cb8-212"></a><span class="co">#   R2  (PGI)  : g6p ⇌ f6p                       (fosfoglucoisomerasa)</span></span>
+<span id="cb8-213"><a href="#cb8-213"></a><span class="co">#   R3  (PFK)  : f6p + atp → fdp + adp + h       (fosofructoquinasa)</span></span>
+<span id="cb8-214"><a href="#cb8-214"></a><span class="co">#   R4  (FBA)  : fdp → dhap + g3p                (aldolasa)</span></span>
+<span id="cb8-215"><a href="#cb8-215"></a><span class="co">#   R5  (TPI)  : dhap ⇌ g3p                      (triosa fosfato isomerasa)</span></span>
+<span id="cb8-216"><a href="#cb8-216"></a><span class="co">#   R6  (GAPD) : g3p + nad + pi → 13dpg + nadh + h (GAPDH)</span></span>
+<span id="cb8-217"><a href="#cb8-217"></a><span class="co">#   R7  (EX)   : atp →                           (demanda de ATP, salida)</span></span>
+<span id="cb8-218"><a href="#cb8-218"></a><span class="co">#</span></span>
+<span id="cb8-219"><a href="#cb8-219"></a><span class="co"># Metabolitos: glc_D, atp, g6p, adp, f6p, fdp, dhap, g3p</span></span>
+<span id="cb8-220"><a href="#cb8-220"></a></span>
+<span id="cb8-221"><a href="#cb8-221"></a>metabolitos <span class="op">=</span> [<span class="st">"glc_D"</span>, <span class="st">"atp"</span>,  <span class="st">"g6p"</span>, <span class="st">"adp"</span>, <span class="st">"f6p"</span>, <span class="st">"fdp"</span>, <span class="st">"dhap"</span>, <span class="st">"g3p"</span>]</span>
+<span id="cb8-222"><a href="#cb8-222"></a>reacciones  <span class="op">=</span> [<span class="st">"HK"</span>,    <span class="st">"PGI"</span>,  <span class="st">"PFK"</span>, <span class="st">"FBA"</span>, <span class="st">"TPI"</span>, <span class="st">"GAPD"</span>,<span class="st">"EX"</span>]</span>
+<span id="cb8-223"><a href="#cb8-223"></a></span>
+<span id="cb8-224"><a href="#cb8-224"></a>S <span class="op">=</span> np.array([</span>
+<span id="cb8-225"><a href="#cb8-225"></a><span class="co">#     HK   PGI  PFK  FBA  TPI  GAPD  EX</span></span>
+<span id="cb8-226"><a href="#cb8-226"></a>     [<span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># glc_D</span></span>
+<span id="cb8-227"><a href="#cb8-227"></a>     [<span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,  <span class="op">-</span><span class="dv">1</span>],   <span class="co"># atp</span></span>
+<span id="cb8-228"><a href="#cb8-228"></a>     [ <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># g6p</span></span>
+<span id="cb8-229"><a href="#cb8-229"></a>     [ <span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># adp</span></span>
+<span id="cb8-230"><a href="#cb8-230"></a>     [ <span class="dv">0</span>,   <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># f6p</span></span>
+<span id="cb8-231"><a href="#cb8-231"></a>     [ <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># fdp</span></span>
+<span id="cb8-232"><a href="#cb8-232"></a>     [ <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>,   <span class="dv">0</span>],   <span class="co"># dhap</span></span>
+<span id="cb8-233"><a href="#cb8-233"></a>     [ <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">0</span>,   <span class="dv">1</span>,   <span class="dv">1</span>,  <span class="op">-</span><span class="dv">1</span>,   <span class="dv">0</span>],   <span class="co"># g3p</span></span>
+<span id="cb8-234"><a href="#cb8-234"></a>], dtype<span class="op">=</span><span class="bu">float</span>)</span>
+<span id="cb8-235"><a href="#cb8-235"></a></span>
+<span id="cb8-236"><a href="#cb8-236"></a><span class="co"># ── Análisis de la matriz ──</span></span>
+<span id="cb8-237"><a href="#cb8-237"></a><span class="bu">print</span>(<span class="ss">f"Dimensiones de S: </span><span class="sc">{</span>S<span class="sc">.</span>shape<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>S<span class="sc">.</span>shape[<span class="dv">0</span>]<span class="sc">}</span><span class="ss"> met × </span><span class="sc">{</span>S<span class="sc">.</span>shape[<span class="dv">1</span>]<span class="sc">}</span><span class="ss"> rxn)"</span>)</span>
+<span id="cb8-238"><a href="#cb8-238"></a><span class="bu">print</span>(<span class="ss">f"Rango de S       : </span><span class="sc">{</span>np<span class="sc">.</span>linalg<span class="sc">.</span>matrix_rank(S)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-239"><a href="#cb8-239"></a><span class="bu">print</span>(<span class="ss">f"Grados de libertad: </span><span class="sc">{</span>S<span class="sc">.</span>shape[<span class="dv">1</span>] <span class="op">-</span> np<span class="sc">.</span>linalg<span class="sc">.</span>matrix_rank(S)<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-240"><a href="#cb8-240"></a></span>
+<span id="cb8-241"><a href="#cb8-241"></a><span class="co"># ── Verificación: ¿qué metabolitos son internos (balance cerrado)? ──</span></span>
+<span id="cb8-242"><a href="#cb8-242"></a><span class="co"># Un metabolito interno tiene al menos un sustrato Y al menos un producto</span></span>
+<span id="cb8-243"><a href="#cb8-243"></a><span class="cf">for</span> i, met <span class="kw">in</span> <span class="bu">enumerate</span>(metabolitos):</span>
+<span id="cb8-244"><a href="#cb8-244"></a>    tiene_sustrato <span class="op">=</span> <span class="bu">any</span>(S[i, j] <span class="op">&lt;</span> <span class="dv">0</span> <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(S.shape[<span class="dv">1</span>]))</span>
+<span id="cb8-245"><a href="#cb8-245"></a>    tiene_producto <span class="op">=</span> <span class="bu">any</span>(S[i, j] <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">for</span> j <span class="kw">in</span> <span class="bu">range</span>(S.shape[<span class="dv">1</span>]))</span>
+<span id="cb8-246"><a href="#cb8-246"></a>    tipo <span class="op">=</span> <span class="st">"interno"</span> <span class="cf">if</span> (tiene_sustrato <span class="kw">and</span> tiene_producto) <span class="cf">else</span> <span class="st">"límite/intercambio"</span></span>
+<span id="cb8-247"><a href="#cb8-247"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>met<span class="sc">:8s}</span><span class="ss">: </span><span class="sc">{</span>tipo<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-248"><a href="#cb8-248"></a><span class="in">```</span></span>
+<span id="cb8-249"><a href="#cb8-249"></a>:::</span>
+<span id="cb8-250"><a href="#cb8-250"></a></span>
+<span id="cb8-251"><a href="#cb8-251"></a>::: {.ejercicio-header}</span>
+<span id="cb8-252"><a href="#cb8-252"></a>Ejercicio 3.2 — Nivel: <span class="co">[</span><span class="ot">Medio</span><span class="co">]</span>{.badge-nivel .medio}</span>
+<span id="cb8-253"><a href="#cb8-253"></a>:::</span>
+<span id="cb8-254"><a href="#cb8-254"></a></span>
+<span id="cb8-255"><a href="#cb8-255"></a>::: {.ejercicio-body}</span>
+<span id="cb8-256"><a href="#cb8-256"></a>Usando la matriz $S$ del ejercicio anterior:</span>
+<span id="cb8-257"><a href="#cb8-257"></a></span>
+<span id="cb8-258"><a href="#cb8-258"></a><span class="ss">1. </span>Aplica la descomposición SVD y determina el rango numérico de $S$.</span>
+<span id="cb8-259"><a href="#cb8-259"></a><span class="ss">2. </span>Construye un vector de flujos $v$ tal que $S \cdot v \approx 0$ (estado estacionario).</span>
+<span id="cb8-260"><a href="#cb8-260"></a><span class="ss">3. </span>Calcula la norma del residual $<span class="sc">\|</span>S \cdot v<span class="sc">\|</span>_2$ y verifica que sea menor a $10^{-10}$.</span>
+<span id="cb8-261"><a href="#cb8-261"></a></span>
+<span id="cb8-262"><a href="#cb8-262"></a>*Pista:* El vector solución es parte del espacio nulo de $S$ y puede obtenerse de las últimas filas de $V^T$ en la SVD.</span>
+<span id="cb8-263"><a href="#cb8-263"></a>:::</span>
+<span id="cb8-264"><a href="#cb8-264"></a></span>
+<span id="cb8-265"><a href="#cb8-265"></a>---</span>
+<span id="cb8-266"><a href="#cb8-266"></a></span>
+<span id="cb8-267"><a href="#cb8-267"></a><span class="fu">## 📚 Para Profundizar</span></span>
+<span id="cb8-268"><a href="#cb8-268"></a></span>
+<span id="cb8-269"><a href="#cb8-269"></a><span class="ss">- </span>**VanderPlas, J.** (2016). *Python Data Science Handbook*, Cap. 2: "Introduction to NumPy". Disponible en acceso abierto: <span class="co">[</span><span class="ot">https://jakevdp.github.io/PythonDataScienceHandbook/</span><span class="co">](https://jakevdp.github.io/PythonDataScienceHandbook/)</span></span>
+<span id="cb8-270"><a href="#cb8-270"></a><span class="ss">- </span>**Palsson, B.Ø.** (2015). *Systems Biology: Constraint-based Reconstruction and Analysis*. Cambridge University Press. — Capítulos 3–4 para la teoría de la matriz estequiométrica.</span>
+<span id="cb8-271"><a href="#cb8-271"></a><span class="ss">- </span>**Orth, J.D., Thiele, I. &amp; Palsson, B.Ø.** (2010). What is flux balance analysis? *Nature Biotechnology*, 28, 245–248. — Introducción accesible al vínculo entre álgebra lineal y FBA.</span>
+<span id="cb8-272"><a href="#cb8-272"></a><span class="ss">- </span>Documentación oficial NumPy — Álgebra lineal: <span class="co">[</span><span class="ot">https://numpy.org/doc/stable/reference/routines.linalg.html</span><span class="co">](https://numpy.org/doc/stable/reference/routines.linalg.html)</span></span></code></pre></div><button title="Copiar código" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© [Año] [Tu nombre] — Licencia CC BY 4.0</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/[tu-usuario]/manual-fba-python/edit/main/chapters/03-numpy.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/[tu-usuario]/manual-fba-python/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Generado con <a href="https://quarto.org">Quarto</a> &amp; <a href="https://cobrapy.readthedocs.io">CobraPy</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

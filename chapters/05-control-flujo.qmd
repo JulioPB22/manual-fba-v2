@@ -1,0 +1,397 @@
+---
+title: "Estructuras de Control de Flujo y Funciones"
+---
+
+::: {.objetivos-box}
+#### Objetivos de aprendizaje
+
+Al finalizar este capítulo serás capaz de:
+
+- Construir flujos de decisión con `if`, `elif` y `else` aplicados a contextos biológicos.
+- Iterar sobre colecciones con `for` y `while` de manera eficiente y pythónica.
+- Definir funciones con argumentos posicionales, por nombre, con valores predeterminados y con número variable de parámetros.
+- Aplicar funciones de orden superior (`map`, `filter`) y expresiones `lambda`.
+- Manejar excepciones con `try / except / finally` para código científico robusto.
+- Construir una función completa de análisis de secuencias FASTA como ejercicio integrador.
+:::
+
+## 🧬 Motivación biológica
+
+El control de flujo no es un concepto abstracto: es la diferencia entre un script que analiza un archivo FASTA de diez secuencias y uno que analiza diez mil. Los bucles `for` sobre listas de metabolitos, los condicionales que clasifican reacciones por subsistema, las funciones que encapsulan el cálculo del contenido GC —todos estos son patrones que aparecerán repetidamente en los capítulos de FBA. Dominarlos ahora significa que, cuando lleguemos a CobraPy, podremos concentrarnos en la biología del modelo en lugar de en la mecánica del código.
+
+---
+
+## 5.1 Condicionales: `if`, `elif`, `else`
+
+```python
+# Clasificación de reacciones por magnitud de flujo
+# (criterio basado en Orth et al., 2010)
+
+def clasificar_flujo(flujo: float, umbral_bajo: float = 0.1,
+                      umbral_alto: float = 5.0) -> str:
+    """
+    Clasifica un flujo metabólico en tres categorías.
+    
+    Parámetros
+    ----------
+    flujo       : float — valor del flujo en mmol/gDW/h
+    umbral_bajo : float — umbral inferior de actividad (default 0.1)
+    umbral_alto : float — umbral de alta actividad (default 5.0)
+    
+    Retorna
+    -------
+    str — 'inactiva', 'baja actividad' o 'alta actividad'
+    """
+    magnitud = abs(flujo)
+    
+    if magnitud < umbral_bajo:
+        return "inactiva"
+    elif magnitud < umbral_alto:
+        return "baja actividad"
+    else:
+        return "alta actividad"
+
+
+# Aplicación a un dict de flujos
+flujos_ejemplo = {
+    "PFK": 4.86, "CS": 0.0, "ATPM": 8.39, "ENO": 9.72,
+    "FHL": 0.05, "PPC": 2.50
+}
+
+for rxn, v in flujos_ejemplo.items():
+    categoria = clasificar_flujo(v)
+    print(f"  {rxn:6s} ({v:6.2f} mmol/gDW/h): {categoria}")
+```
+
+---
+
+## 5.2 Ciclos Iterativos: `for` y `while`
+
+### Bucles `for` y el estilo pythónico
+
+Python favorece la iteración sobre objetos directamente, sin índices explícitos cuando es posible. Las funciones `enumerate()` y `zip()` son herramientas esenciales:
+
+```python
+metabolitos  = ["Glucosa", "G6P", "F6P", "FBP", "PEP", "Piruvato"]
+compartimentos = ["e",     "c",   "c",   "c",   "c",   "c"  ]
+
+# ── enumerate: índice + valor ──
+print("Metabolitos con índice:")
+for i, met in enumerate(metabolitos):
+    print(f"  [{i}] {met}")
+
+# ── zip: dos listas en paralelo ──
+print("\nMetabolitos y compartimentos:")
+for met, comp in zip(metabolitos, compartimentos):
+    print(f"  {met:12s} → compartimento '{comp}'")
+
+# ── Iteración sobre diccionario ──
+estequiometria_pfk = {"atp_c": -1, "f6p_c": -1, "adp_c": 1, "fdp_c": 1, "h_c": 1}
+print("\nPFK — Estequiometría:")
+for met, coef in estequiometria_pfk.items():
+    rol = "sustrato" if coef < 0 else "producto"
+    print(f"  {met:8s} [{coef:+d}]  → {rol}")
+```
+
+### Bucles `while` — iteración condicional
+
+```python
+# Simulación simplificada de convergencia iterativa
+# (precursor conceptual del solver de FBA)
+
+import math
+
+def iteracion_punto_fijo(x_init: float, tol: float = 1e-8,
+                          max_iter: int = 1000) -> tuple:
+    """
+    Itera x ← sqrt(x + 1) hasta convergencia.
+    Ilustra el patrón while con criterio de tolerancia.
+    """
+    x = x_init
+    iteraciones = 0
+    
+    while iteraciones < max_iter:
+        x_nuevo = math.sqrt(x + 1)
+        delta    = abs(x_nuevo - x)
+        x        = x_nuevo
+        iteraciones += 1
+        
+        if delta < tol:
+            return x, iteraciones, "convergió"
+    
+    return x, iteraciones, "no convergió"
+
+
+valor, n_iter, estado = iteracion_punto_fijo(x_init=10.0)
+print(f"Resultado: {valor:.10f}")
+print(f"Iteraciones: {n_iter}  ({estado})")
+# El punto fijo de x = sqrt(x+1) es el número de oro φ ≈ 1.6180339887
+```
+
+---
+
+## 5.3 Funciones: Definición y Argumentos
+
+Python soporta cuatro tipos de argumentos en las funciones:
+
+```python
+# Función con todos los tipos de argumentos
+def calcular_tasa_especifica(
+    flujo_objetivo: float,          # argumento posicional (requerido)
+    biomasa: float,                 # argumento posicional (requerido)
+    unidades: str = "mmol/gDW/h",  # argumento por nombre con default
+    verbose: bool = False,          # argumento por nombre con default
+) -> float:
+    """
+    Calcula la tasa específica de producción de un metabolito.
+    
+    Parámetros
+    ----------
+    flujo_objetivo : float — flujo de la reacción de interés
+    biomasa        : float — flujo de la reacción de biomasa (h⁻¹)
+    unidades       : str   — sistema de unidades (solo para impresión)
+    verbose        : bool  — si True, imprime el reporte detallado
+    
+    Retorna
+    -------
+    float — tasa específica en las mismas unidades del flujo
+    """
+    if biomasa <= 0:
+        raise ValueError(f"La biomasa debe ser positiva, recibido: {biomasa}")
+    
+    tasa = flujo_objetivo / biomasa
+    
+    if verbose:
+        print(f"  Flujo objetivo  : {flujo_objetivo:.4f} {unidades}")
+        print(f"  Tasa de biomasa : {biomasa:.4f} h⁻¹")
+        print(f"  Tasa específica : {tasa:.4f} {unidades.replace('/gDW','')} /célula")
+    
+    return tasa
+
+
+# Llamadas equivalentes:
+tasa = calcular_tasa_especifica(3.12, 0.874)              # posicional
+tasa = calcular_tasa_especifica(flujo_objetivo=3.12, biomasa=0.874, verbose=True)
+```
+
+### Funciones que retornan múltiples valores
+
+En Python, retornar múltiples valores es idiomático mediante tuplas:
+
+```python
+def analizar_vector_flujos(v: list) -> tuple:
+    """
+    Calcula estadísticas básicas de un vector de flujos.
+    Retorna una tupla con múltiples métricas.
+    """
+    import numpy as np
+    v_arr = np.array(v)
+    
+    activos    = v_arr[np.abs(v_arr) > 1e-6]
+    n_activos  = len(activos)
+    flujo_max  = np.max(np.abs(v_arr))
+    flujo_med  = np.mean(np.abs(activos)) if n_activos > 0 else 0.0
+    suma_total = np.sum(np.abs(v_arr))
+    
+    return n_activos, flujo_max, flujo_med, suma_total
+
+
+flujos_test = [5.21, 0.0, 4.86, 9.72, 0.0, 3.12, 0.874]
+n, f_max, f_med, f_sum = analizar_vector_flujos(flujos_test)
+print(f"Activas: {n} | Máximo: {f_max:.3f} | Medio: {f_med:.3f} | Suma: {f_sum:.3f}")
+```
+
+---
+
+## 5.4 Funciones de Orden Superior y `lambda`
+
+```python
+# ── map: aplica una función a cada elemento ──
+secuencias_adn = ["ATGCGT", "GCATCG", "TTAACC", "GCGCGC"]
+
+# Calcular GC-content de cada secuencia
+def gc_content(seq: str) -> float:
+    return (seq.count("G") + seq.count("C")) / len(seq) * 100
+
+gc_values = list(map(gc_content, secuencias_adn))
+print(f"GC-content: {[round(g, 1) for g in gc_values]}")
+
+# ── filter: retiene elementos que cumplen una condición ──
+# Conservar solo secuencias con GC > 50%
+ricas_gc = list(filter(lambda seq: gc_content(seq) > 50, secuencias_adn))
+print(f"Secuencias ricas en GC (>50%): {ricas_gc}")
+
+# ── lambda con sorted: ordenar metabolitos por fórmula molecular ──
+metabolitos_datos = [
+    ("atp_c", "C10H12N5O13P3", -4),
+    ("glc_D", "C6H12O6", 0),
+    ("pyr_c", "C3H4O3", -1),
+]
+# Ordenar por número de carbonos (extraído de la fórmula)
+ordenados = sorted(metabolitos_datos, key=lambda x: int(x[1].split("C")[1].split("H")[0]))
+print(f"\nOrdenados por carbonos: {[m[0] for m in ordenados]}")
+```
+
+---
+
+## 5.5 Manejo de Excepciones
+
+```python
+import os
+
+def cargar_modelo_sbml(ruta_archivo: str) -> dict:
+    """
+    Carga un modelo metabólico desde un archivo SBML.
+    Maneja los errores más comunes de forma informativa.
+    
+    En un proyecto real, usaría cobra.io.read_sbml_model()
+    """
+    try:
+        if not os.path.exists(ruta_archivo):
+            raise FileNotFoundError(f"Archivo no encontrado: '{ruta_archivo}'")
+        
+        if not ruta_archivo.endswith((".xml", ".sbml")):
+            raise ValueError(f"Formato no soportado. Se esperaba .xml o .sbml")
+        
+        # Simulación de carga exitosa
+        print(f"✓ Modelo cargado: {ruta_archivo}")
+        return {"status": "ok", "ruta": ruta_archivo}
+    
+    except FileNotFoundError as e:
+        print(f"[ERROR] {e}")
+        print("  → Verifica la ruta del archivo o descárgalo del repositorio BiGG.")
+        return {"status": "error", "msg": str(e)}
+    
+    except ValueError as e:
+        print(f"[ERROR] {e}")
+        return {"status": "error", "msg": str(e)}
+    
+    finally:
+        # El bloque finally se ejecuta SIEMPRE, independientemente del resultado
+        print("  → Proceso de carga finalizado.")
+
+
+# Pruebas
+cargar_modelo_sbml("e_coli_core.xml")         # FileNotFoundError
+cargar_modelo_sbml("modelo.csv")              # ValueError
+```
+
+::: {.callout-warning}
+## ⚠️ Error Común — Excepciones silenciosas
+
+Nunca uses `except:` sin especificar el tipo de excepción (bare `except`). Captura silenciosa de todas las excepciones oculta bugs críticos. Siempre especifica la excepción más concreta posible:
+
+```python
+# MAL — captura todo, incluido KeyboardInterrupt:
+try:
+    result = model.optimize()
+except:
+    pass
+
+# BIEN — específico y con manejo informativo:
+try:
+    result = model.optimize()
+except cobra.exceptions.Infeasible:
+    print("Modelo inviable bajo las restricciones actuales.")
+```
+:::
+
+---
+
+## 5.6 🔬 Ejercicio Integrador: Función de Análisis de Archivos FASTA
+
+::: {.ejercicio-header}
+Ejercicio 5.1 — Nivel: [Medio]{.badge-nivel .medio}
+:::
+
+::: {.ejercicio-body}
+```python
+# ─────────────────────────────────────────────────────────────────
+# Función completa de análisis de archivos FASTA.
+# Integra: funciones, control de flujo, diccionarios, listas y
+# manejo de excepciones.
+# ─────────────────────────────────────────────────────────────────
+
+def parsear_fasta(contenido: str) -> list:
+    """
+    Parsea una cadena con formato FASTA multi-secuencia.
+    
+    Retorna
+    -------
+    list de dict con claves: 'id', 'descripcion', 'secuencia'
+    """
+    secuencias = []
+    seq_actual = None
+    
+    for linea in contenido.strip().split("\n"):
+        linea = linea.strip()
+        if not linea:
+            continue
+        if linea.startswith(">"):
+            if seq_actual is not None:
+                secuencias.append(seq_actual)
+            partes = linea[1:].split(maxsplit=1)
+            seq_actual = {
+                "id"          : partes[0],
+                "descripcion" : partes[1] if len(partes) > 1 else "",
+                "secuencia"   : ""
+            }
+        elif seq_actual is not None:
+            seq_actual["secuencia"] += linea.upper()
+    
+    if seq_actual is not None:
+        secuencias.append(seq_actual)
+    
+    return secuencias
+
+
+def analizar_secuencias(secuencias: list) -> list:
+    """Agrega propiedades calculadas a cada secuencia."""
+    resultados = []
+    for s in secuencias:
+        seq = s["secuencia"]
+        if not seq:
+            continue
+        analisis = {
+            **s,
+            "longitud"     : len(seq),
+            "gc_content"   : round((seq.count("G") + seq.count("C")) / len(seq) * 100, 2),
+            "n_atg"        : sum(1 for i in range(0, len(seq)-2, 3) if seq[i:i+3] == "ATG"),
+            "es_codificante": seq.startswith("ATG") and any(
+                seq[i:i+3] in {"TAA","TAG","TGA"} for i in range(0, len(seq)-2, 3)
+            )
+        }
+        resultados.append(analisis)
+    return resultados
+
+
+# ── Dataset de ejemplo: genes metabólicos de E. coli ──
+fasta_ejemplo = """
+>b0767 pykF | Pyruvate kinase I
+ATGCGAGTGTTGAAGTTCGGCGGTACATCAGTGGCAAATGCAGAACGTTTTCTGCGTGT
+>b3916 pfkA | 6-phosphofructokinase isozyme 1
+ATGCAAACGCTTTTGCGGGAAACCGTCGCGGCGCTGATCGGCATCGGAGTGAACGGCGAC
+>b2779 eno | Enolase
+ATGAGTATCCTGATTGCCAACAAAGCAGAAATTGAATTTGGACCGATCACTAACGAAGCC
+"""
+
+secuencias = parsear_fasta(fasta_ejemplo)
+resultados = analizar_secuencias(secuencias)
+
+print(f"{'ID':10s} {'Longitud':>10} {'GC%':>8} {'ATGs':>6} {'Codificante':>12}")
+print("-" * 52)
+for r in resultados:
+    print(f"{r['id']:10s} {r['longitud']:>10} {r['gc_content']:>7}% "
+          f"{r['n_atg']:>6} {str(r['es_codificante']):>12}")
+```
+
+**Extensión sugerida:** Modifica la función para que acepte una ruta de archivo FASTA real y lea su contenido con `open()`. Usa manejo de excepciones para el caso en que el archivo no exista.
+:::
+
+---
+
+## 📚 Para Profundizar
+
+- **Grus, J.** (2019). *Data Science from Scratch*, 2ª ed. O'Reilly. — Capítulo 2: "A Crash Course in Python", sección de funciones y control de flujo.
+- **Lutz, M.** (2013). *Learning Python*, 5ª ed. O'Reilly. — La referencia más exhaustiva sobre funciones en Python.
+- **Documentación Python — Funciones integradas**: [https://docs.python.org/3/library/functions.html](https://docs.python.org/3/library/functions.html)

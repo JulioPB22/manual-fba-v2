@@ -1,0 +1,356 @@
+---
+title: "Tipos de Datos y Estructuras en Python"
+---
+
+::: {.objetivos-box}
+#### Objetivos de aprendizaje
+
+Al finalizar este capítulo serás capaz de:
+
+- Describir el modelo de objetos de Python y la diferencia entre tipo, valor e identidad.
+- Operar con los tipos escalares fundamentales: enteros, flotantes, booleanos y cadenas.
+- Construir y manipular las estructuras de datos colectivas: listas, tuplas, diccionarios y conjuntos.
+- Escribir *list comprehensions* para transformar colecciones de datos de manera concisa y eficiente.
+- Aplicar estas estructuras a representaciones de datos biológicos: secuencias, anotaciones génicas y tablas de metabolitos.
+:::
+
+## 🧬 Motivación biológica
+
+Antes de hablar de matrices estequiométricas o de vectores de flujo, toda estructura de datos en biología comienza con la representación elemental de la información: un nucleótido es una cadena de texto; una concentración de metabolito es un número flotante; la presencia o ausencia de un gen en un organismo es un booleano. Comprender con precisión cómo Python almacena, interpreta y opera sobre estos tipos primitivos no es un trámite introductorio: es la diferencia entre escribir código correcto y código que *parece* correcto pero acumula errores de redondeo o colisiones de identidad silenciosas.
+
+---
+
+## 2.1 El Modelo de Objetos de Python
+
+En Python, **todo es un objeto**. Esto no es una simplificación didáctica sino una descripción técnica precisa: cada valor, función, módulo y clase es una instancia de algún tipo definido en el lenguaje [@grus2019data]. Cada objeto tiene tres atributos fundamentales:
+
+- **Tipo** (`type`): define qué operaciones son válidas sobre el objeto.
+- **Valor**: el contenido representado.
+- **Identidad** (`id`): la dirección de memoria donde reside el objeto.
+
+```python
+# Ilustración del modelo de objetos
+concentracion = 1.25e-3   # valor en mol/L
+
+print(f"Tipo      : {type(concentracion)}")   # <class 'float'>
+print(f"Valor     : {concentracion}")          # 0.00125
+print(f"Identidad : {id(concentracion)}")      # e.g. 140234567890112
+```
+
+::: {.callout-tip}
+## 📐 Tipado Dinámico vs. Estático
+
+Python utiliza **tipado dinámico**: el tipo de una variable no se declara en el código, sino que se infiere en tiempo de ejecución a partir del valor asignado. Esto contrasta con lenguajes de tipado estático como C o Java, donde el tipo debe declararse explícitamente. La ventaja es expresividad y rapidez de desarrollo; el riesgo es que errores de tipo solo se detectan al ejecutar, no al compilar. Por ello, en código de producción científica se recomienda usar **anotaciones de tipo** (*type hints*) para documentar la intención:
+
+```python
+def calcular_gc(secuencia: str) -> float:
+    g = secuencia.count("G")
+    c = secuencia.count("C")
+    return (g + c) / len(secuencia) * 100
+```
+:::
+
+---
+
+## 2.2 Tipos Escalares
+
+### Enteros (`int`)
+
+Python 3 maneja enteros de **precisión arbitraria**: no existe un límite superior predefinido para el tamaño de un entero (a diferencia de C donde `int` es tipicamente 32 bits). Esto es relevante en bioinformática cuando se trabaja con identificadores de posiciones genómicas de organismos grandes.
+
+```python
+# Posiciones en el genoma de E. coli K-12 (4.6 Mbp ≈ 4,600,000 pares de bases)
+inicio_gen_lacZ  = 361249
+fin_gen_lacZ     = 364968
+longitud_lacZ    = fin_gen_lacZ - inicio_gen_lacZ
+
+print(f"Longitud del gen lacZ: {longitud_lacZ} bp")   # 3719 bp
+
+# Operaciones aritméticas con enteros
+num_reacciones   = 2712   # modelo iJO1366 de E. coli
+num_metabolitos  = 1805
+grados_libertad  = num_reacciones - num_metabolitos
+print(f"Grados de libertad del sistema: {grados_libertad}")  # 907
+```
+
+### Flotantes (`float`)
+
+Los números flotantes en Python implementan el estándar IEEE 754 de doble precisión (64 bits). Esto implica que ciertos números decimales no tienen representación exacta en binario, fenómeno crítico en cómputo científico:
+
+```python
+# El problema clásico de precisión flotante
+print(0.1 + 0.2)           # 0.30000000000000004
+print(0.1 + 0.2 == 0.3)    # False (!)
+
+# Solución para comparaciones: usar tolerancia
+import math
+print(math.isclose(0.1 + 0.2, 0.3, rel_tol=1e-9))  # True
+
+# En cálculos metabólicos, los flujos se expresan en mmol/gDW/h
+flux_glucosa  = -10.5    # consumo (negativo por convención)
+flux_biomasa  =   0.874  # producción
+print(f"Tasa de crecimiento: {flux_biomasa:.4f} h⁻¹")
+```
+
+::: {.callout-warning}
+## ⚠️ Error Común — Comparación de flotantes
+
+Nunca uses `==` para comparar flotantes en código científico. Usa `math.isclose()` o `numpy.isclose()` con una tolerancia apropiada para tu dominio. En FBA, los flujos inferiores a `1e-7` mmol/gDW/h suelen considerarse cero por convención numérica.
+:::
+
+### Booleanos (`bool`)
+
+```python
+# Propiedades binarias de genes y reacciones
+gen_presente     = True
+reaccion_activa  = False
+es_reversible    = True
+
+# Álgebra booleana en consultas biológicas
+gen_esencial = gen_presente and reaccion_activa
+print(f"¿Gen esencial según criterio?: {gen_esencial}")  # False
+
+# Los booleanos son subclase de int en Python
+print(int(True), int(False))    # 1 0
+# Útil para contar genes activos en una lista:
+genes = [True, False, True, True, False]
+print(f"Genes activos: {sum(genes)}")   # 3
+```
+
+### Cadenas de texto (`str`)
+
+Las cadenas son **inmutables** en Python: una vez creadas no pueden modificarse in-place. Toda operación sobre una cadena crea un nuevo objeto. Esto es eficiente para compartir datos de secuencia entre funciones sin riesgo de mutación accidental.
+
+```python
+# Representación de una secuencia de aminoácidos (proteína LacZ, fragmento)
+proteina_lacZ = "MTMITPSLHACRSTGSRIEFGPINSNKESVKR"
+
+# Operaciones fundamentales sobre cadenas
+print(f"Longitud           : {len(proteina_lacZ)} aa")
+print(f"Aminoácido 1       : {proteina_lacZ[0]}")         # M (Met, inicio)
+print(f"Últimos 5 aa       : {proteina_lacZ[-5:]}")        # VKRAA
+print(f"¿Empieza con Met?  : {proteina_lacZ.startswith('M')}")
+
+# Transcripción simplificada (ADN → ARN)
+adn = "ATGACCATGATTACGCCA"
+arn = adn.replace("T", "U")
+print(f"ADN: {adn}")
+print(f"ARN: {arn}")
+
+# Complemento inverso (útil en bioinformática)
+complemento = {"A": "T", "T": "A", "G": "C", "C": "G"}
+comp_inv = "".join(complemento[b] for b in reversed(adn))
+print(f"Complemento inverso: {comp_inv}")
+```
+
+---
+
+## 2.3 Secuencias: Listas y Tuplas
+
+### Listas (`list`)
+
+Las listas son colecciones **ordenadas y mutables** de objetos heterogéneos. Son la estructura de datos más versátil de Python y el punto de entrada natural para representar colecciones biológicas.
+
+```python
+# Lista de metabolitos en la glucólisis
+metabolitos_glucolisis = [
+    "Glucosa", "Glucosa-6-fosfato", "Fructosa-6-fosfato",
+    "Fructosa-1,6-bisfosfato", "DHAP", "Gliceraldehído-3-P",
+    "1,3-BPG", "3-fosfoglicerato", "2-fosfoglicerato",
+    "Fosfoenolpiruvato", "Piruvato"
+]
+
+# Indexado y segmentado (slicing)
+print(f"Primer metabolito    : {metabolitos_glucolisis[0]}")
+print(f"Último metabolito    : {metabolitos_glucolisis[-1]}")
+print(f"Intermediarios 3-5   : {metabolitos_glucolisis[2:5]}")
+
+# Operaciones de mutación
+metabolitos_glucolisis.append("ATP")    # agregar al final
+metabolitos_glucolisis.insert(0, "ADP") # insertar en posición 0
+print(f"Con cofactores: {len(metabolitos_glucolisis)} elementos")
+
+# Ordenamiento
+metabolitos_glucolisis.sort()
+print(f"Primer en orden alfabético: {metabolitos_glucolisis[0]}")
+```
+
+### Tuplas (`tuple`)
+
+Las tuplas son colecciones **ordenadas e inmutables**. Su inmutabilidad las hace apropiadas para representar datos que no deben modificarse: constantes bioquímicas, coordenadas genómicas, rangos de flujo.
+
+```python
+# Restricciones de flujo (lower_bound, upper_bound) en mmol/gDW/h
+# Convención CobraPy: reacciones reversibles [-1000, 1000]
+restriccion_glucosa  = (-10.0,   0.0)   # intercambio de glucosa (consumo)
+restriccion_oxigeno  = (-20.0,   0.0)   # intercambio de oxígeno
+restriccion_biomasa  = (  0.0, 1000.0)  # reacción de biomasa (solo producción)
+
+# Las tuplas soportan desempaquetado (unpacking)
+lb_glc, ub_glc = restriccion_glucosa
+print(f"Glucosa: [{lb_glc}, {ub_glc}] mmol/gDW/h")
+
+# Tuplas como claves de diccionario (las listas no pueden serlo)
+mapa_reacciones = {
+    ("PFK", "E. coli"): "b3916",
+    ("PFK", "S. cerevisiae"): "YGR240C",
+}
+print(mapa_reacciones[("PFK", "E. coli")])   # b3916
+```
+
+---
+
+## 2.4 Mapas y Conjuntos: Diccionarios y Sets
+
+### Diccionarios (`dict`)
+
+Los diccionarios son colecciones de pares **clave–valor** con acceso en tiempo constante O(1). Son la estructura más natural para representar modelos metabólicos simplificados, anotaciones génicas y tablas de lookup.
+
+```python
+# Representación de una reacción metabólica como diccionario
+reaccion_pfk = {
+    "id"          : "PFK",
+    "nombre"      : "Phosphofructokinase",
+    "ec_number"   : "2.7.1.11",
+    "subsistema"  : "Glycolysis/Gluconeogenesis",
+    "reversible"  : False,
+    "genes"       : ["b3916", "b1723"],
+    "estequiometria": {
+        "atp_c"  : -1,   # ATP consumido
+        "f6p_c"  : -1,   # Fructosa-6-P consumida
+        "adp_c"  :  1,   # ADP producido
+        "fdp_c"  :  1,   # Fructosa-1,6-BP producida
+        "h_c"    :  1,   # H+ producido
+    }
+}
+
+# Acceso a valores
+print(f"Reacción    : {reaccion_pfk['id']} — {reaccion_pfk['nombre']}")
+print(f"EC Number   : {reaccion_pfk['ec_number']}")
+print(f"Genes       : {', '.join(reaccion_pfk['genes'])}")
+
+# Iterar sobre estequiometría
+print("\nEstequiometría:")
+for metabolito, coef in reaccion_pfk["estequiometria"].items():
+    signo = "consumido" if coef < 0 else "producido"
+    print(f"  {metabolito:8s}: {coef:+d}  ({signo})")
+```
+
+### Conjuntos (`set`)
+
+Los conjuntos son colecciones **no ordenadas de elementos únicos**. Implementan las operaciones de la teoría de conjuntos: unión, intersección, diferencia. Son ideales para comparar listas de genes, metabolitos o vías metabólicas entre organismos.
+
+```python
+# Genes esenciales en condición aeróbica vs. anaeróbica (datos ficticios ilustrativos)
+genes_esenciales_aerobico   = {"b0767", "b1602", "b3916", "b2779", "b0720", "b3236"}
+genes_esenciales_anaerobico = {"b3916", "b2779", "b1415", "b0720", "b3513"}
+
+# Genes esenciales en ambas condiciones (core essentials):
+core_essential = genes_esenciales_aerobico & genes_esenciales_anaerobico
+print(f"Genes esenciales en ambas condiciones: {core_essential}")
+
+# Genes esenciales solo en aerobiosis:
+solo_aerobico = genes_esenciales_aerobico - genes_esenciales_anaerobico
+print(f"Solo en aerobiosis: {solo_aerobico}")
+
+# Todos los genes esenciales (unión):
+todos_esenciales = genes_esenciales_aerobico | genes_esenciales_anaerobico
+print(f"Total de genes esenciales: {len(todos_esenciales)}")
+```
+
+---
+
+## 2.5 *List Comprehensions* y Expresiones Generadoras
+
+Las *list comprehensions* son una construcción sintáctica de Python que permite construir listas de forma concisa y legible a partir de iterables. Son preferibles a los bucles `for` explícitos cuando la transformación es simple, porque comunican la **intención** del código más claramente.
+
+Sintaxis general:
+```
+[expresion for elemento in iterable if condicion]
+```
+
+```python
+# Datos de ejemplo: tabla de flujos (reacción: flujo en mmol/gDW/h)
+flujos = {
+    "PFK": 5.21, "PGI": 5.21, "TPI": 4.86,
+    "ENO": 4.95, "PYK": 1.06, "CS" : 0.00,
+    "ACONa": 0.00, "ICDHyr": 0.00,
+    "O2t": -12.4, "Biomass": 0.874
+}
+
+# ── Caso 1: extraer reacciones activas (flujo > 0.01) ──
+activas = [rxn for rxn, v in flujos.items() if abs(v) > 0.01]
+print(f"Reacciones activas: {activas}")
+
+# ── Caso 2: normalizar flujos a escala [0, 1] ──
+max_flujo  = max(abs(v) for v in flujos.values())
+normalizados = {rxn: round(v / max_flujo, 4) for rxn, v in flujos.items()}
+print(f"\nFlujos normalizados (muestra): { {k: normalizados[k] for k in list(normalizados)[:3]} }")
+
+# ── Caso 3: filtrar metabolitos con fórmula molecular ──
+metabolitos_raw = ["C6H12O6", "H2O", "CO2", "C3H4O3", "ATP", "C21H28N7O17P3"]
+con_carbono = [m for m in metabolitos_raw if "C" in m and m != "CO2"]
+print(f"\nMetabolitos orgánicos (excl. CO2): {con_carbono}")
+
+# ── Caso 4: generar codones de un fragmento de ARN ──
+arn = "AUGACCAUGAUUACGCCA"
+codones = [arn[i:i+3] for i in range(0, len(arn) - 2, 3)]
+print(f"\nCodones: {codones}")
+```
+
+::: {.callout-tip}
+## 📐 *List Comprehension* vs. Bucle `for` — ¿Cuándo usar cada uno?
+
+Las *list comprehensions* son **más rápidas** que los bucles `for` equivalentes (hasta ~35%) porque internamente utilizan instrucciones bytecode optimizadas. Sin embargo, prioriza la **legibilidad**: si la expresión requiere más de dos condiciones anidadas o lógica compleja, un bucle `for` explícito comunica mejor la intención. La regla de oro: si no puedes leer la *comprehension* en voz alta como una oración, reescríbela como bucle.
+:::
+
+---
+
+## 2.6 🔬 Ejercicio Integrador: Secuencia de ADN y sus Propiedades
+
+::: {.ejercicio-header}
+Ejercicio 2.1 — Nivel: [Básico]{.badge-nivel .basico}
+:::
+
+::: {.ejercicio-body}
+```python
+# ─────────────────────────────────────────────────────────────────
+# Ejercicio: Análisis de un gen hipotético con todas las
+# estructuras de datos vistas en este capítulo.
+# ─────────────────────────────────────────────────────────────────
+
+# 1. Representa el gen como una cadena
+gen_hipotetico = "ATGCGTAACCTGATCGAATGCAAATGCTTAG"
+
+# 2. Calcula la composición nucleotídica con un diccionario
+composicion = {base: gen_hipotetico.count(base) for base in "ACGT"}
+print(f"Composición: {composicion}")
+
+# 3. Encuentra las posiciones de todos los codones ATG (inicio)
+posiciones_inicio = [i for i in range(0, len(gen_hipotetico)-2, 3)
+                     if gen_hipotetico[i:i+3] == "ATG"]
+print(f"Codones de inicio en marco (+1): {posiciones_inicio}")
+
+# 4. Extrae los codones como tuplas (inmutables)
+codones = tuple(gen_hipotetico[i:i+3] for i in range(0, len(gen_hipotetico)-2, 3))
+print(f"Codones: {codones}")
+
+# 5. ¿Cuántos codones de paro hay?
+codones_paro = {"TAA", "TAG", "TGA"}
+n_paro = sum(1 for c in codones if c in codones_paro)
+print(f"Codones de paro encontrados: {n_paro}")
+```
+
+**Preguntas de extensión:**
+1. Modifica la búsqueda de posiciones ATG para que no se limite al marco de lectura +1 (examina los tres marcos posibles).
+2. ¿Por qué se usó `tuple` en el paso 4 y no `list`? ¿Qué garantía ofrece esto en el contexto de un análisis reproducible?
+:::
+
+---
+
+## 📚 Para Profundizar
+
+- **Grus, J.** (2019). *Data Science from Scratch*. O'Reilly. — Capítulo 2: "A Crash Course in Python", sección sobre estructuras de datos.
+- **Bruce, P. et al.** (2020). *Practical Statistics for Data Scientists*, 2ª ed. O'Reilly. — Apéndice sobre Python para estadísticos.
+- **McKinney, W.** (2022). *Python for Data Analysis*, 3ª ed. O'Reilly. — Capítulo 3: "Built-In Data Structures, Functions, and Files".
+- **Documentación Python — Tipos incorporados**: [https://docs.python.org/3/library/stdtypes.html](https://docs.python.org/3/library/stdtypes.html)

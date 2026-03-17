@@ -1,0 +1,11 @@
+---
+title: "Prólogo al Estudiante"
+---
+
+# Prólogo al Estudiante {.unnumbered}
+
+La biología contemporánea ha experimentado una transición paradigmática, evolucionando desde una disciplina predominantemente cualitativa y descriptiva hacia una ciencia cuantitativa intensiva en datos. Este cambio, impulsado por el advenimiento de las tecnologías de secuenciación de alto rendimiento (NGS) y la espectrometría de masas, ha generado volúmenes de información que superan la capacidad de análisis manual. En este nuevo ecosistema, la capacidad para modelar sistemas biológicos *in silico* no es simplemente una habilidad auxiliar, sino un requisito fundamental para el investigador moderno. El lenguaje de programación Python se ha establecido como la *lingua franca* de este dominio, desplazando a predecesores como Perl y complementando a R, gracias a su sintaxis legible, su tipado dinámico y, crucialmente, a un vasto ecosistema de bibliotecas científicas robustas.
+
+Este manual tiene como propósito dotar al ingeniero biotecnológico y al ingeniero metabólico de una comprensión profunda y rigurosa de las herramientas computacionales necesarias para el Análisis de Balance de Flujos (FBA) y la reconstrucción de redes metabólicas utilizando CobraPy. Sin embargo, antes de abordar la complejidad del modelado basado en restricciones, es imperativo establecer una base sólida en los fundamentos del lenguaje Python, la computación numérica con NumPy y la manipulación de datos estructurados con Pandas. La ingeniería de software rigurosa, la reproducibilidad y el manejo adecuado de formatos biológicos estandarizados constituyen los cimientos sobre los que se construyen los modelos predictivos fiables.
+
+A lo largo de este manual, diseccionaremos los componentes del lenguaje con precisión académica, integrando definiciones formales extraídas de la literatura técnica seminal —incluyendo las obras de Grus, McKinney y Bruce— con aplicaciones prácticas directas en el contexto biotecnológico. Desde la gestión de la memoria en la manipulación de secuencias de ADN hasta la vectorización de operaciones matriciales para la estequiometría, cada concepto será explorado no solo en su sintaxis, sino en su implicación computacional y biológica.

@@ -1,0 +1,272 @@
+---
+title: "NumPy — Vectores y Matrices para Biología Computacional"
+---
+
+::: {.objetivos-box}
+#### Objetivos de aprendizaje
+
+Al finalizar este capítulo serás capaz de:
+
+- Crear y manipular arreglos NumPy de una y dos dimensiones con precisión.
+- Aplicar indexado avanzado, *broadcasting* y operaciones vectorizadas.
+- Utilizar las funciones de álgebra lineal de NumPy: producto matricial, transpuesta, rango y descomposiciones.
+- Construir la **matriz estequiométrica** $S$ de una red metabólica desde código Python.
+- Verificar la condición de estado estacionario $S \cdot v = 0$ para un vector de flujos dado.
+:::
+
+## 🧬 Motivación biológica
+
+La biología de sistemas cuantitativa descansa sobre una estructura matemática central: la **matriz estequiométrica** $S$. Esta matriz, de dimensiones $m \times n$ donde $m$ es el número de metabolitos y $n$ el número de reacciones, codifica toda la topología de la red metabólica. Cada columna es una reacción; cada fila, un metabolito; cada entrada $S_{ij}$, el coeficiente estequiométrico del metabolito $i$ en la reacción $j$ (negativo si es sustrato, positivo si es producto).
+
+Cuando el modelo de *E. coli* a escala de genoma iJO1366 [@orth2011comprehensive] contiene 1,805 metabolitos y 2,712 reacciones, $S$ tiene dimensiones 1,805 × 2,712 y más de cuatro millones de entradas. Manejar esa información con listas de Python sería imprácticamente lento. NumPy resuelve este problema con arreglos almacenados en bloques contiguos de memoria C, permitiendo operaciones sobre millones de valores en microsegundos.
+
+---
+
+## 3.1 El `ndarray`: Estructura Fundamental
+
+```python
+import numpy as np
+
+# Verificar versión instalada
+print(f"NumPy versión: {np.__version__}")
+
+# Crear un arreglo 1-D (vector de flujos)
+v = np.array([5.21, 5.21, 4.86, 4.95, 1.06, 0.874])
+print(f"Vector v    : {v}")
+print(f"Forma       : {v.shape}")       # (6,) → 6 elementos, 1 dimensión
+print(f"Tipo        : {v.dtype}")       # float64 (64 bits, doble precisión)
+print(f"N-dimensiones: {v.ndim}")       # 1
+print(f"N-elementos : {v.size}")        # 6
+print(f"Bytes total : {v.nbytes}")      # 48 (6 × 8 bytes)
+```
+
+::: {.callout-tip}
+## 📐 `ndarray` vs. Lista de Python
+
+Una lista de Python almacena **punteros** a objetos heterogéneos dispersos en memoria. Un `ndarray` almacena **valores** del mismo tipo en un bloque contiguo de memoria. La diferencia en rendimiento es de 10–100× para operaciones numéricas. Además, NumPy compila internamente las operaciones en C o Fortran, lo que lo hace competitivo con MATLAB para álgebra lineal.
+:::
+
+### Arreglos 2-D: matrices
+
+```python
+# Crear una matriz 3×3 (3 metabolitos, 3 reacciones — glucólisis simplificada)
+# Convención: filas = metabolitos, columnas = reacciones
+# Coeficiente negativo = sustrato, positivo = producto
+
+S_simple = np.array([
+#    R1    R2    R3
+    [-1,    0,    0],   # Glucosa
+    [ 1,   -1,    0],   # G6P
+    [ 0,    1,   -1],   # F6P
+])
+
+print(f"S_simple:\n{S_simple}")
+print(f"Forma: {S_simple.shape}")      # (3, 3)
+print(f"Rango: {np.linalg.matrix_rank(S_simple)}")  # 3
+```
+
+---
+
+## 3.2 Creación de Arreglos
+
+```python
+# ── Arreglos de inicialización ──
+ceros   = np.zeros((4, 3))          # matriz de ceros 4×3
+unos    = np.ones((2, 5))           # matriz de unos 2×5
+identidad = np.eye(4)               # matriz identidad 4×4
+
+# ── Arreglos de rango ──
+tiempo = np.linspace(0, 24, 49)     # 49 puntos de 0 a 24 h (simulación)
+concentraciones_init = np.arange(0, 1.1, 0.1)  # 0.0, 0.1, ..., 1.0
+
+# ── Arreglos aleatorios (útil para perturbaciones) ──
+np.random.seed(42)                  # semilla para reproducibilidad
+ruido = np.random.normal(0, 0.01, size=100)   # ruido gaussiano σ=0.01
+
+print(f"Vector tiempo (h): {tiempo[:6]}...")
+print(f"Ruido experimental (primeros 5): {ruido[:5].round(4)}")
+```
+
+---
+
+## 3.3 Indexado y Segmentado
+
+```python
+# Matriz estequiométrica extendida (5 metabolitos × 4 reacciones)
+S = np.array([
+#    HK     PGI    PFK    ENO
+    [-1,    0,    0,    0 ],   # Glucosa       (met 0)
+    [ 1,   -1,    0,    0 ],   # G6P           (met 1)
+    [ 0,    1,   -1,    0 ],   # F6P           (met 2)
+    [ 0,    0,    1,   -1 ],   # FBP           (met 3)
+    [ 0,    0,    0,    1 ],   # PEP           (met 4)
+], dtype=float)
+
+metabolitos = ["Glucosa", "G6P", "F6P", "FBP", "PEP"]
+reacciones  = ["HK", "PGI", "PFK", "ENO"]
+
+# ── Acceso a elementos individuales ──
+print(f"Coef. G6P en PGI: {S[1, 1]}")            # -1.0
+print(f"Columna HK (todos sus metabolitos):")
+for i, coef in enumerate(S[:, 0]):
+    if coef != 0:
+        print(f"  {metabolitos[i]:10s}: {coef:+.0f}")
+
+# ── Indexado booleano — metabolitos que participan en PFK ──
+mascara_pfk  = S[:, 2] != 0
+mets_en_pfk  = [metabolitos[i] for i in np.where(mascara_pfk)[0]]
+print(f"\nMetabolitos en PFK: {mets_en_pfk}")
+
+# ── Submatriz — primeras 3 reacciones, últimos 3 metabolitos ──
+subS = S[2:, :3]
+print(f"\nSubmatriz [met 2-4, rxn 0-2]:\n{subS}")
+```
+
+---
+
+## 3.4 Operaciones Vectorizadas y Broadcasting
+
+Una de las características más poderosas de NumPy es la **vectorización**: la aplicación de operaciones matemáticas a todos los elementos de un arreglo sin escribir bucles explícitos. El *broadcasting* extiende este concepto a arreglos de formas distintas.
+
+```python
+# ── Operaciones element-wise ──
+flujos = np.array([5.21, 5.21, 4.86, 1.06, 0.874])
+
+# Normalizar flujos al máximo (muy común en análisis de redes)
+flujos_norm = flujos / np.max(flujos)
+print(f"Flujos normalizados: {flujos_norm.round(4)}")
+
+# Calcular el logaritmo de la magnitud (análisis de escala)
+import numpy as np
+magnitudes = np.abs(flujos)
+log_magnitudes = np.log10(magnitudes + 1e-10)  # +1e-10 evita log(0)
+print(f"Log10 de magnitudes: {log_magnitudes.round(3)}")
+
+# ── Broadcasting: escalar sobre matriz ──
+# Multiplicar toda la matriz S por -1 (cambiar convención de signos)
+S_alt_convencion = -1 * S
+print(f"\nConvención invertida (primeros 2 met × 2 rxn):\n{S_alt_convencion[:2, :2]}")
+
+# ── Broadcasting: vector sobre matriz (normalización por columna) ──
+# Dividir cada columna de S por la suma de sus valores absolutos
+normas_columnas = np.sum(np.abs(S), axis=0)   # suma por columna (axis=0)
+S_normalizada   = S / normas_columnas          # broadcasting automático
+print(f"\nNormas de columnas (reacciones): {normas_columnas}")
+```
+
+---
+
+## 3.5 Álgebra Lineal: El Núcleo del FBA
+
+```python
+# ── Producto matricial: S @ v ──
+# En estado estacionario: S · v = 0  (balance de masa)
+# Verificamos con un vector de flujos de ejemplo
+
+v_ejemplo = np.array([1.0, 1.0, 1.0, 1.0])   # flujos iguales para todas las rxn
+balance = S @ v_ejemplo
+print(f"S · v = {balance}")
+# Si no es cero, el sistema no está en estado estacionario para estos flujos
+
+# ── Transpuesta ──
+print(f"\nS  (forma original): {S.shape}")
+print(f"Sᵀ (transpuesta)  : {S.T.shape}")
+
+# ── Rango de la matriz ──
+rango = np.linalg.matrix_rank(S)
+grados_libertad = S.shape[1] - rango
+print(f"\nRango de S    : {rango}")
+print(f"Dimensión nula: {grados_libertad} (grados de libertad del sistema)")
+
+# ── Espacio nulo aproximado (solución particular de S·v=0) ──
+# Usando descomposición SVD (valor singular)
+U, sigma, Vt = np.linalg.svd(S)
+# Las últimas (n - rango) filas de Vt forman la base del espacio nulo
+nulo_aprox = Vt[rango:, :]
+print(f"\nVectores de la base nula (forma): {nulo_aprox.shape}")
+print(f"Verificación S · nulo[0]ᵀ ≈ 0: {np.abs(S @ nulo_aprox[0]).max():.2e}")
+```
+
+::: {.callout-tip}
+## 📐 El Espacio Nulo y el FBA
+
+El conjunto de todos los vectores de flujo $v$ que satisfacen $S \cdot v = 0$ forma el **espacio nulo** (o *null space*) de $S$. Este espacio define el universo de distribuciones de flujo biológicamente factibles bajo el supuesto de estado estacionario. El Análisis de Balance de Flujos (FBA) consiste en encontrar el punto óptimo dentro de este espacio que maximice una función objetivo —típicamente la producción de biomasa. Esta conexión entre NumPy y CobraPy es el puente que atraviesa toda la Parte II y III del manual.
+:::
+
+---
+
+## 3.6 🔬 Ejercicio Integrador: Matriz Estequiométrica Completa
+
+::: {.ejercicio-header}
+Ejercicio 3.1 — Nivel: [Básico]{.badge-nivel .basico}
+:::
+
+::: {.ejercicio-body}
+```python
+import numpy as np
+
+# Red metabólica: glucólisis central de E. coli (7 reacciones, 8 metabolitos)
+#
+# Reacciones:
+#   R1  (HK)   : glc_D + atp → g6p + adp + h    (hexoquinasa)
+#   R2  (PGI)  : g6p ⇌ f6p                       (fosfoglucoisomerasa)
+#   R3  (PFK)  : f6p + atp → fdp + adp + h       (fosofructoquinasa)
+#   R4  (FBA)  : fdp → dhap + g3p                (aldolasa)
+#   R5  (TPI)  : dhap ⇌ g3p                      (triosa fosfato isomerasa)
+#   R6  (GAPD) : g3p + nad + pi → 13dpg + nadh + h (GAPDH)
+#   R7  (EX)   : atp →                           (demanda de ATP, salida)
+#
+# Metabolitos: glc_D, atp, g6p, adp, f6p, fdp, dhap, g3p
+
+metabolitos = ["glc_D", "atp",  "g6p", "adp", "f6p", "fdp", "dhap", "g3p"]
+reacciones  = ["HK",    "PGI",  "PFK", "FBA", "TPI", "GAPD","EX"]
+
+S = np.array([
+#     HK   PGI  PFK  FBA  TPI  GAPD  EX
+     [-1,   0,   0,   0,   0,   0,   0],   # glc_D
+     [-1,   0,  -1,   0,   0,   0,  -1],   # atp
+     [ 1,  -1,   0,   0,   0,   0,   0],   # g6p
+     [ 1,   0,   1,   0,   0,   0,   0],   # adp
+     [ 0,   1,  -1,   0,   0,   0,   0],   # f6p
+     [ 0,   0,   1,  -1,   0,   0,   0],   # fdp
+     [ 0,   0,   0,   1,  -1,   0,   0],   # dhap
+     [ 0,   0,   0,   1,   1,  -1,   0],   # g3p
+], dtype=float)
+
+# ── Análisis de la matriz ──
+print(f"Dimensiones de S: {S.shape}  ({S.shape[0]} met × {S.shape[1]} rxn)")
+print(f"Rango de S       : {np.linalg.matrix_rank(S)}")
+print(f"Grados de libertad: {S.shape[1] - np.linalg.matrix_rank(S)}")
+
+# ── Verificación: ¿qué metabolitos son internos (balance cerrado)? ──
+# Un metabolito interno tiene al menos un sustrato Y al menos un producto
+for i, met in enumerate(metabolitos):
+    tiene_sustrato = any(S[i, j] < 0 for j in range(S.shape[1]))
+    tiene_producto = any(S[i, j] > 0 for j in range(S.shape[1]))
+    tipo = "interno" if (tiene_sustrato and tiene_producto) else "límite/intercambio"
+    print(f"  {met:8s}: {tipo}")
+```
+:::
+
+::: {.ejercicio-header}
+Ejercicio 3.2 — Nivel: [Medio]{.badge-nivel .medio}
+:::
+
+::: {.ejercicio-body}
+Usando la matriz $S$ del ejercicio anterior:
+
+1. Aplica la descomposición SVD y determina el rango numérico de $S$.
+2. Construye un vector de flujos $v$ tal que $S \cdot v \approx 0$ (estado estacionario).
+3. Calcula la norma del residual $\|S \cdot v\|_2$ y verifica que sea menor a $10^{-10}$.
+
+*Pista:* El vector solución es parte del espacio nulo de $S$ y puede obtenerse de las últimas filas de $V^T$ en la SVD.
+:::
+
+---
+
+## 📚 Para Profundizar
+
+- **VanderPlas, J.** (2016). *Python Data Science Handbook*, Cap. 2: "Introduction to NumPy". Disponible en acceso abierto: [https://jakevdp.github.io/PythonDataScienceHandbook/](https://jakevdp.github.io/PythonDataScienceHandbook/)
+- **Palsson, B.Ø.** (2015). *Systems Biology: Constraint-based Reconstruction and Analysis*. Cambridge University Press. — Capítulos 3–4 para la teoría de la matriz estequiométrica.
+- **Orth, J.D., Thiele, I. & Palsson, B.Ø.** (2010). What is flux balance analysis? *Nature Biotechnology*, 28, 245–248. — Introducción accesible al vínculo entre álgebra lineal y FBA.
+- Documentación oficial NumPy — Álgebra lineal: [https://numpy.org/doc/stable/reference/routines.linalg.html](https://numpy.org/doc/stable/reference/routines.linalg.html)

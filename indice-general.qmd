@@ -1,0 +1,109 @@
+---
+title: "Índice General"
+---
+
+# Índice General {.unnumbered}
+
+## Parte I — Preparación, Herramientas y Fundamentos de Python para Bioinformáticos
+
+**Capítulo 1.** Instalación de Python e Introducción al Entorno de Desarrollo
+
+- 1.1 ¿Por qué Python para bioinformática y biología computacional?
+- 1.2 Instalación de Python 3.11+ en Windows, macOS y Linux
+- 1.3 Entornos de desarrollo integrados: Jupyter, Google Colab y VS Code
+- 1.4 Tipos de archivo: `.py`, notebooks `.ipynb` y documentos `.qmd`
+- 1.5 Organización de proyectos y entornos virtuales
+- 1.6 Ejercicio integrador: primer script biotecnológico
+
+**Capítulo 2.** Tipos de Datos y Estructuras en Python
+
+- 2.1 El modelo de objetos de Python: variables, referencias y tipos
+- 2.2 Tipos escalares: enteros, flotantes, booleanos y cadenas
+- 2.3 Secuencias: listas, tuplas y su uso en datos biológicos
+- 2.4 Mapas y conjuntos: diccionarios y sets
+- 2.5 *List comprehensions* y expresiones generadoras
+- 2.6 Ejercicio integrador: representar una secuencia de ADN y sus propiedades
+
+**Capítulo 3.** NumPy — Vectores y Matrices para Biología Computacional
+
+- 3.1 El `ndarray`: estructura fundamental del cómputo numérico
+- 3.2 Creación, indexado y segmentado de arreglos
+- 3.3 Operaciones vectorizadas y *broadcasting*
+- 3.4 Álgebra lineal con NumPy: producto matricial, transpuesta y rango
+- 3.5 La matriz estequiométrica $S$: representación computacional del metabolismo
+- 3.6 Ejercicio integrador: construir y analizar una red metabólica simple
+
+**Capítulo 4.** Pandas — DataFrames para Análisis Biológico
+
+- 4.1 Series y DataFrames: estructuras tabulares con semántica biológica
+- 4.2 Lectura y escritura de archivos: CSV, TSV, Excel
+- 4.3 Indexado, filtrado y selección de datos
+- 4.4 Operaciones de agrupamiento y estadísticas descriptivas
+- 4.5 Joins y concatenación de tablas de reacciones y metabolitos
+- 4.6 Ejercicio integrador: analizar una tabla de reacciones del modelo *E. coli*
+
+**Capítulo 5.** Estructuras de Control de Flujo y Funciones
+
+- 5.1 Condicionales: `if`, `elif`, `else`
+- 5.2 Ciclos iterativos: `for` y `while`
+- 5.3 Funciones: definición, argumentos y valores de retorno
+- 5.4 Funciones de orden superior y expresiones `lambda`
+- 5.5 Manejo de excepciones: `try`, `except`, `finally`
+- 5.6 Ejercicio integrador: función de análisis de secuencias FASTA
+
+**Capítulo 6.** Visualización Científica con Matplotlib
+
+- 6.1 Arquitectura de Matplotlib: figura, ejes y artistas
+- 6.2 Gráficas de línea, dispersión, barras e histogramas
+- 6.3 Personalización: etiquetas, leyendas, escalas y colores
+- 6.4 Exportación de figuras en alta resolución para publicación
+- 6.5 Introducción a Seaborn para visualización estadística
+- 6.6 Ejercicio integrador: visualizar distribución de flujos metabólicos
+
+---
+
+## Parte II — Sistemas Biológicos y Modelado
+
+**Capítulo 7.** ¿Qué es un Sistema Biológico y por qué Modelar?
+
+**Capítulo 8.** Tipos de Modelos en Biología
+
+**Capítulo 9.** Redes Biológicas y Teoría de Grafos
+
+**Capítulo 10.** Metabolismo y su Representación Matemática
+
+---
+
+## Parte III — Flux Balance Analysis (FBA) con CobraPy
+
+**Capítulo 11.** Fundamentos Teóricos del FBA
+
+**Capítulo 12.** Formulación Matemática Paso a Paso
+
+**Capítulo 13.** Introducción Práctica a CobraPy
+
+**Capítulo 14.** Análisis e Interpretación de Resultados
+
+**Capítulo 15.** Casos Prácticos con el Modelo de *E. coli*
+
+**Capítulo 16.** Visualización de Redes Metabólicas
+
+**Capítulo 17.** Errores Comunes y Cómo Interpretarlos
+
+**Capítulo 18.** Proyecto Final Integrador
+
+---
+
+## Apéndices
+
+**Apéndice A.** Guías de Instalación Detallada (Python, Librerías, CobraPy)
+
+**Apéndice B.** Datasets de Ejemplo: Descripción y Fuentes
+
+**Apéndice C.** Glosario de Términos
+
+**Apéndice D.** Cómo Citar las Herramientas Utilizadas en Investigación
+
+---
+
+## Referencias Bibliográficas

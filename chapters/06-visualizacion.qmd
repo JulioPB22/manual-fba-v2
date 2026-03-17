@@ -1,0 +1,308 @@
+---
+title: "Visualización Científica con Matplotlib"
+---
+
+::: {.objetivos-box}
+#### Objetivos de aprendizaje
+
+Al finalizar este capítulo serás capaz de:
+
+- Comprender la arquitectura jerárquica de Matplotlib: `Figure`, `Axes` y *artists*.
+- Construir gráficas de línea, barras, dispersión e histogramas con calidad de publicación.
+- Personalizar todos los elementos visuales: etiquetas, leyendas, escalas, colores y anotaciones.
+- Exportar figuras en formatos de alta resolución para artículos científicos (PDF, SVG, PNG 300 dpi).
+- Crear visualizaciones directamente relevantes para FBA: distribuciones de flujo y mapas de subsistemas.
+:::
+
+## 🧬 Motivación biológica
+
+La visualización de flujos metabólicos no es decorativa: es una herramienta epistémica. Una distribución de flujo bien graficada permite identificar cuellos de botella, detectar reacciones inactivas y comparar fenotipos metabólicos entre condiciones en segundos, algo que una tabla de números haría en minutos con mayor margen de error. Aprender Matplotlib con contexto metabólico desde este capítulo significa que cuando llegues a la Parte III, ya tendrás el lenguaje visual necesario para interpretar los resultados de CobraPy.
+
+---
+
+## 6.1 Arquitectura de Matplotlib
+
+Matplotlib organiza sus gráficas en una jerarquía de objetos:
+
+- **`Figure`**: el lienzo completo (la "hoja de papel").
+- **`Axes`**: el área de graficación dentro de la Figure (los "ejes"). Una Figure puede contener múltiples Axes.
+- ***Artists***: todo lo que se dibuja sobre los Axes: líneas, barras, texto, imágenes.
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+# ── Modo orientado a objetos (recomendado para código científico) ──
+fig, ax = plt.subplots(figsize=(8, 4))   # Figure + 1 Axes
+
+ax.plot([1, 2, 3], [4, 5, 6])            # agregar un artista (línea)
+ax.set_title("Mi primera figura")
+ax.set_xlabel("Tiempo (h)")
+ax.set_ylabel("Concentración (mM)")
+
+plt.tight_layout()
+plt.savefig("figura_base.png", dpi=150)
+plt.show()
+
+# ── Diferencia con el modo funcional (pyplot) ──
+# plt.plot(), plt.xlabel(), etc. — menos control, no recomendado para
+# figuras complejas ni multi-panel
+```
+
+::: {.callout-tip}
+## 📐 OOP vs. pyplot
+
+El modo orientado a objetos (`fig, ax = plt.subplots()`) es el estándar para código reproducible. El modo `pyplot` (`plt.plot()`) es conveniente para exploración rápida en notebooks. En este manual usaremos siempre el modo OOP para garantizar que las figuras sean reproducibles y fáciles de modificar.
+:::
+
+---
+
+## 6.2 Gráficas Fundamentales con Contexto Metabólico
+
+### Gráfica de barras: distribución de flujos por subsistema
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Datos: flujo promedio por subsistema metabólico
+subsistemas = ["Glycolysis", "TCA cycle", "Pentose-P", "Amino acid", "Nucleotide"]
+flujos_med  = [7.42, 3.12, 1.85, 0.94, 0.23]
+colores     = ["#1B4F72", "#117A65", "#B7950B", "#5C5C6E", "#922B21"]
+
+fig, ax = plt.subplots(figsize=(8, 4.5))
+
+barras = ax.bar(subsistemas, flujos_med, color=colores,
+                edgecolor="white", linewidth=0.8, width=0.65)
+
+# Etiquetas sobre las barras
+for barra, valor in zip(barras, flujos_med):
+    ax.text(barra.get_x() + barra.get_width() / 2,
+            barra.get_height() + 0.08,
+            f"{valor:.2f}",
+            ha="center", va="bottom", fontsize=9, color="#1C1C1E")
+
+ax.set_title("Flujo promedio por subsistema metabólico\n(modelo E. coli core — condición aeróbica)",
+             fontsize=12, pad=12)
+ax.set_ylabel("Flujo promedio (mmol/gDW/h)", fontsize=10)
+ax.set_ylim(0, max(flujos_med) * 1.2)
+ax.spines[["top", "right"]].set_visible(False)
+ax.tick_params(axis="x", rotation=15)
+
+plt.tight_layout()
+plt.savefig("flujos_subsistemas.pdf", dpi=300, bbox_inches="tight")
+plt.show()
+```
+
+### Gráfica de dispersión: correlación flujo aeróbico vs. anaeróbico
+
+```python
+np.random.seed(42)
+n_rxn = 40
+flujos_aerobico   = np.abs(np.random.normal(5, 3, n_rxn))
+flujos_anaerobico = flujos_aerobico * np.random.uniform(0.2, 1.8, n_rxn)
+
+# Clasificar puntos por categoría de cambio
+delta = flujos_anaerobico - flujos_aerobico
+colores_pts = np.where(delta > 1, "#117A65",    # aumenta en anaerobiosis
+               np.where(delta < -1, "#922B21",   # disminuye en anaerobiosis
+               "#5C5C6E"))                        # sin cambio significativo
+
+fig, ax = plt.subplots(figsize=(6, 5.5))
+
+ax.scatter(flujos_aerobico, flujos_anaerobico,
+           c=colores_pts, alpha=0.75, s=60, edgecolors="white", linewidth=0.5)
+
+# Línea de referencia y = x (sin cambio)
+lim_max = max(flujos_aerobico.max(), flujos_anaerobico.max()) * 1.05
+ax.plot([0, lim_max], [0, lim_max], "--", color="#B7950B",
+        linewidth=1.2, label="Sin cambio (y = x)")
+
+# Leyenda manual con parches de color
+import matplotlib.patches as mpatches
+legend_elements = [
+    mpatches.Patch(color="#117A65", label="↑ Anaerobiosis"),
+    mpatches.Patch(color="#922B21", label="↓ Anaerobiosis"),
+    mpatches.Patch(color="#5C5C6E", label="Sin cambio"),
+]
+ax.legend(handles=legend_elements, fontsize=9, frameon=False)
+
+ax.set_xlabel("Flujo aeróbico (mmol/gDW/h)", fontsize=10)
+ax.set_ylabel("Flujo anaeróbico (mmol/gDW/h)", fontsize=10)
+ax.set_title("Comparación de flujos: aeróbico vs. anaeróbico", fontsize=11)
+ax.spines[["top", "right"]].set_visible(False)
+
+plt.tight_layout()
+plt.savefig("scatter_condiciones.png", dpi=300, bbox_inches="tight")
+plt.show()
+```
+
+### Histograma y distribución de flujos
+
+```python
+np.random.seed(7)
+# Simular distribución de flujos de un modelo FBA
+todos_flujos = np.concatenate([
+    np.zeros(60),                          # ~60% de reacciones inactivas
+    np.abs(np.random.exponential(3, 40)),  # reacciones activas (dist. exponencial)
+])
+
+fig, axes = plt.subplots(1, 2, figsize=(10, 4))
+
+# Panel izquierdo: histograma completo
+axes[0].hist(todos_flujos, bins=25, color="#1B4F72", alpha=0.8, edgecolor="white")
+axes[0].axvline(np.median(todos_flujos[todos_flujos > 0]), color="#922B21",
+                linestyle="--", linewidth=1.5, label=f"Mediana activas")
+axes[0].set_xlabel("Flujo (mmol/gDW/h)")
+axes[0].set_ylabel("Frecuencia (N reacciones)")
+axes[0].set_title("Distribución completa de flujos")
+axes[0].spines[["top", "right"]].set_visible(False)
+axes[0].legend(fontsize=9)
+
+# Panel derecho: solo reacciones activas en escala log
+activos = todos_flujos[todos_flujos > 1e-6]
+axes[1].hist(activos, bins=20, color="#117A65", alpha=0.85, edgecolor="white",
+             log=True)
+axes[1].set_xlabel("Flujo (mmol/gDW/h)")
+axes[1].set_ylabel("Frecuencia (escala logarítmica)")
+axes[1].set_title(f"Reacciones activas (N={len(activos)})")
+axes[1].spines[["top", "right"]].set_visible(False)
+
+plt.suptitle("Análisis estadístico de la distribución de flujos FBA",
+             fontsize=12, y=1.02)
+plt.tight_layout()
+plt.savefig("histograma_flujos.png", dpi=300, bbox_inches="tight")
+plt.show()
+```
+
+---
+
+## 6.3 Figuras Multi-Panel y Anotaciones
+
+```python
+fig, axes = plt.subplots(2, 2, figsize=(10, 8))
+
+reacciones = ["PFK", "TPI", "ENO", "PYK", "CS", "ACONa", "ICDHyr", "MDH"]
+flujos_base = [4.86, 4.86, 9.72, 9.72, 3.12, 3.12, 3.12, 3.09]
+
+# ── Panel A: flujos absolutos ──
+axes[0,0].barh(reacciones, flujos_base, color="#1B4F72", height=0.6)
+axes[0,0].set_xlabel("Flujo (mmol/gDW/h)")
+axes[0,0].set_title("A — Flujos absolutos", fontweight="bold")
+axes[0,0].spines[["top", "right"]].set_visible(False)
+
+# ── Panel B: flujos normalizados ──
+flujos_norm = [v / max(flujos_base) for v in flujos_base]
+colores_b   = ["#117A65" if v > 0.5 else "#B7950B" for v in flujos_norm]
+axes[0,1].barh(reacciones, flujos_norm, color=colores_b, height=0.6)
+axes[0,1].axvline(0.5, color="#922B21", linestyle=":", linewidth=1.2)
+axes[0,1].set_xlabel("Flujo relativo (normalizado)")
+axes[0,1].set_title("B — Flujos normalizados", fontweight="bold")
+axes[0,1].spines[["top", "right"]].set_visible(False)
+
+# ── Panel C: perfil temporal ficticio ──
+tiempo = np.linspace(0, 12, 100)
+conc   = 10 * np.exp(-0.3 * tiempo) + 0.5
+axes[1,0].plot(tiempo, conc, color="#1B4F72", linewidth=2)
+axes[1,0].fill_between(tiempo, conc * 0.9, conc * 1.1,
+                         alpha=0.2, color="#1B4F72", label="± 10% IC")
+axes[1,0].set_xlabel("Tiempo (h)")
+axes[1,0].set_ylabel("[Glucosa] (mM)")
+axes[1,0].set_title("C — Consumo de glucosa", fontweight="bold")
+axes[1,0].legend(fontsize=8)
+axes[1,0].spines[["top", "right"]].set_visible(False)
+
+# ── Panel D: diagrama de pastel por subsistema ──
+labels_pie = ["Glucólisis", "Ciclo TCA", "Pent-Fosfato", "Otros"]
+sizes_pie  = [38, 28, 17, 17]
+colors_pie = ["#1B4F72", "#117A65", "#B7950B", "#5C5C6E"]
+axes[1,1].pie(sizes_pie, labels=labels_pie, colors=colors_pie,
+              autopct="%1.1f%%", startangle=90,
+              wedgeprops={"edgecolor": "white", "linewidth": 1.5})
+axes[1,1].set_title("D — Distribución por subsistema", fontweight="bold")
+
+plt.suptitle("Panel integrado — Análisis de flujos metabólicos", fontsize=13, y=1.01)
+plt.tight_layout()
+plt.savefig("panel_integrado.pdf", dpi=300, bbox_inches="tight")
+plt.show()
+```
+
+---
+
+## 6.4 Exportación para Publicación
+
+```python
+# Configuración global de estilo para figuras de publicación
+import matplotlib as mpl
+
+mpl.rcParams.update({
+    "font.family"       : "sans-serif",
+    "font.size"         : 10,
+    "axes.titlesize"    : 11,
+    "axes.labelsize"    : 10,
+    "xtick.labelsize"   : 9,
+    "ytick.labelsize"   : 9,
+    "legend.fontsize"   : 9,
+    "figure.dpi"        : 150,
+    "savefig.dpi"       : 300,
+    "savefig.bbox"      : "tight",
+    "axes.spines.top"   : False,
+    "axes.spines.right" : False,
+    "axes.linewidth"    : 0.8,
+    "grid.alpha"        : 0.3,
+})
+
+# Exportar en múltiples formatos desde una sola figura:
+fig, ax = plt.subplots(figsize=(6, 4))
+ax.plot([1,2,3,4], [2,4,3,5], color="#1B4F72", linewidth=2)
+ax.set_title("Figura de ejemplo para publicación")
+
+# PNG — para presentaciones y web (compresión sin pérdida con alta resolución):
+fig.savefig("figura_publicacion.png", format="png", dpi=300)
+
+# PDF — para revistas (vectorial, escala sin pérdida):
+fig.savefig("figura_publicacion.pdf", format="pdf")
+
+# SVG — para edición posterior en Inkscape/Illustrator:
+fig.savefig("figura_publicacion.svg", format="svg")
+
+print("Figuras exportadas: .png (300dpi), .pdf (vectorial), .svg (editable)")
+```
+
+---
+
+## 6.5 🔬 Ejercicio Integrador: Visualizar Distribución de Flujos FBA
+
+::: {.ejercicio-header}
+Ejercicio 6.1 — Nivel: [Medio]{.badge-nivel .medio}
+:::
+
+::: {.ejercicio-body}
+Con los datos de flujos de los ejercicios anteriores, construye una figura de dos paneles que muestre:
+
+1. **Panel izquierdo**: gráfica de barras horizontales con los 10 flujos de mayor magnitud, coloreados por signo (positivo = verde, negativo = rojo).
+2. **Panel derecho**: histograma de todos los flujos con marcadores para la media y la mediana.
+
+Exporta la figura en PDF con resolución de 300 dpi. La figura debe incluir título general, etiquetas de ejes, y una nota al pie indicando el modelo y la condición de simulación.
+
+```python
+import matplotlib.pyplot as plt
+import numpy as np
+
+np.random.seed(42)
+rxn_ids = [f"RXN_{i:03d}" for i in range(30)]
+flujos  = np.random.normal(0, 5, 30)
+
+# ── Tu código aquí ──
+# Pista: usa plt.subplots(1, 2), barh() con colores condicionales y hist()
+```
+:::
+
+---
+
+## 📚 Para Profundizar
+
+- **VanderPlas, J.** (2016). *Python Data Science Handbook*, Cap. 4: "Visualization with Matplotlib". — Acceso abierto online.
+- **McKinney, W.** (2022). *Python for Data Analysis*, 3ª ed. O'Reilly. — Capítulo 9: "Plotting and Visualization".
+- **Documentación oficial Matplotlib**: [https://matplotlib.org/stable/](https://matplotlib.org/stable/)
+- **Gallery de Matplotlib**: [https://matplotlib.org/stable/gallery/index.html](https://matplotlib.org/stable/gallery/index.html) — referencia visual de todos los tipos de gráficas.

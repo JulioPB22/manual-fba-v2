@@ -1,0 +1,1740 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="es" xml:lang="es"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Manual en español sobre Flux Balance Analysis (FBA) con Python y CobraPy, orientado a estudiantes de bioinformática, biología computacional e ingeniería biotecnológica de nivel universitario y posgrado.">
+
+<title>8&nbsp; Estructuras de Control de Flujo y Funciones – Análisis de Balance de Flujos Metabólicos con Python</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/06-visualizacion.html" rel="next">
+<link href="../chapters/04-pandas.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-8a36787d37a309c00503ce8984a43a6b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-7e29095fd6801b388fb53898fd2568a8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "language": {
+    "search-no-results-text": "No se han encontrado resultados",
+    "search-matching-documents-text": "documentos encontrados",
+    "search-copy-link-title": "Copiar el enlace en la búsqueda",
+    "search-hide-matches-text": "Ocultar resultados adicionales",
+    "search-more-match-text": "resultado adicional en este documento",
+    "search-more-matches-text": "resultados adicionales en este documento",
+    "search-clear-button-title": "Borrar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Buscar"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&amp;family=Playfair+Display:ital,wght@0,700;1,400&amp;family=Source+Sans+3:ital,wght@0,400;0,600;1,400&amp;display=swap" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">Análisis de Balance de Flujos Metabólicos con Python</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Buscar"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Navegación de palanca" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/[tu-usuario]/manual-fba-python"> <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+    <a href="https://github.com/[tu-usuario]/manual-fba-python" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+    <div class="dropdown">
+      <a href="" title="Download" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label="Download"><i class="bi bi-download"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../Análisis-de-Balance-de-Flujos-Metabólicos-con-Python.pdf">
+              <i class="bi bi-file-pdf pe-1"></i>
+            Download PDF
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item quarto-navbar-tools-item" href="../Análisis-de-Balance-de-Flujos-Metabólicos-con-Python.epub">
+              <i class="bi bi-journal pe-1"></i>
+            Download ePub
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-instalacion.html">Parte I — Fundamentos de Python para Bioinformáticos</a></li><li class="breadcrumb-item"><a href="../chapters/05-control-flujo.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estructuras de Control de Flujo y Funciones</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Buscar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Buscar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Prefacio</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../prologo.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Prólogo al Estudiante</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../indice-general.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Índice General</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Parte I — Fundamentos de Python para Bioinformáticos</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/01-instalacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Instalación de Python e Introducción al Entorno de Desarrollo</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/02-tipos-datos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Tipos de Datos y Estructuras en Python</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/03-numpy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">NumPy — Vectores y Matrices para Biología Computacional</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/04-pandas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pandas — DataFrames para Análisis Biológico</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/05-control-flujo.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estructuras de Control de Flujo y Funciones</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/06-visualizacion.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Visualización Científica con Matplotlib</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/07-paquetes-buenas-practicas.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">07-paquetes-buenas-practicas</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false">
+ <span class="menu-text">Parte II — Sistemas Biológicos y Modelado</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="false" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/08-sistemas-biologicos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">08-sistemas-biologicos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/09-tipos-modelos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">09-tipos-modelos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/10-redes-grafos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">13</span>&nbsp; <span class="chapter-title">10-redes-grafos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/11-metabolismo-matematica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">14</span>&nbsp; <span class="chapter-title">11-metabolismo-matematica</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false">
+ <span class="menu-text">Parte III — Flux Balance Analysis con CobraPy</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="false" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/12-fundamentos-fba.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">15</span>&nbsp; <span class="chapter-title">12-fundamentos-fba</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/13-formulacion-matematica.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">16</span>&nbsp; <span class="chapter-title">13-formulacion-matematica</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/14-intro-cobrapy.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">17</span>&nbsp; <span class="chapter-title">14-intro-cobrapy</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/15-analisis-resultados.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">18</span>&nbsp; <span class="chapter-title">15-analisis-resultados</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/16-casos-practicos.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">19</span>&nbsp; <span class="chapter-title">16-casos-practicos</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/17-visualizacion-redes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">20</span>&nbsp; <span class="chapter-title">17-visualizacion-redes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/18-errores-comunes.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">21</span>&nbsp; <span class="chapter-title">18-errores-comunes</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/19-proyecto-final.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">22</span>&nbsp; <span class="chapter-title">19-proyecto-final</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false">
+ <span class="menu-text">Apéndices</span></a>
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="false" aria-label="Alternar sección">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 ">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/A-instalacion-detallada.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">23</span>&nbsp; <span class="chapter-title">A-instalacion-detallada</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/B-datasets.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">24</span>&nbsp; <span class="chapter-title">B-datasets</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/C-glosario.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">25</span>&nbsp; <span class="chapter-title">C-glosario</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/D-como-citar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">26</span>&nbsp; <span class="chapter-title">D-como-citar</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">27</span>&nbsp; <span class="chapter-title">Referencias</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active" data-toc-expanded="2">
+    <h2 id="toc-title">En este capítulo</h2>
+   
+  <ul>
+  <li><a href="#motivación-biológica" id="toc-motivación-biológica" class="nav-link active" data-scroll-target="#motivación-biológica"><span class="header-section-number">8.1</span> 🧬 Motivación biológica</a></li>
+  <li><a href="#condicionales-if-elif-else" id="toc-condicionales-if-elif-else" class="nav-link" data-scroll-target="#condicionales-if-elif-else"><span class="header-section-number">8.2</span> 5.1 Condicionales: <code>if</code>, <code>elif</code>, <code>else</code></a></li>
+  <li><a href="#ciclos-iterativos-for-y-while" id="toc-ciclos-iterativos-for-y-while" class="nav-link" data-scroll-target="#ciclos-iterativos-for-y-while"><span class="header-section-number">8.3</span> 5.2 Ciclos Iterativos: <code>for</code> y <code>while</code></a>
+  <ul class="collapse">
+  <li><a href="#bucles-for-y-el-estilo-pythónico" id="toc-bucles-for-y-el-estilo-pythónico" class="nav-link" data-scroll-target="#bucles-for-y-el-estilo-pythónico"><span class="header-section-number">8.3.1</span> Bucles <code>for</code> y el estilo pythónico</a></li>
+  <li><a href="#bucles-while-iteración-condicional" id="toc-bucles-while-iteración-condicional" class="nav-link" data-scroll-target="#bucles-while-iteración-condicional"><span class="header-section-number">8.3.2</span> Bucles <code>while</code> — iteración condicional</a></li>
+  </ul></li>
+  <li><a href="#funciones-definición-y-argumentos" id="toc-funciones-definición-y-argumentos" class="nav-link" data-scroll-target="#funciones-definición-y-argumentos"><span class="header-section-number">8.4</span> 5.3 Funciones: Definición y Argumentos</a>
+  <ul class="collapse">
+  <li><a href="#funciones-que-retornan-múltiples-valores" id="toc-funciones-que-retornan-múltiples-valores" class="nav-link" data-scroll-target="#funciones-que-retornan-múltiples-valores"><span class="header-section-number">8.4.1</span> Funciones que retornan múltiples valores</a></li>
+  </ul></li>
+  <li><a href="#funciones-de-orden-superior-y-lambda" id="toc-funciones-de-orden-superior-y-lambda" class="nav-link" data-scroll-target="#funciones-de-orden-superior-y-lambda"><span class="header-section-number">8.5</span> 5.4 Funciones de Orden Superior y <code>lambda</code></a></li>
+  <li><a href="#manejo-de-excepciones" id="toc-manejo-de-excepciones" class="nav-link" data-scroll-target="#manejo-de-excepciones"><span class="header-section-number">8.6</span> 5.5 Manejo de Excepciones</a></li>
+  <li><a href="#ejercicio-integrador-función-de-análisis-de-archivos-fasta" id="toc-ejercicio-integrador-función-de-análisis-de-archivos-fasta" class="nav-link" data-scroll-target="#ejercicio-integrador-función-de-análisis-de-archivos-fasta"><span class="header-section-number">8.7</span> 5.6 🔬 Ejercicio Integrador: Función de Análisis de Archivos FASTA</a></li>
+  <li><a href="#para-profundizar" id="toc-para-profundizar" class="nav-link" data-scroll-target="#para-profundizar"><span class="header-section-number">8.8</span> 📚 Para Profundizar</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/[tu-usuario]/manual-fba-python/edit/main/chapters/05-control-flujo.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/[tu-usuario]/manual-fba-python/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/01-instalacion.html">Parte I — Fundamentos de Python para Bioinformáticos</a></li><li class="breadcrumb-item"><a href="../chapters/05-control-flujo.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estructuras de Control de Flujo y Funciones</span></a></li></ol></nav>
+<div class="quarto-title">
+<div class="quarto-title-block"><div><h1 class="title"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Estructuras de Control de Flujo y Funciones</span></h1><button type="button" class="btn code-tools-button" id="quarto-code-tools-source"><i class="bi"></i> Código</button></div></div>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="objetivos-de-aprendizaje" class="level4 objetivos-box">
+<h4 class="anchored" data-anchor-id="objetivos-de-aprendizaje">Objetivos de aprendizaje</h4>
+<p>Al finalizar este capítulo serás capaz de:</p>
+<ul>
+<li>Construir flujos de decisión con <code>if</code>, <code>elif</code> y <code>else</code> aplicados a contextos biológicos.</li>
+<li>Iterar sobre colecciones con <code>for</code> y <code>while</code> de manera eficiente y pythónica.</li>
+<li>Definir funciones con argumentos posicionales, por nombre, con valores predeterminados y con número variable de parámetros.</li>
+<li>Aplicar funciones de orden superior (<code>map</code>, <code>filter</code>) y expresiones <code>lambda</code>.</li>
+<li>Manejar excepciones con <code>try / except / finally</code> para código científico robusto.</li>
+<li>Construir una función completa de análisis de secuencias FASTA como ejercicio integrador.</li>
+</ul>
+</section>
+<section id="motivación-biológica" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="motivación-biológica"><span class="header-section-number">8.1</span> 🧬 Motivación biológica</h2>
+<p>El control de flujo no es un concepto abstracto: es la diferencia entre un script que analiza un archivo FASTA de diez secuencias y uno que analiza diez mil. Los bucles <code>for</code> sobre listas de metabolitos, los condicionales que clasifican reacciones por subsistema, las funciones que encapsulan el cálculo del contenido GC —todos estos son patrones que aparecerán repetidamente en los capítulos de FBA. Dominarlos ahora significa que, cuando lleguemos a CobraPy, podremos concentrarnos en la biología del modelo en lugar de en la mecánica del código.</p>
+<hr>
+</section>
+<section id="condicionales-if-elif-else" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="condicionales-if-elif-else"><span class="header-section-number">8.2</span> 5.1 Condicionales: <code>if</code>, <code>elif</code>, <code>else</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1"></a><span class="co"># Clasificación de reacciones por magnitud de flujo</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="co"># (criterio basado en Orth et al., 2010)</span></span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="kw">def</span> clasificar_flujo(flujo: <span class="bu">float</span>, umbral_bajo: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span id="cb1-5"><a href="#cb1-5"></a>                      umbral_alto: <span class="bu">float</span> <span class="op">=</span> <span class="fl">5.0</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb1-6"><a href="#cb1-6"></a>    <span class="co">"""</span></span>
+<span id="cb1-7"><a href="#cb1-7"></a><span class="co">    Clasifica un flujo metabólico en tres categorías.</span></span>
+<span id="cb1-8"><a href="#cb1-8"></a><span class="co">    </span></span>
+<span id="cb1-9"><a href="#cb1-9"></a><span class="co">    Parámetros</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a><span class="co">    ----------</span></span>
+<span id="cb1-11"><a href="#cb1-11"></a><span class="co">    flujo       : float — valor del flujo en mmol/gDW/h</span></span>
+<span id="cb1-12"><a href="#cb1-12"></a><span class="co">    umbral_bajo : float — umbral inferior de actividad (default 0.1)</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a><span class="co">    umbral_alto : float — umbral de alta actividad (default 5.0)</span></span>
+<span id="cb1-14"><a href="#cb1-14"></a><span class="co">    </span></span>
+<span id="cb1-15"><a href="#cb1-15"></a><span class="co">    Retorna</span></span>
+<span id="cb1-16"><a href="#cb1-16"></a><span class="co">    -------</span></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="co">    str — 'inactiva', 'baja actividad' o 'alta actividad'</span></span>
+<span id="cb1-18"><a href="#cb1-18"></a><span class="co">    """</span></span>
+<span id="cb1-19"><a href="#cb1-19"></a>    magnitud <span class="op">=</span> <span class="bu">abs</span>(flujo)</span>
+<span id="cb1-20"><a href="#cb1-20"></a>    </span>
+<span id="cb1-21"><a href="#cb1-21"></a>    <span class="cf">if</span> magnitud <span class="op">&lt;</span> umbral_bajo:</span>
+<span id="cb1-22"><a href="#cb1-22"></a>        <span class="cf">return</span> <span class="st">"inactiva"</span></span>
+<span id="cb1-23"><a href="#cb1-23"></a>    <span class="cf">elif</span> magnitud <span class="op">&lt;</span> umbral_alto:</span>
+<span id="cb1-24"><a href="#cb1-24"></a>        <span class="cf">return</span> <span class="st">"baja actividad"</span></span>
+<span id="cb1-25"><a href="#cb1-25"></a>    <span class="cf">else</span>:</span>
+<span id="cb1-26"><a href="#cb1-26"></a>        <span class="cf">return</span> <span class="st">"alta actividad"</span></span>
+<span id="cb1-27"><a href="#cb1-27"></a></span>
+<span id="cb1-28"><a href="#cb1-28"></a></span>
+<span id="cb1-29"><a href="#cb1-29"></a><span class="co"># Aplicación a un dict de flujos</span></span>
+<span id="cb1-30"><a href="#cb1-30"></a>flujos_ejemplo <span class="op">=</span> {</span>
+<span id="cb1-31"><a href="#cb1-31"></a>    <span class="st">"PFK"</span>: <span class="fl">4.86</span>, <span class="st">"CS"</span>: <span class="fl">0.0</span>, <span class="st">"ATPM"</span>: <span class="fl">8.39</span>, <span class="st">"ENO"</span>: <span class="fl">9.72</span>,</span>
+<span id="cb1-32"><a href="#cb1-32"></a>    <span class="st">"FHL"</span>: <span class="fl">0.05</span>, <span class="st">"PPC"</span>: <span class="fl">2.50</span></span>
+<span id="cb1-33"><a href="#cb1-33"></a>}</span>
+<span id="cb1-34"><a href="#cb1-34"></a></span>
+<span id="cb1-35"><a href="#cb1-35"></a><span class="cf">for</span> rxn, v <span class="kw">in</span> flujos_ejemplo.items():</span>
+<span id="cb1-36"><a href="#cb1-36"></a>    categoria <span class="op">=</span> clasificar_flujo(v)</span>
+<span id="cb1-37"><a href="#cb1-37"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>rxn<span class="sc">:6s}</span><span class="ss"> (</span><span class="sc">{</span>v<span class="sc">:6.2f}</span><span class="ss"> mmol/gDW/h): </span><span class="sc">{</span>categoria<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="ciclos-iterativos-for-y-while" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="ciclos-iterativos-for-y-while"><span class="header-section-number">8.3</span> 5.2 Ciclos Iterativos: <code>for</code> y <code>while</code></h2>
+<section id="bucles-for-y-el-estilo-pythónico" class="level3" data-number="8.3.1">
+<h3 data-number="8.3.1" class="anchored" data-anchor-id="bucles-for-y-el-estilo-pythónico"><span class="header-section-number">8.3.1</span> Bucles <code>for</code> y el estilo pythónico</h3>
+<p>Python favorece la iteración sobre objetos directamente, sin índices explícitos cuando es posible. Las funciones <code>enumerate()</code> y <code>zip()</code> son herramientas esenciales:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a>metabolitos  <span class="op">=</span> [<span class="st">"Glucosa"</span>, <span class="st">"G6P"</span>, <span class="st">"F6P"</span>, <span class="st">"FBP"</span>, <span class="st">"PEP"</span>, <span class="st">"Piruvato"</span>]</span>
+<span id="cb2-2"><a href="#cb2-2"></a>compartimentos <span class="op">=</span> [<span class="st">"e"</span>,     <span class="st">"c"</span>,   <span class="st">"c"</span>,   <span class="st">"c"</span>,   <span class="st">"c"</span>,   <span class="st">"c"</span>  ]</span>
+<span id="cb2-3"><a href="#cb2-3"></a></span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="co"># ── enumerate: índice + valor ──</span></span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="bu">print</span>(<span class="st">"Metabolitos con índice:"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="cf">for</span> i, met <span class="kw">in</span> <span class="bu">enumerate</span>(metabolitos):</span>
+<span id="cb2-7"><a href="#cb2-7"></a>    <span class="bu">print</span>(<span class="ss">f"  [</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>met<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a><span class="co"># ── zip: dos listas en paralelo ──</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Metabolitos y compartimentos:"</span>)</span>
+<span id="cb2-11"><a href="#cb2-11"></a><span class="cf">for</span> met, comp <span class="kw">in</span> <span class="bu">zip</span>(metabolitos, compartimentos):</span>
+<span id="cb2-12"><a href="#cb2-12"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>met<span class="sc">:12s}</span><span class="ss"> → compartimento '</span><span class="sc">{</span>comp<span class="sc">}</span><span class="ss">'"</span>)</span>
+<span id="cb2-13"><a href="#cb2-13"></a></span>
+<span id="cb2-14"><a href="#cb2-14"></a><span class="co"># ── Iteración sobre diccionario ──</span></span>
+<span id="cb2-15"><a href="#cb2-15"></a>estequiometria_pfk <span class="op">=</span> {<span class="st">"atp_c"</span>: <span class="op">-</span><span class="dv">1</span>, <span class="st">"f6p_c"</span>: <span class="op">-</span><span class="dv">1</span>, <span class="st">"adp_c"</span>: <span class="dv">1</span>, <span class="st">"fdp_c"</span>: <span class="dv">1</span>, <span class="st">"h_c"</span>: <span class="dv">1</span>}</span>
+<span id="cb2-16"><a href="#cb2-16"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">PFK — Estequiometría:"</span>)</span>
+<span id="cb2-17"><a href="#cb2-17"></a><span class="cf">for</span> met, coef <span class="kw">in</span> estequiometria_pfk.items():</span>
+<span id="cb2-18"><a href="#cb2-18"></a>    rol <span class="op">=</span> <span class="st">"sustrato"</span> <span class="cf">if</span> coef <span class="op">&lt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"producto"</span></span>
+<span id="cb2-19"><a href="#cb2-19"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>met<span class="sc">:8s}</span><span class="ss"> [</span><span class="sc">{</span>coef<span class="sc">:+d}</span><span class="ss">]  → </span><span class="sc">{</span>rol<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+</section>
+<section id="bucles-while-iteración-condicional" class="level3" data-number="8.3.2">
+<h3 data-number="8.3.2" class="anchored" data-anchor-id="bucles-while-iteración-condicional"><span class="header-section-number">8.3.2</span> Bucles <code>while</code> — iteración condicional</h3>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># Simulación simplificada de convergencia iterativa</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a><span class="co"># (precursor conceptual del solver de FBA)</span></span>
+<span id="cb3-3"><a href="#cb3-3"></a></span>
+<span id="cb3-4"><a href="#cb3-4"></a><span class="im">import</span> math</span>
+<span id="cb3-5"><a href="#cb3-5"></a></span>
+<span id="cb3-6"><a href="#cb3-6"></a><span class="kw">def</span> iteracion_punto_fijo(x_init: <span class="bu">float</span>, tol: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1e-8</span>,</span>
+<span id="cb3-7"><a href="#cb3-7"></a>                          max_iter: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1000</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>:</span>
+<span id="cb3-8"><a href="#cb3-8"></a>    <span class="co">"""</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="co">    Itera x ← sqrt(x + 1) hasta convergencia.</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a><span class="co">    Ilustra el patrón while con criterio de tolerancia.</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a><span class="co">    """</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>    x <span class="op">=</span> x_init</span>
+<span id="cb3-13"><a href="#cb3-13"></a>    iteraciones <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a>    </span>
+<span id="cb3-15"><a href="#cb3-15"></a>    <span class="cf">while</span> iteraciones <span class="op">&lt;</span> max_iter:</span>
+<span id="cb3-16"><a href="#cb3-16"></a>        x_nuevo <span class="op">=</span> math.sqrt(x <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb3-17"><a href="#cb3-17"></a>        delta    <span class="op">=</span> <span class="bu">abs</span>(x_nuevo <span class="op">-</span> x)</span>
+<span id="cb3-18"><a href="#cb3-18"></a>        x        <span class="op">=</span> x_nuevo</span>
+<span id="cb3-19"><a href="#cb3-19"></a>        iteraciones <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb3-20"><a href="#cb3-20"></a>        </span>
+<span id="cb3-21"><a href="#cb3-21"></a>        <span class="cf">if</span> delta <span class="op">&lt;</span> tol:</span>
+<span id="cb3-22"><a href="#cb3-22"></a>            <span class="cf">return</span> x, iteraciones, <span class="st">"convergió"</span></span>
+<span id="cb3-23"><a href="#cb3-23"></a>    </span>
+<span id="cb3-24"><a href="#cb3-24"></a>    <span class="cf">return</span> x, iteraciones, <span class="st">"no convergió"</span></span>
+<span id="cb3-25"><a href="#cb3-25"></a></span>
+<span id="cb3-26"><a href="#cb3-26"></a></span>
+<span id="cb3-27"><a href="#cb3-27"></a>valor, n_iter, estado <span class="op">=</span> iteracion_punto_fijo(x_init<span class="op">=</span><span class="fl">10.0</span>)</span>
+<span id="cb3-28"><a href="#cb3-28"></a><span class="bu">print</span>(<span class="ss">f"Resultado: </span><span class="sc">{</span>valor<span class="sc">:.10f}</span><span class="ss">"</span>)</span>
+<span id="cb3-29"><a href="#cb3-29"></a><span class="bu">print</span>(<span class="ss">f"Iteraciones: </span><span class="sc">{</span>n_iter<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>estado<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb3-30"><a href="#cb3-30"></a><span class="co"># El punto fijo de x = sqrt(x+1) es el número de oro φ ≈ 1.6180339887</span></span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="funciones-definición-y-argumentos" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="funciones-definición-y-argumentos"><span class="header-section-number">8.4</span> 5.3 Funciones: Definición y Argumentos</h2>
+<p>Python soporta cuatro tipos de argumentos en las funciones:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1"></a><span class="co"># Función con todos los tipos de argumentos</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="kw">def</span> calcular_tasa_especifica(</span>
+<span id="cb4-3"><a href="#cb4-3"></a>    flujo_objetivo: <span class="bu">float</span>,          <span class="co"># argumento posicional (requerido)</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>    biomasa: <span class="bu">float</span>,                 <span class="co"># argumento posicional (requerido)</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>    unidades: <span class="bu">str</span> <span class="op">=</span> <span class="st">"mmol/gDW/h"</span>,  <span class="co"># argumento por nombre con default</span></span>
+<span id="cb4-6"><a href="#cb4-6"></a>    verbose: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>,          <span class="co"># argumento por nombre con default</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb4-8"><a href="#cb4-8"></a>    <span class="co">"""</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">    Calcula la tasa específica de producción de un metabolito.</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">    </span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">    Parámetros</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">    ----------</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">    flujo_objetivo : float — flujo de la reacción de interés</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">    biomasa        : float — flujo de la reacción de biomasa (h⁻¹)</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">    unidades       : str   — sistema de unidades (solo para impresión)</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="co">    verbose        : bool  — si True, imprime el reporte detallado</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">    </span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="co">    Retorna</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co">    -------</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co">    float — tasa específica en las mismas unidades del flujo</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">    """</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a>    <span class="cf">if</span> biomasa <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb4-23"><a href="#cb4-23"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"La biomasa debe ser positiva, recibido: </span><span class="sc">{</span>biomasa<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-24"><a href="#cb4-24"></a>    </span>
+<span id="cb4-25"><a href="#cb4-25"></a>    tasa <span class="op">=</span> flujo_objetivo <span class="op">/</span> biomasa</span>
+<span id="cb4-26"><a href="#cb4-26"></a>    </span>
+<span id="cb4-27"><a href="#cb4-27"></a>    <span class="cf">if</span> verbose:</span>
+<span id="cb4-28"><a href="#cb4-28"></a>        <span class="bu">print</span>(<span class="ss">f"  Flujo objetivo  : </span><span class="sc">{</span>flujo_objetivo<span class="sc">:.4f}</span><span class="ss"> </span><span class="sc">{</span>unidades<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb4-29"><a href="#cb4-29"></a>        <span class="bu">print</span>(<span class="ss">f"  Tasa de biomasa : </span><span class="sc">{</span>biomasa<span class="sc">:.4f}</span><span class="ss"> h⁻¹"</span>)</span>
+<span id="cb4-30"><a href="#cb4-30"></a>        <span class="bu">print</span>(<span class="ss">f"  Tasa específica : </span><span class="sc">{</span>tasa<span class="sc">:.4f}</span><span class="ss"> </span><span class="sc">{</span>unidades<span class="sc">.</span>replace(<span class="st">'/gDW'</span>,<span class="st">''</span>)<span class="sc">}</span><span class="ss"> /célula"</span>)</span>
+<span id="cb4-31"><a href="#cb4-31"></a>    </span>
+<span id="cb4-32"><a href="#cb4-32"></a>    <span class="cf">return</span> tasa</span>
+<span id="cb4-33"><a href="#cb4-33"></a></span>
+<span id="cb4-34"><a href="#cb4-34"></a></span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="co"># Llamadas equivalentes:</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a>tasa <span class="op">=</span> calcular_tasa_especifica(<span class="fl">3.12</span>, <span class="fl">0.874</span>)              <span class="co"># posicional</span></span>
+<span id="cb4-37"><a href="#cb4-37"></a>tasa <span class="op">=</span> calcular_tasa_especifica(flujo_objetivo<span class="op">=</span><span class="fl">3.12</span>, biomasa<span class="op">=</span><span class="fl">0.874</span>, verbose<span class="op">=</span><span class="va">True</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<section id="funciones-que-retornan-múltiples-valores" class="level3" data-number="8.4.1">
+<h3 data-number="8.4.1" class="anchored" data-anchor-id="funciones-que-retornan-múltiples-valores"><span class="header-section-number">8.4.1</span> Funciones que retornan múltiples valores</h3>
+<p>En Python, retornar múltiples valores es idiomático mediante tuplas:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1"></a><span class="kw">def</span> analizar_vector_flujos(v: <span class="bu">list</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>:</span>
+<span id="cb5-2"><a href="#cb5-2"></a>    <span class="co">"""</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a><span class="co">    Calcula estadísticas básicas de un vector de flujos.</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">    Retorna una tupla con múltiples métricas.</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">    """</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    v_arr <span class="op">=</span> np.array(v)</span>
+<span id="cb5-8"><a href="#cb5-8"></a>    </span>
+<span id="cb5-9"><a href="#cb5-9"></a>    activos    <span class="op">=</span> v_arr[np.<span class="bu">abs</span>(v_arr) <span class="op">&gt;</span> <span class="fl">1e-6</span>]</span>
+<span id="cb5-10"><a href="#cb5-10"></a>    n_activos  <span class="op">=</span> <span class="bu">len</span>(activos)</span>
+<span id="cb5-11"><a href="#cb5-11"></a>    flujo_max  <span class="op">=</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(v_arr))</span>
+<span id="cb5-12"><a href="#cb5-12"></a>    flujo_med  <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(activos)) <span class="cf">if</span> n_activos <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="fl">0.0</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>    suma_total <span class="op">=</span> np.<span class="bu">sum</span>(np.<span class="bu">abs</span>(v_arr))</span>
+<span id="cb5-14"><a href="#cb5-14"></a>    </span>
+<span id="cb5-15"><a href="#cb5-15"></a>    <span class="cf">return</span> n_activos, flujo_max, flujo_med, suma_total</span>
+<span id="cb5-16"><a href="#cb5-16"></a></span>
+<span id="cb5-17"><a href="#cb5-17"></a></span>
+<span id="cb5-18"><a href="#cb5-18"></a>flujos_test <span class="op">=</span> [<span class="fl">5.21</span>, <span class="fl">0.0</span>, <span class="fl">4.86</span>, <span class="fl">9.72</span>, <span class="fl">0.0</span>, <span class="fl">3.12</span>, <span class="fl">0.874</span>]</span>
+<span id="cb5-19"><a href="#cb5-19"></a>n, f_max, f_med, f_sum <span class="op">=</span> analizar_vector_flujos(flujos_test)</span>
+<span id="cb5-20"><a href="#cb5-20"></a><span class="bu">print</span>(<span class="ss">f"Activas: </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> | Máximo: </span><span class="sc">{</span>f_max<span class="sc">:.3f}</span><span class="ss"> | Medio: </span><span class="sc">{</span>f_med<span class="sc">:.3f}</span><span class="ss"> | Suma: </span><span class="sc">{</span>f_sum<span class="sc">:.3f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+</section>
+<section id="funciones-de-orden-superior-y-lambda" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="funciones-de-orden-superior-y-lambda"><span class="header-section-number">8.5</span> 5.4 Funciones de Orden Superior y <code>lambda</code></h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># ── map: aplica una función a cada elemento ──</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>secuencias_adn <span class="op">=</span> [<span class="st">"ATGCGT"</span>, <span class="st">"GCATCG"</span>, <span class="st">"TTAACC"</span>, <span class="st">"GCGCGC"</span>]</span>
+<span id="cb6-3"><a href="#cb6-3"></a></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co"># Calcular GC-content de cada secuencia</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="kw">def</span> gc_content(seq: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb6-6"><a href="#cb6-6"></a>    <span class="cf">return</span> (seq.count(<span class="st">"G"</span>) <span class="op">+</span> seq.count(<span class="st">"C"</span>)) <span class="op">/</span> <span class="bu">len</span>(seq) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a>gc_values <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(gc_content, secuencias_adn))</span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="bu">print</span>(<span class="ss">f"GC-content: </span><span class="sc">{</span>[<span class="bu">round</span>(g, <span class="dv">1</span>) <span class="cf">for</span> g <span class="kw">in</span> gc_values]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co"># ── filter: retiene elementos que cumplen una condición ──</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co"># Conservar solo secuencias con GC &gt; 50%</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a>ricas_gc <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> seq: gc_content(seq) <span class="op">&gt;</span> <span class="dv">50</span>, secuencias_adn))</span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="bu">print</span>(<span class="ss">f"Secuencias ricas en GC (&gt;50%): </span><span class="sc">{</span>ricas_gc<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb6-15"><a href="#cb6-15"></a></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co"># ── lambda con sorted: ordenar metabolitos por fórmula molecular ──</span></span>
+<span id="cb6-17"><a href="#cb6-17"></a>metabolitos_datos <span class="op">=</span> [</span>
+<span id="cb6-18"><a href="#cb6-18"></a>    (<span class="st">"atp_c"</span>, <span class="st">"C10H12N5O13P3"</span>, <span class="op">-</span><span class="dv">4</span>),</span>
+<span id="cb6-19"><a href="#cb6-19"></a>    (<span class="st">"glc_D"</span>, <span class="st">"C6H12O6"</span>, <span class="dv">0</span>),</span>
+<span id="cb6-20"><a href="#cb6-20"></a>    (<span class="st">"pyr_c"</span>, <span class="st">"C3H4O3"</span>, <span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb6-21"><a href="#cb6-21"></a>]</span>
+<span id="cb6-22"><a href="#cb6-22"></a><span class="co"># Ordenar por número de carbonos (extraído de la fórmula)</span></span>
+<span id="cb6-23"><a href="#cb6-23"></a>ordenados <span class="op">=</span> <span class="bu">sorted</span>(metabolitos_datos, key<span class="op">=</span><span class="kw">lambda</span> x: <span class="bu">int</span>(x[<span class="dv">1</span>].split(<span class="st">"C"</span>)[<span class="dv">1</span>].split(<span class="st">"H"</span>)[<span class="dv">0</span>]))</span>
+<span id="cb6-24"><a href="#cb6-24"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Ordenados por carbonos: </span><span class="sc">{</span>[m[<span class="dv">0</span>] <span class="cf">for</span> m <span class="kw">in</span> ordenados]<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<hr>
+</section>
+<section id="manejo-de-excepciones" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="manejo-de-excepciones"><span class="header-section-number">8.6</span> 5.5 Manejo de Excepciones</h2>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a><span class="im">import</span> os</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="kw">def</span> cargar_modelo_sbml(ruta_archivo: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="co">"""</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">    Carga un modelo metabólico desde un archivo SBML.</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">    Maneja los errores más comunes de forma informativa.</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">    </span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">    En un proyecto real, usaría cobra.io.read_sbml_model()</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co">    """</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a>    <span class="cf">try</span>:</span>
+<span id="cb7-11"><a href="#cb7-11"></a>        <span class="cf">if</span> <span class="kw">not</span> os.path.exists(ruta_archivo):</span>
+<span id="cb7-12"><a href="#cb7-12"></a>            <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f"Archivo no encontrado: '</span><span class="sc">{</span>ruta_archivo<span class="sc">}</span><span class="ss">'"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13"></a>        </span>
+<span id="cb7-14"><a href="#cb7-14"></a>        <span class="cf">if</span> <span class="kw">not</span> ruta_archivo.endswith((<span class="st">".xml"</span>, <span class="st">".sbml"</span>)):</span>
+<span id="cb7-15"><a href="#cb7-15"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Formato no soportado. Se esperaba .xml o .sbml"</span>)</span>
+<span id="cb7-16"><a href="#cb7-16"></a>        </span>
+<span id="cb7-17"><a href="#cb7-17"></a>        <span class="co"># Simulación de carga exitosa</span></span>
+<span id="cb7-18"><a href="#cb7-18"></a>        <span class="bu">print</span>(<span class="ss">f"✓ Modelo cargado: </span><span class="sc">{</span>ruta_archivo<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-19"><a href="#cb7-19"></a>        <span class="cf">return</span> {<span class="st">"status"</span>: <span class="st">"ok"</span>, <span class="st">"ruta"</span>: ruta_archivo}</span>
+<span id="cb7-20"><a href="#cb7-20"></a>    </span>
+<span id="cb7-21"><a href="#cb7-21"></a>    <span class="cf">except</span> <span class="pp">FileNotFoundError</span> <span class="im">as</span> e:</span>
+<span id="cb7-22"><a href="#cb7-22"></a>        <span class="bu">print</span>(<span class="ss">f"[ERROR] </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-23"><a href="#cb7-23"></a>        <span class="bu">print</span>(<span class="st">"  → Verifica la ruta del archivo o descárgalo del repositorio BiGG."</span>)</span>
+<span id="cb7-24"><a href="#cb7-24"></a>        <span class="cf">return</span> {<span class="st">"status"</span>: <span class="st">"error"</span>, <span class="st">"msg"</span>: <span class="bu">str</span>(e)}</span>
+<span id="cb7-25"><a href="#cb7-25"></a>    </span>
+<span id="cb7-26"><a href="#cb7-26"></a>    <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:</span>
+<span id="cb7-27"><a href="#cb7-27"></a>        <span class="bu">print</span>(<span class="ss">f"[ERROR] </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-28"><a href="#cb7-28"></a>        <span class="cf">return</span> {<span class="st">"status"</span>: <span class="st">"error"</span>, <span class="st">"msg"</span>: <span class="bu">str</span>(e)}</span>
+<span id="cb7-29"><a href="#cb7-29"></a>    </span>
+<span id="cb7-30"><a href="#cb7-30"></a>    <span class="cf">finally</span>:</span>
+<span id="cb7-31"><a href="#cb7-31"></a>        <span class="co"># El bloque finally se ejecuta SIEMPRE, independientemente del resultado</span></span>
+<span id="cb7-32"><a href="#cb7-32"></a>        <span class="bu">print</span>(<span class="st">"  → Proceso de carga finalizado."</span>)</span>
+<span id="cb7-33"><a href="#cb7-33"></a></span>
+<span id="cb7-34"><a href="#cb7-34"></a></span>
+<span id="cb7-35"><a href="#cb7-35"></a><span class="co"># Pruebas</span></span>
+<span id="cb7-36"><a href="#cb7-36"></a>cargar_modelo_sbml(<span class="st">"e_coli_core.xml"</span>)         <span class="co"># FileNotFoundError</span></span>
+<span id="cb7-37"><a href="#cb7-37"></a>cargar_modelo_sbml(<span class="st">"modelo.csv"</span>)              <span class="co"># ValueError</span></span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Advertencia</span>⚠️ Error Común — Excepciones silenciosas
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nunca uses <code>except:</code> sin especificar el tipo de excepción (bare <code>except</code>). Captura silenciosa de todas las excepciones oculta bugs críticos. Siempre especifica la excepción más concreta posible:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a><span class="co"># MAL — captura todo, incluido KeyboardInterrupt:</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a><span class="cf">try</span>:</span>
+<span id="cb8-3"><a href="#cb8-3"></a>    result <span class="op">=</span> model.optimize()</span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="cf">except</span>:</span>
+<span id="cb8-5"><a href="#cb8-5"></a>    <span class="cf">pass</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co"># BIEN — específico y con manejo informativo:</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="cf">try</span>:</span>
+<span id="cb8-9"><a href="#cb8-9"></a>    result <span class="op">=</span> model.optimize()</span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="cf">except</span> cobra.exceptions.Infeasible:</span>
+<span id="cb8-11"><a href="#cb8-11"></a>    <span class="bu">print</span>(<span class="st">"Modelo inviable bajo las restricciones actuales."</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+<hr>
+</section>
+<section id="ejercicio-integrador-función-de-análisis-de-archivos-fasta" class="level2" data-number="8.7">
+<h2 data-number="8.7" class="anchored" data-anchor-id="ejercicio-integrador-función-de-análisis-de-archivos-fasta"><span class="header-section-number">8.7</span> 5.6 🔬 Ejercicio Integrador: Función de Análisis de Archivos FASTA</h2>
+<div class="ejercicio-header">
+<p>Ejercicio 5.1 — Nivel: <span class="badge-nivel medio">Medio</span></p>
+</div>
+<div class="ejercicio-body">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="co"># ─────────────────────────────────────────────────────────────────</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a><span class="co"># Función completa de análisis de archivos FASTA.</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co"># Integra: funciones, control de flujo, diccionarios, listas y</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co"># manejo de excepciones.</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co"># ─────────────────────────────────────────────────────────────────</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="kw">def</span> parsear_fasta(contenido: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>:</span>
+<span id="cb9-8"><a href="#cb9-8"></a>    <span class="co">"""</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">    Parsea una cadena con formato FASTA multi-secuencia.</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">    </span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">    Retorna</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">    -------</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">    list de dict con claves: 'id', 'descripcion', 'secuencia'</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="co">    """</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a>    secuencias <span class="op">=</span> []</span>
+<span id="cb9-16"><a href="#cb9-16"></a>    seq_actual <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a>    </span>
+<span id="cb9-18"><a href="#cb9-18"></a>    <span class="cf">for</span> linea <span class="kw">in</span> contenido.strip().split(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>):</span>
+<span id="cb9-19"><a href="#cb9-19"></a>        linea <span class="op">=</span> linea.strip()</span>
+<span id="cb9-20"><a href="#cb9-20"></a>        <span class="cf">if</span> <span class="kw">not</span> linea:</span>
+<span id="cb9-21"><a href="#cb9-21"></a>            <span class="cf">continue</span></span>
+<span id="cb9-22"><a href="#cb9-22"></a>        <span class="cf">if</span> linea.startswith(<span class="st">"&gt;"</span>):</span>
+<span id="cb9-23"><a href="#cb9-23"></a>            <span class="cf">if</span> seq_actual <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-24"><a href="#cb9-24"></a>                secuencias.append(seq_actual)</span>
+<span id="cb9-25"><a href="#cb9-25"></a>            partes <span class="op">=</span> linea[<span class="dv">1</span>:].split(maxsplit<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb9-26"><a href="#cb9-26"></a>            seq_actual <span class="op">=</span> {</span>
+<span id="cb9-27"><a href="#cb9-27"></a>                <span class="st">"id"</span>          : partes[<span class="dv">0</span>],</span>
+<span id="cb9-28"><a href="#cb9-28"></a>                <span class="st">"descripcion"</span> : partes[<span class="dv">1</span>] <span class="cf">if</span> <span class="bu">len</span>(partes) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">""</span>,</span>
+<span id="cb9-29"><a href="#cb9-29"></a>                <span class="st">"secuencia"</span>   : <span class="st">""</span></span>
+<span id="cb9-30"><a href="#cb9-30"></a>            }</span>
+<span id="cb9-31"><a href="#cb9-31"></a>        <span class="cf">elif</span> seq_actual <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-32"><a href="#cb9-32"></a>            seq_actual[<span class="st">"secuencia"</span>] <span class="op">+=</span> linea.upper()</span>
+<span id="cb9-33"><a href="#cb9-33"></a>    </span>
+<span id="cb9-34"><a href="#cb9-34"></a>    <span class="cf">if</span> seq_actual <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb9-35"><a href="#cb9-35"></a>        secuencias.append(seq_actual)</span>
+<span id="cb9-36"><a href="#cb9-36"></a>    </span>
+<span id="cb9-37"><a href="#cb9-37"></a>    <span class="cf">return</span> secuencias</span>
+<span id="cb9-38"><a href="#cb9-38"></a></span>
+<span id="cb9-39"><a href="#cb9-39"></a></span>
+<span id="cb9-40"><a href="#cb9-40"></a><span class="kw">def</span> analizar_secuencias(secuencias: <span class="bu">list</span>) <span class="op">-&gt;</span> <span class="bu">list</span>:</span>
+<span id="cb9-41"><a href="#cb9-41"></a>    <span class="co">"""Agrega propiedades calculadas a cada secuencia."""</span></span>
+<span id="cb9-42"><a href="#cb9-42"></a>    resultados <span class="op">=</span> []</span>
+<span id="cb9-43"><a href="#cb9-43"></a>    <span class="cf">for</span> s <span class="kw">in</span> secuencias:</span>
+<span id="cb9-44"><a href="#cb9-44"></a>        seq <span class="op">=</span> s[<span class="st">"secuencia"</span>]</span>
+<span id="cb9-45"><a href="#cb9-45"></a>        <span class="cf">if</span> <span class="kw">not</span> seq:</span>
+<span id="cb9-46"><a href="#cb9-46"></a>            <span class="cf">continue</span></span>
+<span id="cb9-47"><a href="#cb9-47"></a>        analisis <span class="op">=</span> {</span>
+<span id="cb9-48"><a href="#cb9-48"></a>            <span class="op">**</span>s,</span>
+<span id="cb9-49"><a href="#cb9-49"></a>            <span class="st">"longitud"</span>     : <span class="bu">len</span>(seq),</span>
+<span id="cb9-50"><a href="#cb9-50"></a>            <span class="st">"gc_content"</span>   : <span class="bu">round</span>((seq.count(<span class="st">"G"</span>) <span class="op">+</span> seq.count(<span class="st">"C"</span>)) <span class="op">/</span> <span class="bu">len</span>(seq) <span class="op">*</span> <span class="dv">100</span>, <span class="dv">2</span>),</span>
+<span id="cb9-51"><a href="#cb9-51"></a>            <span class="st">"n_atg"</span>        : <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(seq)<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>) <span class="cf">if</span> seq[i:i<span class="op">+</span><span class="dv">3</span>] <span class="op">==</span> <span class="st">"ATG"</span>),</span>
+<span id="cb9-52"><a href="#cb9-52"></a>            <span class="st">"es_codificante"</span>: seq.startswith(<span class="st">"ATG"</span>) <span class="kw">and</span> <span class="bu">any</span>(</span>
+<span id="cb9-53"><a href="#cb9-53"></a>                seq[i:i<span class="op">+</span><span class="dv">3</span>] <span class="kw">in</span> {<span class="st">"TAA"</span>,<span class="st">"TAG"</span>,<span class="st">"TGA"</span>} <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(seq)<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb9-54"><a href="#cb9-54"></a>            )</span>
+<span id="cb9-55"><a href="#cb9-55"></a>        }</span>
+<span id="cb9-56"><a href="#cb9-56"></a>        resultados.append(analisis)</span>
+<span id="cb9-57"><a href="#cb9-57"></a>    <span class="cf">return</span> resultados</span>
+<span id="cb9-58"><a href="#cb9-58"></a></span>
+<span id="cb9-59"><a href="#cb9-59"></a></span>
+<span id="cb9-60"><a href="#cb9-60"></a><span class="co"># ── Dataset de ejemplo: genes metabólicos de E. coli ──</span></span>
+<span id="cb9-61"><a href="#cb9-61"></a>fasta_ejemplo <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb9-62"><a href="#cb9-62"></a><span class="st">&gt;b0767 pykF | Pyruvate kinase I</span></span>
+<span id="cb9-63"><a href="#cb9-63"></a><span class="st">ATGCGAGTGTTGAAGTTCGGCGGTACATCAGTGGCAAATGCAGAACGTTTTCTGCGTGT</span></span>
+<span id="cb9-64"><a href="#cb9-64"></a><span class="st">&gt;b3916 pfkA | 6-phosphofructokinase isozyme 1</span></span>
+<span id="cb9-65"><a href="#cb9-65"></a><span class="st">ATGCAAACGCTTTTGCGGGAAACCGTCGCGGCGCTGATCGGCATCGGAGTGAACGGCGAC</span></span>
+<span id="cb9-66"><a href="#cb9-66"></a><span class="st">&gt;b2779 eno | Enolase</span></span>
+<span id="cb9-67"><a href="#cb9-67"></a><span class="st">ATGAGTATCCTGATTGCCAACAAAGCAGAAATTGAATTTGGACCGATCACTAACGAAGCC</span></span>
+<span id="cb9-68"><a href="#cb9-68"></a><span class="st">"""</span></span>
+<span id="cb9-69"><a href="#cb9-69"></a></span>
+<span id="cb9-70"><a href="#cb9-70"></a>secuencias <span class="op">=</span> parsear_fasta(fasta_ejemplo)</span>
+<span id="cb9-71"><a href="#cb9-71"></a>resultados <span class="op">=</span> analizar_secuencias(secuencias)</span>
+<span id="cb9-72"><a href="#cb9-72"></a></span>
+<span id="cb9-73"><a href="#cb9-73"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'ID'</span><span class="sc">:10s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Longitud'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'GC%'</span><span class="sc">:&gt;8}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'ATGs'</span><span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Codificante'</span><span class="sc">:&gt;12}</span><span class="ss">"</span>)</span>
+<span id="cb9-74"><a href="#cb9-74"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">52</span>)</span>
+<span id="cb9-75"><a href="#cb9-75"></a><span class="cf">for</span> r <span class="kw">in</span> resultados:</span>
+<span id="cb9-76"><a href="#cb9-76"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>r[<span class="st">'id'</span>]<span class="sc">:10s}</span><span class="ss"> </span><span class="sc">{</span>r[<span class="st">'longitud'</span>]<span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span>r[<span class="st">'gc_content'</span>]<span class="sc">:&gt;7}</span><span class="ss">% "</span></span>
+<span id="cb9-77"><a href="#cb9-77"></a>          <span class="ss">f"</span><span class="sc">{</span>r[<span class="st">'n_atg'</span>]<span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="bu">str</span>(r[<span class="st">'es_codificante'</span>])<span class="sc">:&gt;12}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copiar código" class="code-copy-button"><i class="bi"></i></button></div>
+<p><strong>Extensión sugerida:</strong> Modifica la función para que acepte una ruta de archivo FASTA real y lea su contenido con <code>open()</code>. Usa manejo de excepciones para el caso en que el archivo no exista.</p>
+</div>
+<hr>
+</section>
+<section id="para-profundizar" class="level2" data-number="8.8">
+<h2 data-number="8.8" class="anchored" data-anchor-id="para-profundizar"><span class="header-section-number">8.8</span> 📚 Para Profundizar</h2>
+<ul>
+<li><strong>Grus, J.</strong> (2019). <em>Data Science from Scratch</em>, 2ª ed.&nbsp;O’Reilly. — Capítulo 2: “A Crash Course in Python”, sección de funciones y control de flujo.</li>
+<li><strong>Lutz, M.</strong> (2013). <em>Learning Python</em>, 5ª ed.&nbsp;O’Reilly. — La referencia más exhaustiva sobre funciones en Python.</li>
+<li><strong>Documentación Python — Funciones integradas</strong>: <a href="https://docs.python.org/3/library/functions.html">https://docs.python.org/3/library/functions.html</a></li>
+</ul>
+
+
+<!-- -->
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copiado");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copiado");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/04-pandas.html" class="pagination-link" aria-label="Pandas — DataFrames para Análisis Biológico">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Pandas — DataFrames para Análisis Biológico</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/06-visualizacion.html" class="pagination-link" aria-label="Visualización Científica con Matplotlib">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Visualización Científica con Matplotlib</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav><div class="modal fade" id="quarto-embedded-source-code-modal" tabindex="-1" aria-labelledby="quarto-embedded-source-code-modal-label" aria-hidden="true"><div class="modal-dialog modal-dialog-scrollable"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="quarto-embedded-source-code-modal-label">Ejecutar el código</h5><button class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><div class="">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" data-shortcodes="false"><pre class="sourceCode numberSource markdown number-lines code-with-copy"><code class="sourceCode markdown"><span id="cb10-1"><a href="#cb10-1"></a><span class="co">---</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a><span class="an">title:</span><span class="co"> "Estructuras de Control de Flujo y Funciones"</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="co">---</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a></span>
+<span id="cb10-5"><a href="#cb10-5"></a>::: {.objetivos-box}</span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="fu">#### Objetivos de aprendizaje</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a></span>
+<span id="cb10-8"><a href="#cb10-8"></a>Al finalizar este capítulo serás capaz de:</span>
+<span id="cb10-9"><a href="#cb10-9"></a></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="ss">- </span>Construir flujos de decisión con <span class="in">`if`</span>, <span class="in">`elif`</span> y <span class="in">`else`</span> aplicados a contextos biológicos.</span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="ss">- </span>Iterar sobre colecciones con <span class="in">`for`</span> y <span class="in">`while`</span> de manera eficiente y pythónica.</span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="ss">- </span>Definir funciones con argumentos posicionales, por nombre, con valores predeterminados y con número variable de parámetros.</span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="ss">- </span>Aplicar funciones de orden superior (<span class="in">`map`</span>, <span class="in">`filter`</span>) y expresiones <span class="in">`lambda`</span>.</span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="ss">- </span>Manejar excepciones con <span class="in">`try / except / finally`</span> para código científico robusto.</span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="ss">- </span>Construir una función completa de análisis de secuencias FASTA como ejercicio integrador.</span>
+<span id="cb10-16"><a href="#cb10-16"></a>:::</span>
+<span id="cb10-17"><a href="#cb10-17"></a></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="fu">## 🧬 Motivación biológica</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a></span>
+<span id="cb10-20"><a href="#cb10-20"></a>El control de flujo no es un concepto abstracto: es la diferencia entre un script que analiza un archivo FASTA de diez secuencias y uno que analiza diez mil. Los bucles <span class="in">`for`</span> sobre listas de metabolitos, los condicionales que clasifican reacciones por subsistema, las funciones que encapsulan el cálculo del contenido GC —todos estos son patrones que aparecerán repetidamente en los capítulos de FBA. Dominarlos ahora significa que, cuando lleguemos a CobraPy, podremos concentrarnos en la biología del modelo en lugar de en la mecánica del código.</span>
+<span id="cb10-21"><a href="#cb10-21"></a></span>
+<span id="cb10-22"><a href="#cb10-22"></a>---</span>
+<span id="cb10-23"><a href="#cb10-23"></a></span>
+<span id="cb10-24"><a href="#cb10-24"></a><span class="fu">## 5.1 Condicionales: `if`, `elif`, `else`</span></span>
+<span id="cb10-25"><a href="#cb10-25"></a></span>
+<span id="cb10-26"><a href="#cb10-26"></a><span class="in">```python</span></span>
+<span id="cb10-27"><a href="#cb10-27"></a><span class="co"># Clasificación de reacciones por magnitud de flujo</span></span>
+<span id="cb10-28"><a href="#cb10-28"></a><span class="co"># (criterio basado en Orth et al., 2010)</span></span>
+<span id="cb10-29"><a href="#cb10-29"></a></span>
+<span id="cb10-30"><a href="#cb10-30"></a><span class="kw">def</span> clasificar_flujo(flujo: <span class="bu">float</span>, umbral_bajo: <span class="bu">float</span> <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span id="cb10-31"><a href="#cb10-31"></a>                      umbral_alto: <span class="bu">float</span> <span class="op">=</span> <span class="fl">5.0</span>) <span class="op">-&gt;</span> <span class="bu">str</span>:</span>
+<span id="cb10-32"><a href="#cb10-32"></a>    <span class="co">"""</span></span>
+<span id="cb10-33"><a href="#cb10-33"></a><span class="co">    Clasifica un flujo metabólico en tres categorías.</span></span>
+<span id="cb10-34"><a href="#cb10-34"></a><span class="co">    </span></span>
+<span id="cb10-35"><a href="#cb10-35"></a><span class="co">    Parámetros</span></span>
+<span id="cb10-36"><a href="#cb10-36"></a><span class="co">    ----------</span></span>
+<span id="cb10-37"><a href="#cb10-37"></a><span class="co">    flujo       : float — valor del flujo en mmol/gDW/h</span></span>
+<span id="cb10-38"><a href="#cb10-38"></a><span class="co">    umbral_bajo : float — umbral inferior de actividad (default 0.1)</span></span>
+<span id="cb10-39"><a href="#cb10-39"></a><span class="co">    umbral_alto : float — umbral de alta actividad (default 5.0)</span></span>
+<span id="cb10-40"><a href="#cb10-40"></a><span class="co">    </span></span>
+<span id="cb10-41"><a href="#cb10-41"></a><span class="co">    Retorna</span></span>
+<span id="cb10-42"><a href="#cb10-42"></a><span class="co">    -------</span></span>
+<span id="cb10-43"><a href="#cb10-43"></a><span class="co">    str — 'inactiva', 'baja actividad' o 'alta actividad'</span></span>
+<span id="cb10-44"><a href="#cb10-44"></a><span class="co">    """</span></span>
+<span id="cb10-45"><a href="#cb10-45"></a>    magnitud <span class="op">=</span> <span class="bu">abs</span>(flujo)</span>
+<span id="cb10-46"><a href="#cb10-46"></a>    </span>
+<span id="cb10-47"><a href="#cb10-47"></a>    <span class="cf">if</span> magnitud <span class="op">&lt;</span> umbral_bajo:</span>
+<span id="cb10-48"><a href="#cb10-48"></a>        <span class="cf">return</span> <span class="st">"inactiva"</span></span>
+<span id="cb10-49"><a href="#cb10-49"></a>    <span class="cf">elif</span> magnitud <span class="op">&lt;</span> umbral_alto:</span>
+<span id="cb10-50"><a href="#cb10-50"></a>        <span class="cf">return</span> <span class="st">"baja actividad"</span></span>
+<span id="cb10-51"><a href="#cb10-51"></a>    <span class="cf">else</span>:</span>
+<span id="cb10-52"><a href="#cb10-52"></a>        <span class="cf">return</span> <span class="st">"alta actividad"</span></span>
+<span id="cb10-53"><a href="#cb10-53"></a></span>
+<span id="cb10-54"><a href="#cb10-54"></a></span>
+<span id="cb10-55"><a href="#cb10-55"></a><span class="co"># Aplicación a un dict de flujos</span></span>
+<span id="cb10-56"><a href="#cb10-56"></a>flujos_ejemplo <span class="op">=</span> {</span>
+<span id="cb10-57"><a href="#cb10-57"></a>    <span class="st">"PFK"</span>: <span class="fl">4.86</span>, <span class="st">"CS"</span>: <span class="fl">0.0</span>, <span class="st">"ATPM"</span>: <span class="fl">8.39</span>, <span class="st">"ENO"</span>: <span class="fl">9.72</span>,</span>
+<span id="cb10-58"><a href="#cb10-58"></a>    <span class="st">"FHL"</span>: <span class="fl">0.05</span>, <span class="st">"PPC"</span>: <span class="fl">2.50</span></span>
+<span id="cb10-59"><a href="#cb10-59"></a>}</span>
+<span id="cb10-60"><a href="#cb10-60"></a></span>
+<span id="cb10-61"><a href="#cb10-61"></a><span class="cf">for</span> rxn, v <span class="kw">in</span> flujos_ejemplo.items():</span>
+<span id="cb10-62"><a href="#cb10-62"></a>    categoria <span class="op">=</span> clasificar_flujo(v)</span>
+<span id="cb10-63"><a href="#cb10-63"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>rxn<span class="sc">:6s}</span><span class="ss"> (</span><span class="sc">{</span>v<span class="sc">:6.2f}</span><span class="ss"> mmol/gDW/h): </span><span class="sc">{</span>categoria<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-64"><a href="#cb10-64"></a><span class="in">```</span></span>
+<span id="cb10-65"><a href="#cb10-65"></a></span>
+<span id="cb10-66"><a href="#cb10-66"></a>---</span>
+<span id="cb10-67"><a href="#cb10-67"></a></span>
+<span id="cb10-68"><a href="#cb10-68"></a><span class="fu">## 5.2 Ciclos Iterativos: `for` y `while`</span></span>
+<span id="cb10-69"><a href="#cb10-69"></a></span>
+<span id="cb10-70"><a href="#cb10-70"></a><span class="fu">### Bucles `for` y el estilo pythónico</span></span>
+<span id="cb10-71"><a href="#cb10-71"></a></span>
+<span id="cb10-72"><a href="#cb10-72"></a>Python favorece la iteración sobre objetos directamente, sin índices explícitos cuando es posible. Las funciones <span class="in">`enumerate()`</span> y <span class="in">`zip()`</span> son herramientas esenciales:</span>
+<span id="cb10-73"><a href="#cb10-73"></a></span>
+<span id="cb10-74"><a href="#cb10-74"></a><span class="in">```python</span></span>
+<span id="cb10-75"><a href="#cb10-75"></a>metabolitos  <span class="op">=</span> [<span class="st">"Glucosa"</span>, <span class="st">"G6P"</span>, <span class="st">"F6P"</span>, <span class="st">"FBP"</span>, <span class="st">"PEP"</span>, <span class="st">"Piruvato"</span>]</span>
+<span id="cb10-76"><a href="#cb10-76"></a>compartimentos <span class="op">=</span> [<span class="st">"e"</span>,     <span class="st">"c"</span>,   <span class="st">"c"</span>,   <span class="st">"c"</span>,   <span class="st">"c"</span>,   <span class="st">"c"</span>  ]</span>
+<span id="cb10-77"><a href="#cb10-77"></a></span>
+<span id="cb10-78"><a href="#cb10-78"></a><span class="co"># ── enumerate: índice + valor ──</span></span>
+<span id="cb10-79"><a href="#cb10-79"></a><span class="bu">print</span>(<span class="st">"Metabolitos con índice:"</span>)</span>
+<span id="cb10-80"><a href="#cb10-80"></a><span class="cf">for</span> i, met <span class="kw">in</span> <span class="bu">enumerate</span>(metabolitos):</span>
+<span id="cb10-81"><a href="#cb10-81"></a>    <span class="bu">print</span>(<span class="ss">f"  [</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>met<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-82"><a href="#cb10-82"></a></span>
+<span id="cb10-83"><a href="#cb10-83"></a><span class="co"># ── zip: dos listas en paralelo ──</span></span>
+<span id="cb10-84"><a href="#cb10-84"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Metabolitos y compartimentos:"</span>)</span>
+<span id="cb10-85"><a href="#cb10-85"></a><span class="cf">for</span> met, comp <span class="kw">in</span> <span class="bu">zip</span>(metabolitos, compartimentos):</span>
+<span id="cb10-86"><a href="#cb10-86"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>met<span class="sc">:12s}</span><span class="ss"> → compartimento '</span><span class="sc">{</span>comp<span class="sc">}</span><span class="ss">'"</span>)</span>
+<span id="cb10-87"><a href="#cb10-87"></a></span>
+<span id="cb10-88"><a href="#cb10-88"></a><span class="co"># ── Iteración sobre diccionario ──</span></span>
+<span id="cb10-89"><a href="#cb10-89"></a>estequiometria_pfk <span class="op">=</span> {<span class="st">"atp_c"</span>: <span class="op">-</span><span class="dv">1</span>, <span class="st">"f6p_c"</span>: <span class="op">-</span><span class="dv">1</span>, <span class="st">"adp_c"</span>: <span class="dv">1</span>, <span class="st">"fdp_c"</span>: <span class="dv">1</span>, <span class="st">"h_c"</span>: <span class="dv">1</span>}</span>
+<span id="cb10-90"><a href="#cb10-90"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">PFK — Estequiometría:"</span>)</span>
+<span id="cb10-91"><a href="#cb10-91"></a><span class="cf">for</span> met, coef <span class="kw">in</span> estequiometria_pfk.items():</span>
+<span id="cb10-92"><a href="#cb10-92"></a>    rol <span class="op">=</span> <span class="st">"sustrato"</span> <span class="cf">if</span> coef <span class="op">&lt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="st">"producto"</span></span>
+<span id="cb10-93"><a href="#cb10-93"></a>    <span class="bu">print</span>(<span class="ss">f"  </span><span class="sc">{</span>met<span class="sc">:8s}</span><span class="ss"> [</span><span class="sc">{</span>coef<span class="sc">:+d}</span><span class="ss">]  → </span><span class="sc">{</span>rol<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-94"><a href="#cb10-94"></a><span class="in">```</span></span>
+<span id="cb10-95"><a href="#cb10-95"></a></span>
+<span id="cb10-96"><a href="#cb10-96"></a><span class="fu">### Bucles `while` — iteración condicional</span></span>
+<span id="cb10-97"><a href="#cb10-97"></a></span>
+<span id="cb10-98"><a href="#cb10-98"></a><span class="in">```python</span></span>
+<span id="cb10-99"><a href="#cb10-99"></a><span class="co"># Simulación simplificada de convergencia iterativa</span></span>
+<span id="cb10-100"><a href="#cb10-100"></a><span class="co"># (precursor conceptual del solver de FBA)</span></span>
+<span id="cb10-101"><a href="#cb10-101"></a></span>
+<span id="cb10-102"><a href="#cb10-102"></a><span class="im">import</span> math</span>
+<span id="cb10-103"><a href="#cb10-103"></a></span>
+<span id="cb10-104"><a href="#cb10-104"></a><span class="kw">def</span> iteracion_punto_fijo(x_init: <span class="bu">float</span>, tol: <span class="bu">float</span> <span class="op">=</span> <span class="fl">1e-8</span>,</span>
+<span id="cb10-105"><a href="#cb10-105"></a>                          max_iter: <span class="bu">int</span> <span class="op">=</span> <span class="dv">1000</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>:</span>
+<span id="cb10-106"><a href="#cb10-106"></a>    <span class="co">"""</span></span>
+<span id="cb10-107"><a href="#cb10-107"></a><span class="co">    Itera x ← sqrt(x + 1) hasta convergencia.</span></span>
+<span id="cb10-108"><a href="#cb10-108"></a><span class="co">    Ilustra el patrón while con criterio de tolerancia.</span></span>
+<span id="cb10-109"><a href="#cb10-109"></a><span class="co">    """</span></span>
+<span id="cb10-110"><a href="#cb10-110"></a>    x <span class="op">=</span> x_init</span>
+<span id="cb10-111"><a href="#cb10-111"></a>    iteraciones <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb10-112"><a href="#cb10-112"></a>    </span>
+<span id="cb10-113"><a href="#cb10-113"></a>    <span class="cf">while</span> iteraciones <span class="op">&lt;</span> max_iter:</span>
+<span id="cb10-114"><a href="#cb10-114"></a>        x_nuevo <span class="op">=</span> math.sqrt(x <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb10-115"><a href="#cb10-115"></a>        delta    <span class="op">=</span> <span class="bu">abs</span>(x_nuevo <span class="op">-</span> x)</span>
+<span id="cb10-116"><a href="#cb10-116"></a>        x        <span class="op">=</span> x_nuevo</span>
+<span id="cb10-117"><a href="#cb10-117"></a>        iteraciones <span class="op">+=</span> <span class="dv">1</span></span>
+<span id="cb10-118"><a href="#cb10-118"></a>        </span>
+<span id="cb10-119"><a href="#cb10-119"></a>        <span class="cf">if</span> delta <span class="op">&lt;</span> tol:</span>
+<span id="cb10-120"><a href="#cb10-120"></a>            <span class="cf">return</span> x, iteraciones, <span class="st">"convergió"</span></span>
+<span id="cb10-121"><a href="#cb10-121"></a>    </span>
+<span id="cb10-122"><a href="#cb10-122"></a>    <span class="cf">return</span> x, iteraciones, <span class="st">"no convergió"</span></span>
+<span id="cb10-123"><a href="#cb10-123"></a></span>
+<span id="cb10-124"><a href="#cb10-124"></a></span>
+<span id="cb10-125"><a href="#cb10-125"></a>valor, n_iter, estado <span class="op">=</span> iteracion_punto_fijo(x_init<span class="op">=</span><span class="fl">10.0</span>)</span>
+<span id="cb10-126"><a href="#cb10-126"></a><span class="bu">print</span>(<span class="ss">f"Resultado: </span><span class="sc">{</span>valor<span class="sc">:.10f}</span><span class="ss">"</span>)</span>
+<span id="cb10-127"><a href="#cb10-127"></a><span class="bu">print</span>(<span class="ss">f"Iteraciones: </span><span class="sc">{</span>n_iter<span class="sc">}</span><span class="ss">  (</span><span class="sc">{</span>estado<span class="sc">}</span><span class="ss">)"</span>)</span>
+<span id="cb10-128"><a href="#cb10-128"></a><span class="co"># El punto fijo de x = sqrt(x+1) es el número de oro φ ≈ 1.6180339887</span></span>
+<span id="cb10-129"><a href="#cb10-129"></a><span class="in">```</span></span>
+<span id="cb10-130"><a href="#cb10-130"></a></span>
+<span id="cb10-131"><a href="#cb10-131"></a>---</span>
+<span id="cb10-132"><a href="#cb10-132"></a></span>
+<span id="cb10-133"><a href="#cb10-133"></a><span class="fu">## 5.3 Funciones: Definición y Argumentos</span></span>
+<span id="cb10-134"><a href="#cb10-134"></a></span>
+<span id="cb10-135"><a href="#cb10-135"></a>Python soporta cuatro tipos de argumentos en las funciones:</span>
+<span id="cb10-136"><a href="#cb10-136"></a></span>
+<span id="cb10-137"><a href="#cb10-137"></a><span class="in">```python</span></span>
+<span id="cb10-138"><a href="#cb10-138"></a><span class="co"># Función con todos los tipos de argumentos</span></span>
+<span id="cb10-139"><a href="#cb10-139"></a><span class="kw">def</span> calcular_tasa_especifica(</span>
+<span id="cb10-140"><a href="#cb10-140"></a>    flujo_objetivo: <span class="bu">float</span>,          <span class="co"># argumento posicional (requerido)</span></span>
+<span id="cb10-141"><a href="#cb10-141"></a>    biomasa: <span class="bu">float</span>,                 <span class="co"># argumento posicional (requerido)</span></span>
+<span id="cb10-142"><a href="#cb10-142"></a>    unidades: <span class="bu">str</span> <span class="op">=</span> <span class="st">"mmol/gDW/h"</span>,  <span class="co"># argumento por nombre con default</span></span>
+<span id="cb10-143"><a href="#cb10-143"></a>    verbose: <span class="bu">bool</span> <span class="op">=</span> <span class="va">False</span>,          <span class="co"># argumento por nombre con default</span></span>
+<span id="cb10-144"><a href="#cb10-144"></a>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb10-145"><a href="#cb10-145"></a>    <span class="co">"""</span></span>
+<span id="cb10-146"><a href="#cb10-146"></a><span class="co">    Calcula la tasa específica de producción de un metabolito.</span></span>
+<span id="cb10-147"><a href="#cb10-147"></a><span class="co">    </span></span>
+<span id="cb10-148"><a href="#cb10-148"></a><span class="co">    Parámetros</span></span>
+<span id="cb10-149"><a href="#cb10-149"></a><span class="co">    ----------</span></span>
+<span id="cb10-150"><a href="#cb10-150"></a><span class="co">    flujo_objetivo : float — flujo de la reacción de interés</span></span>
+<span id="cb10-151"><a href="#cb10-151"></a><span class="co">    biomasa        : float — flujo de la reacción de biomasa (h⁻¹)</span></span>
+<span id="cb10-152"><a href="#cb10-152"></a><span class="co">    unidades       : str   — sistema de unidades (solo para impresión)</span></span>
+<span id="cb10-153"><a href="#cb10-153"></a><span class="co">    verbose        : bool  — si True, imprime el reporte detallado</span></span>
+<span id="cb10-154"><a href="#cb10-154"></a><span class="co">    </span></span>
+<span id="cb10-155"><a href="#cb10-155"></a><span class="co">    Retorna</span></span>
+<span id="cb10-156"><a href="#cb10-156"></a><span class="co">    -------</span></span>
+<span id="cb10-157"><a href="#cb10-157"></a><span class="co">    float — tasa específica en las mismas unidades del flujo</span></span>
+<span id="cb10-158"><a href="#cb10-158"></a><span class="co">    """</span></span>
+<span id="cb10-159"><a href="#cb10-159"></a>    <span class="cf">if</span> biomasa <span class="op">&lt;=</span> <span class="dv">0</span>:</span>
+<span id="cb10-160"><a href="#cb10-160"></a>        <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"La biomasa debe ser positiva, recibido: </span><span class="sc">{</span>biomasa<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-161"><a href="#cb10-161"></a>    </span>
+<span id="cb10-162"><a href="#cb10-162"></a>    tasa <span class="op">=</span> flujo_objetivo <span class="op">/</span> biomasa</span>
+<span id="cb10-163"><a href="#cb10-163"></a>    </span>
+<span id="cb10-164"><a href="#cb10-164"></a>    <span class="cf">if</span> verbose:</span>
+<span id="cb10-165"><a href="#cb10-165"></a>        <span class="bu">print</span>(<span class="ss">f"  Flujo objetivo  : </span><span class="sc">{</span>flujo_objetivo<span class="sc">:.4f}</span><span class="ss"> </span><span class="sc">{</span>unidades<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-166"><a href="#cb10-166"></a>        <span class="bu">print</span>(<span class="ss">f"  Tasa de biomasa : </span><span class="sc">{</span>biomasa<span class="sc">:.4f}</span><span class="ss"> h⁻¹"</span>)</span>
+<span id="cb10-167"><a href="#cb10-167"></a>        <span class="bu">print</span>(<span class="ss">f"  Tasa específica : </span><span class="sc">{</span>tasa<span class="sc">:.4f}</span><span class="ss"> </span><span class="sc">{</span>unidades<span class="sc">.</span>replace(<span class="st">'/gDW'</span>,<span class="st">''</span>)<span class="sc">}</span><span class="ss"> /célula"</span>)</span>
+<span id="cb10-168"><a href="#cb10-168"></a>    </span>
+<span id="cb10-169"><a href="#cb10-169"></a>    <span class="cf">return</span> tasa</span>
+<span id="cb10-170"><a href="#cb10-170"></a></span>
+<span id="cb10-171"><a href="#cb10-171"></a></span>
+<span id="cb10-172"><a href="#cb10-172"></a><span class="co"># Llamadas equivalentes:</span></span>
+<span id="cb10-173"><a href="#cb10-173"></a>tasa <span class="op">=</span> calcular_tasa_especifica(<span class="fl">3.12</span>, <span class="fl">0.874</span>)              <span class="co"># posicional</span></span>
+<span id="cb10-174"><a href="#cb10-174"></a>tasa <span class="op">=</span> calcular_tasa_especifica(flujo_objetivo<span class="op">=</span><span class="fl">3.12</span>, biomasa<span class="op">=</span><span class="fl">0.874</span>, verbose<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb10-175"><a href="#cb10-175"></a><span class="in">```</span></span>
+<span id="cb10-176"><a href="#cb10-176"></a></span>
+<span id="cb10-177"><a href="#cb10-177"></a><span class="fu">### Funciones que retornan múltiples valores</span></span>
+<span id="cb10-178"><a href="#cb10-178"></a></span>
+<span id="cb10-179"><a href="#cb10-179"></a>En Python, retornar múltiples valores es idiomático mediante tuplas:</span>
+<span id="cb10-180"><a href="#cb10-180"></a></span>
+<span id="cb10-181"><a href="#cb10-181"></a><span class="in">```python</span></span>
+<span id="cb10-182"><a href="#cb10-182"></a><span class="kw">def</span> analizar_vector_flujos(v: <span class="bu">list</span>) <span class="op">-&gt;</span> <span class="bu">tuple</span>:</span>
+<span id="cb10-183"><a href="#cb10-183"></a>    <span class="co">"""</span></span>
+<span id="cb10-184"><a href="#cb10-184"></a><span class="co">    Calcula estadísticas básicas de un vector de flujos.</span></span>
+<span id="cb10-185"><a href="#cb10-185"></a><span class="co">    Retorna una tupla con múltiples métricas.</span></span>
+<span id="cb10-186"><a href="#cb10-186"></a><span class="co">    """</span></span>
+<span id="cb10-187"><a href="#cb10-187"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb10-188"><a href="#cb10-188"></a>    v_arr <span class="op">=</span> np.array(v)</span>
+<span id="cb10-189"><a href="#cb10-189"></a>    </span>
+<span id="cb10-190"><a href="#cb10-190"></a>    activos    <span class="op">=</span> v_arr[np.<span class="bu">abs</span>(v_arr) <span class="op">&gt;</span> <span class="fl">1e-6</span>]</span>
+<span id="cb10-191"><a href="#cb10-191"></a>    n_activos  <span class="op">=</span> <span class="bu">len</span>(activos)</span>
+<span id="cb10-192"><a href="#cb10-192"></a>    flujo_max  <span class="op">=</span> np.<span class="bu">max</span>(np.<span class="bu">abs</span>(v_arr))</span>
+<span id="cb10-193"><a href="#cb10-193"></a>    flujo_med  <span class="op">=</span> np.mean(np.<span class="bu">abs</span>(activos)) <span class="cf">if</span> n_activos <span class="op">&gt;</span> <span class="dv">0</span> <span class="cf">else</span> <span class="fl">0.0</span></span>
+<span id="cb10-194"><a href="#cb10-194"></a>    suma_total <span class="op">=</span> np.<span class="bu">sum</span>(np.<span class="bu">abs</span>(v_arr))</span>
+<span id="cb10-195"><a href="#cb10-195"></a>    </span>
+<span id="cb10-196"><a href="#cb10-196"></a>    <span class="cf">return</span> n_activos, flujo_max, flujo_med, suma_total</span>
+<span id="cb10-197"><a href="#cb10-197"></a></span>
+<span id="cb10-198"><a href="#cb10-198"></a></span>
+<span id="cb10-199"><a href="#cb10-199"></a>flujos_test <span class="op">=</span> [<span class="fl">5.21</span>, <span class="fl">0.0</span>, <span class="fl">4.86</span>, <span class="fl">9.72</span>, <span class="fl">0.0</span>, <span class="fl">3.12</span>, <span class="fl">0.874</span>]</span>
+<span id="cb10-200"><a href="#cb10-200"></a>n, f_max, f_med, f_sum <span class="op">=</span> analizar_vector_flujos(flujos_test)</span>
+<span id="cb10-201"><a href="#cb10-201"></a><span class="bu">print</span>(<span class="ss">f"Activas: </span><span class="sc">{</span>n<span class="sc">}</span><span class="ss"> | Máximo: </span><span class="sc">{</span>f_max<span class="sc">:.3f}</span><span class="ss"> | Medio: </span><span class="sc">{</span>f_med<span class="sc">:.3f}</span><span class="ss"> | Suma: </span><span class="sc">{</span>f_sum<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb10-202"><a href="#cb10-202"></a><span class="in">```</span></span>
+<span id="cb10-203"><a href="#cb10-203"></a></span>
+<span id="cb10-204"><a href="#cb10-204"></a>---</span>
+<span id="cb10-205"><a href="#cb10-205"></a></span>
+<span id="cb10-206"><a href="#cb10-206"></a><span class="fu">## 5.4 Funciones de Orden Superior y `lambda`</span></span>
+<span id="cb10-207"><a href="#cb10-207"></a></span>
+<span id="cb10-208"><a href="#cb10-208"></a><span class="in">```python</span></span>
+<span id="cb10-209"><a href="#cb10-209"></a><span class="co"># ── map: aplica una función a cada elemento ──</span></span>
+<span id="cb10-210"><a href="#cb10-210"></a>secuencias_adn <span class="op">=</span> [<span class="st">"ATGCGT"</span>, <span class="st">"GCATCG"</span>, <span class="st">"TTAACC"</span>, <span class="st">"GCGCGC"</span>]</span>
+<span id="cb10-211"><a href="#cb10-211"></a></span>
+<span id="cb10-212"><a href="#cb10-212"></a><span class="co"># Calcular GC-content de cada secuencia</span></span>
+<span id="cb10-213"><a href="#cb10-213"></a><span class="kw">def</span> gc_content(seq: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">float</span>:</span>
+<span id="cb10-214"><a href="#cb10-214"></a>    <span class="cf">return</span> (seq.count(<span class="st">"G"</span>) <span class="op">+</span> seq.count(<span class="st">"C"</span>)) <span class="op">/</span> <span class="bu">len</span>(seq) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb10-215"><a href="#cb10-215"></a></span>
+<span id="cb10-216"><a href="#cb10-216"></a>gc_values <span class="op">=</span> <span class="bu">list</span>(<span class="bu">map</span>(gc_content, secuencias_adn))</span>
+<span id="cb10-217"><a href="#cb10-217"></a><span class="bu">print</span>(<span class="ss">f"GC-content: </span><span class="sc">{</span>[<span class="bu">round</span>(g, <span class="dv">1</span>) <span class="cf">for</span> g <span class="kw">in</span> gc_values]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-218"><a href="#cb10-218"></a></span>
+<span id="cb10-219"><a href="#cb10-219"></a><span class="co"># ── filter: retiene elementos que cumplen una condición ──</span></span>
+<span id="cb10-220"><a href="#cb10-220"></a><span class="co"># Conservar solo secuencias con GC &gt; 50%</span></span>
+<span id="cb10-221"><a href="#cb10-221"></a>ricas_gc <span class="op">=</span> <span class="bu">list</span>(<span class="bu">filter</span>(<span class="kw">lambda</span> seq: gc_content(seq) <span class="op">&gt;</span> <span class="dv">50</span>, secuencias_adn))</span>
+<span id="cb10-222"><a href="#cb10-222"></a><span class="bu">print</span>(<span class="ss">f"Secuencias ricas en GC (&gt;50%): </span><span class="sc">{</span>ricas_gc<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-223"><a href="#cb10-223"></a></span>
+<span id="cb10-224"><a href="#cb10-224"></a><span class="co"># ── lambda con sorted: ordenar metabolitos por fórmula molecular ──</span></span>
+<span id="cb10-225"><a href="#cb10-225"></a>metabolitos_datos <span class="op">=</span> [</span>
+<span id="cb10-226"><a href="#cb10-226"></a>    (<span class="st">"atp_c"</span>, <span class="st">"C10H12N5O13P3"</span>, <span class="op">-</span><span class="dv">4</span>),</span>
+<span id="cb10-227"><a href="#cb10-227"></a>    (<span class="st">"glc_D"</span>, <span class="st">"C6H12O6"</span>, <span class="dv">0</span>),</span>
+<span id="cb10-228"><a href="#cb10-228"></a>    (<span class="st">"pyr_c"</span>, <span class="st">"C3H4O3"</span>, <span class="op">-</span><span class="dv">1</span>),</span>
+<span id="cb10-229"><a href="#cb10-229"></a>]</span>
+<span id="cb10-230"><a href="#cb10-230"></a><span class="co"># Ordenar por número de carbonos (extraído de la fórmula)</span></span>
+<span id="cb10-231"><a href="#cb10-231"></a>ordenados <span class="op">=</span> <span class="bu">sorted</span>(metabolitos_datos, key<span class="op">=</span><span class="kw">lambda</span> x: <span class="bu">int</span>(x[<span class="dv">1</span>].split(<span class="st">"C"</span>)[<span class="dv">1</span>].split(<span class="st">"H"</span>)[<span class="dv">0</span>]))</span>
+<span id="cb10-232"><a href="#cb10-232"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Ordenados por carbonos: </span><span class="sc">{</span>[m[<span class="dv">0</span>] <span class="cf">for</span> m <span class="kw">in</span> ordenados]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-233"><a href="#cb10-233"></a><span class="in">```</span></span>
+<span id="cb10-234"><a href="#cb10-234"></a></span>
+<span id="cb10-235"><a href="#cb10-235"></a>---</span>
+<span id="cb10-236"><a href="#cb10-236"></a></span>
+<span id="cb10-237"><a href="#cb10-237"></a><span class="fu">## 5.5 Manejo de Excepciones</span></span>
+<span id="cb10-238"><a href="#cb10-238"></a></span>
+<span id="cb10-239"><a href="#cb10-239"></a><span class="in">```python</span></span>
+<span id="cb10-240"><a href="#cb10-240"></a><span class="im">import</span> os</span>
+<span id="cb10-241"><a href="#cb10-241"></a></span>
+<span id="cb10-242"><a href="#cb10-242"></a><span class="kw">def</span> cargar_modelo_sbml(ruta_archivo: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">dict</span>:</span>
+<span id="cb10-243"><a href="#cb10-243"></a>    <span class="co">"""</span></span>
+<span id="cb10-244"><a href="#cb10-244"></a><span class="co">    Carga un modelo metabólico desde un archivo SBML.</span></span>
+<span id="cb10-245"><a href="#cb10-245"></a><span class="co">    Maneja los errores más comunes de forma informativa.</span></span>
+<span id="cb10-246"><a href="#cb10-246"></a><span class="co">    </span></span>
+<span id="cb10-247"><a href="#cb10-247"></a><span class="co">    En un proyecto real, usaría cobra.io.read_sbml_model()</span></span>
+<span id="cb10-248"><a href="#cb10-248"></a><span class="co">    """</span></span>
+<span id="cb10-249"><a href="#cb10-249"></a>    <span class="cf">try</span>:</span>
+<span id="cb10-250"><a href="#cb10-250"></a>        <span class="cf">if</span> <span class="kw">not</span> os.path.exists(ruta_archivo):</span>
+<span id="cb10-251"><a href="#cb10-251"></a>            <span class="cf">raise</span> <span class="pp">FileNotFoundError</span>(<span class="ss">f"Archivo no encontrado: '</span><span class="sc">{</span>ruta_archivo<span class="sc">}</span><span class="ss">'"</span>)</span>
+<span id="cb10-252"><a href="#cb10-252"></a>        </span>
+<span id="cb10-253"><a href="#cb10-253"></a>        <span class="cf">if</span> <span class="kw">not</span> ruta_archivo.endswith((<span class="st">".xml"</span>, <span class="st">".sbml"</span>)):</span>
+<span id="cb10-254"><a href="#cb10-254"></a>            <span class="cf">raise</span> <span class="pp">ValueError</span>(<span class="ss">f"Formato no soportado. Se esperaba .xml o .sbml"</span>)</span>
+<span id="cb10-255"><a href="#cb10-255"></a>        </span>
+<span id="cb10-256"><a href="#cb10-256"></a>        <span class="co"># Simulación de carga exitosa</span></span>
+<span id="cb10-257"><a href="#cb10-257"></a>        <span class="bu">print</span>(<span class="ss">f"✓ Modelo cargado: </span><span class="sc">{</span>ruta_archivo<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-258"><a href="#cb10-258"></a>        <span class="cf">return</span> {<span class="st">"status"</span>: <span class="st">"ok"</span>, <span class="st">"ruta"</span>: ruta_archivo}</span>
+<span id="cb10-259"><a href="#cb10-259"></a>    </span>
+<span id="cb10-260"><a href="#cb10-260"></a>    <span class="cf">except</span> <span class="pp">FileNotFoundError</span> <span class="im">as</span> e:</span>
+<span id="cb10-261"><a href="#cb10-261"></a>        <span class="bu">print</span>(<span class="ss">f"[ERROR] </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-262"><a href="#cb10-262"></a>        <span class="bu">print</span>(<span class="st">"  → Verifica la ruta del archivo o descárgalo del repositorio BiGG."</span>)</span>
+<span id="cb10-263"><a href="#cb10-263"></a>        <span class="cf">return</span> {<span class="st">"status"</span>: <span class="st">"error"</span>, <span class="st">"msg"</span>: <span class="bu">str</span>(e)}</span>
+<span id="cb10-264"><a href="#cb10-264"></a>    </span>
+<span id="cb10-265"><a href="#cb10-265"></a>    <span class="cf">except</span> <span class="pp">ValueError</span> <span class="im">as</span> e:</span>
+<span id="cb10-266"><a href="#cb10-266"></a>        <span class="bu">print</span>(<span class="ss">f"[ERROR] </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-267"><a href="#cb10-267"></a>        <span class="cf">return</span> {<span class="st">"status"</span>: <span class="st">"error"</span>, <span class="st">"msg"</span>: <span class="bu">str</span>(e)}</span>
+<span id="cb10-268"><a href="#cb10-268"></a>    </span>
+<span id="cb10-269"><a href="#cb10-269"></a>    <span class="cf">finally</span>:</span>
+<span id="cb10-270"><a href="#cb10-270"></a>        <span class="co"># El bloque finally se ejecuta SIEMPRE, independientemente del resultado</span></span>
+<span id="cb10-271"><a href="#cb10-271"></a>        <span class="bu">print</span>(<span class="st">"  → Proceso de carga finalizado."</span>)</span>
+<span id="cb10-272"><a href="#cb10-272"></a></span>
+<span id="cb10-273"><a href="#cb10-273"></a></span>
+<span id="cb10-274"><a href="#cb10-274"></a><span class="co"># Pruebas</span></span>
+<span id="cb10-275"><a href="#cb10-275"></a>cargar_modelo_sbml(<span class="st">"e_coli_core.xml"</span>)         <span class="co"># FileNotFoundError</span></span>
+<span id="cb10-276"><a href="#cb10-276"></a>cargar_modelo_sbml(<span class="st">"modelo.csv"</span>)              <span class="co"># ValueError</span></span>
+<span id="cb10-277"><a href="#cb10-277"></a><span class="in">```</span></span>
+<span id="cb10-278"><a href="#cb10-278"></a></span>
+<span id="cb10-279"><a href="#cb10-279"></a>::: {.callout-warning}</span>
+<span id="cb10-280"><a href="#cb10-280"></a><span class="fu">## ⚠️ Error Común — Excepciones silenciosas</span></span>
+<span id="cb10-281"><a href="#cb10-281"></a></span>
+<span id="cb10-282"><a href="#cb10-282"></a>Nunca uses <span class="in">`except:`</span> sin especificar el tipo de excepción (bare <span class="in">`except`</span>). Captura silenciosa de todas las excepciones oculta bugs críticos. Siempre especifica la excepción más concreta posible:</span>
+<span id="cb10-283"><a href="#cb10-283"></a></span>
+<span id="cb10-284"><a href="#cb10-284"></a><span class="in">```python</span></span>
+<span id="cb10-285"><a href="#cb10-285"></a><span class="co"># MAL — captura todo, incluido KeyboardInterrupt:</span></span>
+<span id="cb10-286"><a href="#cb10-286"></a><span class="cf">try</span>:</span>
+<span id="cb10-287"><a href="#cb10-287"></a>    result <span class="op">=</span> model.optimize()</span>
+<span id="cb10-288"><a href="#cb10-288"></a><span class="cf">except</span>:</span>
+<span id="cb10-289"><a href="#cb10-289"></a>    <span class="cf">pass</span></span>
+<span id="cb10-290"><a href="#cb10-290"></a></span>
+<span id="cb10-291"><a href="#cb10-291"></a><span class="co"># BIEN — específico y con manejo informativo:</span></span>
+<span id="cb10-292"><a href="#cb10-292"></a><span class="cf">try</span>:</span>
+<span id="cb10-293"><a href="#cb10-293"></a>    result <span class="op">=</span> model.optimize()</span>
+<span id="cb10-294"><a href="#cb10-294"></a><span class="cf">except</span> cobra.exceptions.Infeasible:</span>
+<span id="cb10-295"><a href="#cb10-295"></a>    <span class="bu">print</span>(<span class="st">"Modelo inviable bajo las restricciones actuales."</span>)</span>
+<span id="cb10-296"><a href="#cb10-296"></a><span class="in">```</span></span>
+<span id="cb10-297"><a href="#cb10-297"></a>:::</span>
+<span id="cb10-298"><a href="#cb10-298"></a></span>
+<span id="cb10-299"><a href="#cb10-299"></a>---</span>
+<span id="cb10-300"><a href="#cb10-300"></a></span>
+<span id="cb10-301"><a href="#cb10-301"></a><span class="fu">## 5.6 🔬 Ejercicio Integrador: Función de Análisis de Archivos FASTA</span></span>
+<span id="cb10-302"><a href="#cb10-302"></a></span>
+<span id="cb10-303"><a href="#cb10-303"></a>::: {.ejercicio-header}</span>
+<span id="cb10-304"><a href="#cb10-304"></a>Ejercicio 5.1 — Nivel: <span class="co">[</span><span class="ot">Medio</span><span class="co">]</span>{.badge-nivel .medio}</span>
+<span id="cb10-305"><a href="#cb10-305"></a>:::</span>
+<span id="cb10-306"><a href="#cb10-306"></a></span>
+<span id="cb10-307"><a href="#cb10-307"></a>::: {.ejercicio-body}</span>
+<span id="cb10-308"><a href="#cb10-308"></a><span class="in">```python</span></span>
+<span id="cb10-309"><a href="#cb10-309"></a><span class="co"># ─────────────────────────────────────────────────────────────────</span></span>
+<span id="cb10-310"><a href="#cb10-310"></a><span class="co"># Función completa de análisis de archivos FASTA.</span></span>
+<span id="cb10-311"><a href="#cb10-311"></a><span class="co"># Integra: funciones, control de flujo, diccionarios, listas y</span></span>
+<span id="cb10-312"><a href="#cb10-312"></a><span class="co"># manejo de excepciones.</span></span>
+<span id="cb10-313"><a href="#cb10-313"></a><span class="co"># ─────────────────────────────────────────────────────────────────</span></span>
+<span id="cb10-314"><a href="#cb10-314"></a></span>
+<span id="cb10-315"><a href="#cb10-315"></a><span class="kw">def</span> parsear_fasta(contenido: <span class="bu">str</span>) <span class="op">-&gt;</span> <span class="bu">list</span>:</span>
+<span id="cb10-316"><a href="#cb10-316"></a>    <span class="co">"""</span></span>
+<span id="cb10-317"><a href="#cb10-317"></a><span class="co">    Parsea una cadena con formato FASTA multi-secuencia.</span></span>
+<span id="cb10-318"><a href="#cb10-318"></a><span class="co">    </span></span>
+<span id="cb10-319"><a href="#cb10-319"></a><span class="co">    Retorna</span></span>
+<span id="cb10-320"><a href="#cb10-320"></a><span class="co">    -------</span></span>
+<span id="cb10-321"><a href="#cb10-321"></a><span class="co">    list de dict con claves: 'id', 'descripcion', 'secuencia'</span></span>
+<span id="cb10-322"><a href="#cb10-322"></a><span class="co">    """</span></span>
+<span id="cb10-323"><a href="#cb10-323"></a>    secuencias <span class="op">=</span> []</span>
+<span id="cb10-324"><a href="#cb10-324"></a>    seq_actual <span class="op">=</span> <span class="va">None</span></span>
+<span id="cb10-325"><a href="#cb10-325"></a>    </span>
+<span id="cb10-326"><a href="#cb10-326"></a>    <span class="cf">for</span> linea <span class="kw">in</span> contenido.strip().split(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>):</span>
+<span id="cb10-327"><a href="#cb10-327"></a>        linea <span class="op">=</span> linea.strip()</span>
+<span id="cb10-328"><a href="#cb10-328"></a>        <span class="cf">if</span> <span class="kw">not</span> linea:</span>
+<span id="cb10-329"><a href="#cb10-329"></a>            <span class="cf">continue</span></span>
+<span id="cb10-330"><a href="#cb10-330"></a>        <span class="cf">if</span> linea.startswith(<span class="st">"&gt;"</span>):</span>
+<span id="cb10-331"><a href="#cb10-331"></a>            <span class="cf">if</span> seq_actual <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb10-332"><a href="#cb10-332"></a>                secuencias.append(seq_actual)</span>
+<span id="cb10-333"><a href="#cb10-333"></a>            partes <span class="op">=</span> linea[<span class="dv">1</span>:].split(maxsplit<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb10-334"><a href="#cb10-334"></a>            seq_actual <span class="op">=</span> {</span>
+<span id="cb10-335"><a href="#cb10-335"></a>                <span class="st">"id"</span>          : partes[<span class="dv">0</span>],</span>
+<span id="cb10-336"><a href="#cb10-336"></a>                <span class="st">"descripcion"</span> : partes[<span class="dv">1</span>] <span class="cf">if</span> <span class="bu">len</span>(partes) <span class="op">&gt;</span> <span class="dv">1</span> <span class="cf">else</span> <span class="st">""</span>,</span>
+<span id="cb10-337"><a href="#cb10-337"></a>                <span class="st">"secuencia"</span>   : <span class="st">""</span></span>
+<span id="cb10-338"><a href="#cb10-338"></a>            }</span>
+<span id="cb10-339"><a href="#cb10-339"></a>        <span class="cf">elif</span> seq_actual <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb10-340"><a href="#cb10-340"></a>            seq_actual[<span class="st">"secuencia"</span>] <span class="op">+=</span> linea.upper()</span>
+<span id="cb10-341"><a href="#cb10-341"></a>    </span>
+<span id="cb10-342"><a href="#cb10-342"></a>    <span class="cf">if</span> seq_actual <span class="kw">is</span> <span class="kw">not</span> <span class="va">None</span>:</span>
+<span id="cb10-343"><a href="#cb10-343"></a>        secuencias.append(seq_actual)</span>
+<span id="cb10-344"><a href="#cb10-344"></a>    </span>
+<span id="cb10-345"><a href="#cb10-345"></a>    <span class="cf">return</span> secuencias</span>
+<span id="cb10-346"><a href="#cb10-346"></a></span>
+<span id="cb10-347"><a href="#cb10-347"></a></span>
+<span id="cb10-348"><a href="#cb10-348"></a><span class="kw">def</span> analizar_secuencias(secuencias: <span class="bu">list</span>) <span class="op">-&gt;</span> <span class="bu">list</span>:</span>
+<span id="cb10-349"><a href="#cb10-349"></a>    <span class="co">"""Agrega propiedades calculadas a cada secuencia."""</span></span>
+<span id="cb10-350"><a href="#cb10-350"></a>    resultados <span class="op">=</span> []</span>
+<span id="cb10-351"><a href="#cb10-351"></a>    <span class="cf">for</span> s <span class="kw">in</span> secuencias:</span>
+<span id="cb10-352"><a href="#cb10-352"></a>        seq <span class="op">=</span> s[<span class="st">"secuencia"</span>]</span>
+<span id="cb10-353"><a href="#cb10-353"></a>        <span class="cf">if</span> <span class="kw">not</span> seq:</span>
+<span id="cb10-354"><a href="#cb10-354"></a>            <span class="cf">continue</span></span>
+<span id="cb10-355"><a href="#cb10-355"></a>        analisis <span class="op">=</span> {</span>
+<span id="cb10-356"><a href="#cb10-356"></a>            <span class="op">**</span>s,</span>
+<span id="cb10-357"><a href="#cb10-357"></a>            <span class="st">"longitud"</span>     : <span class="bu">len</span>(seq),</span>
+<span id="cb10-358"><a href="#cb10-358"></a>            <span class="st">"gc_content"</span>   : <span class="bu">round</span>((seq.count(<span class="st">"G"</span>) <span class="op">+</span> seq.count(<span class="st">"C"</span>)) <span class="op">/</span> <span class="bu">len</span>(seq) <span class="op">*</span> <span class="dv">100</span>, <span class="dv">2</span>),</span>
+<span id="cb10-359"><a href="#cb10-359"></a>            <span class="st">"n_atg"</span>        : <span class="bu">sum</span>(<span class="dv">1</span> <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(seq)<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>) <span class="cf">if</span> seq[i:i<span class="op">+</span><span class="dv">3</span>] <span class="op">==</span> <span class="st">"ATG"</span>),</span>
+<span id="cb10-360"><a href="#cb10-360"></a>            <span class="st">"es_codificante"</span>: seq.startswith(<span class="st">"ATG"</span>) <span class="kw">and</span> <span class="bu">any</span>(</span>
+<span id="cb10-361"><a href="#cb10-361"></a>                seq[i:i<span class="op">+</span><span class="dv">3</span>] <span class="kw">in</span> {<span class="st">"TAA"</span>,<span class="st">"TAG"</span>,<span class="st">"TGA"</span>} <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="bu">len</span>(seq)<span class="op">-</span><span class="dv">2</span>, <span class="dv">3</span>)</span>
+<span id="cb10-362"><a href="#cb10-362"></a>            )</span>
+<span id="cb10-363"><a href="#cb10-363"></a>        }</span>
+<span id="cb10-364"><a href="#cb10-364"></a>        resultados.append(analisis)</span>
+<span id="cb10-365"><a href="#cb10-365"></a>    <span class="cf">return</span> resultados</span>
+<span id="cb10-366"><a href="#cb10-366"></a></span>
+<span id="cb10-367"><a href="#cb10-367"></a></span>
+<span id="cb10-368"><a href="#cb10-368"></a><span class="co"># ── Dataset de ejemplo: genes metabólicos de E. coli ──</span></span>
+<span id="cb10-369"><a href="#cb10-369"></a>fasta_ejemplo <span class="op">=</span> <span class="st">"""</span></span>
+<span id="cb10-370"><a href="#cb10-370"></a><span class="st">&gt;b0767 pykF | Pyruvate kinase I</span></span>
+<span id="cb10-371"><a href="#cb10-371"></a><span class="st">ATGCGAGTGTTGAAGTTCGGCGGTACATCAGTGGCAAATGCAGAACGTTTTCTGCGTGT</span></span>
+<span id="cb10-372"><a href="#cb10-372"></a><span class="st">&gt;b3916 pfkA | 6-phosphofructokinase isozyme 1</span></span>
+<span id="cb10-373"><a href="#cb10-373"></a><span class="st">ATGCAAACGCTTTTGCGGGAAACCGTCGCGGCGCTGATCGGCATCGGAGTGAACGGCGAC</span></span>
+<span id="cb10-374"><a href="#cb10-374"></a><span class="st">&gt;b2779 eno | Enolase</span></span>
+<span id="cb10-375"><a href="#cb10-375"></a><span class="st">ATGAGTATCCTGATTGCCAACAAAGCAGAAATTGAATTTGGACCGATCACTAACGAAGCC</span></span>
+<span id="cb10-376"><a href="#cb10-376"></a><span class="st">"""</span></span>
+<span id="cb10-377"><a href="#cb10-377"></a></span>
+<span id="cb10-378"><a href="#cb10-378"></a>secuencias <span class="op">=</span> parsear_fasta(fasta_ejemplo)</span>
+<span id="cb10-379"><a href="#cb10-379"></a>resultados <span class="op">=</span> analizar_secuencias(secuencias)</span>
+<span id="cb10-380"><a href="#cb10-380"></a></span>
+<span id="cb10-381"><a href="#cb10-381"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span><span class="st">'ID'</span><span class="sc">:10s}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Longitud'</span><span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'GC%'</span><span class="sc">:&gt;8}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'ATGs'</span><span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="st">'Codificante'</span><span class="sc">:&gt;12}</span><span class="ss">"</span>)</span>
+<span id="cb10-382"><a href="#cb10-382"></a><span class="bu">print</span>(<span class="st">"-"</span> <span class="op">*</span> <span class="dv">52</span>)</span>
+<span id="cb10-383"><a href="#cb10-383"></a><span class="cf">for</span> r <span class="kw">in</span> resultados:</span>
+<span id="cb10-384"><a href="#cb10-384"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>r[<span class="st">'id'</span>]<span class="sc">:10s}</span><span class="ss"> </span><span class="sc">{</span>r[<span class="st">'longitud'</span>]<span class="sc">:&gt;10}</span><span class="ss"> </span><span class="sc">{</span>r[<span class="st">'gc_content'</span>]<span class="sc">:&gt;7}</span><span class="ss">% "</span></span>
+<span id="cb10-385"><a href="#cb10-385"></a>          <span class="ss">f"</span><span class="sc">{</span>r[<span class="st">'n_atg'</span>]<span class="sc">:&gt;6}</span><span class="ss"> </span><span class="sc">{</span><span class="bu">str</span>(r[<span class="st">'es_codificante'</span>])<span class="sc">:&gt;12}</span><span class="ss">"</span>)</span>
+<span id="cb10-386"><a href="#cb10-386"></a><span class="in">```</span></span>
+<span id="cb10-387"><a href="#cb10-387"></a></span>
+<span id="cb10-388"><a href="#cb10-388"></a>**Extensión sugerida:** Modifica la función para que acepte una ruta de archivo FASTA real y lea su contenido con <span class="in">`open()`</span>. Usa manejo de excepciones para el caso en que el archivo no exista.</span>
+<span id="cb10-389"><a href="#cb10-389"></a>:::</span>
+<span id="cb10-390"><a href="#cb10-390"></a></span>
+<span id="cb10-391"><a href="#cb10-391"></a>---</span>
+<span id="cb10-392"><a href="#cb10-392"></a></span>
+<span id="cb10-393"><a href="#cb10-393"></a><span class="fu">## 📚 Para Profundizar</span></span>
+<span id="cb10-394"><a href="#cb10-394"></a></span>
+<span id="cb10-395"><a href="#cb10-395"></a><span class="ss">- </span>**Grus, J.** (2019). *Data Science from Scratch*, 2ª ed. O'Reilly. — Capítulo 2: "A Crash Course in Python", sección de funciones y control de flujo.</span>
+<span id="cb10-396"><a href="#cb10-396"></a><span class="ss">- </span>**Lutz, M.** (2013). *Learning Python*, 5ª ed. O'Reilly. — La referencia más exhaustiva sobre funciones en Python.</span>
+<span id="cb10-397"><a href="#cb10-397"></a><span class="ss">- </span>**Documentación Python — Funciones integradas**: <span class="co">[</span><span class="ot">https://docs.python.org/3/library/functions.html</span><span class="co">](https://docs.python.org/3/library/functions.html)</span></span></code></pre></div><button title="Copiar código" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+</div></div></div></div></div>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>© [Año] [Tu nombre] — Licencia CC BY 4.0</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/[tu-usuario]/manual-fba-python/edit/main/chapters/05-control-flujo.qmd" class="toc-action"><i class="bi bi-github"></i>Editar esta página</a></li><li><a href="https://github.com/[tu-usuario]/manual-fba-python/issues/new" class="toc-action"><i class="bi empty"></i>Informar sobre problema</a></li></ul></div></div>
+    <div class="nav-footer-right">
+<p>Generado con <a href="https://quarto.org">Quarto</a> &amp; <a href="https://cobrapy.readthedocs.io">CobraPy</a></p>
+</div>
+  </div>
+</footer>
+
+
+
+
+<script src="../site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>

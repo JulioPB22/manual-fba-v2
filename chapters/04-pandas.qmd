@@ -1,0 +1,254 @@
+---
+title: "Pandas — DataFrames para Análisis Biológico"
+---
+
+::: {.objetivos-box}
+#### Objetivos de aprendizaje
+
+Al finalizar este capítulo serás capaz de:
+
+- Distinguir entre `Series` y `DataFrame` y elegir la estructura adecuada para cada tipo de dato biológico.
+- Leer y escribir archivos tabulares en formatos CSV, TSV y Excel con control preciso del parseo.
+- Aplicar las operaciones fundamentales de filtrado, agrupamiento, *join* y transformación sobre DataFrames.
+- Calcular estadísticas descriptivas sobre tablas de reacciones y metabolitos.
+- Preparar una tabla de reacciones en el formato esperado por CobraPy.
+:::
+
+## 🧬 Motivación biológica
+
+Las bases de datos de modelos metabólicos —BiGG, KEGG, MetaNetX— distribuyen su información en formatos tabulares: archivos `.tsv` con columnas de identificadores, fórmulas moleculares, coeficientes estequiométricos, subsistemas y anotaciones genómicas. Un modelo a escala de genoma típico puede tener miles de filas. Pandas es la herramienta que permite transformar esos archivos en estructuras de datos manipulables, filtrarlos por subsistema metabólico, unirlos con bases de datos externas y exportarlos en nuevos formatos con una docena de líneas de código.
+
+---
+
+## 4.1 Series y DataFrames
+
+### Series: el vector etiquetado
+
+Una `Series` de Pandas es un arreglo unidimensional con un **índice** —etiquetas para cada valor. A diferencia de un arreglo NumPy, las Series tienen semántica incorporada: el índice puede ser texto, lo que permite acceso por nombre en lugar de posición.
+
+```python
+import pandas as pd
+import numpy as np
+
+# Serie de flujos con nombre de reacción como índice
+flujos = pd.Series(
+    data  = [5.21, 5.21, 4.86, 4.95, 1.06, 0.0, 0.874],
+    index = ["PGI", "PFK", "TPI", "ENO", "PYK", "CS", "Biomass"],
+    name  = "flujo_mmol_gDW_h"
+)
+
+print(flujos)
+print(f"\nFlujo de Biomass : {flujos['Biomass']:.4f} h⁻¹")
+print(f"Flujo medio      : {flujos.mean():.4f}")
+print(f"Reacciones activas: {(flujos.abs() > 0.01).sum()}")
+```
+
+### DataFrame: la tabla con semántica biológica
+
+Un `DataFrame` es una tabla bidimensional con **índice de filas** y **nombres de columnas**. Puede pensarse como una colección de Series que comparten el mismo índice, o como el equivalente Python de una hoja de cálculo estructurada.
+
+```python
+# Tabla de reacciones de la glucólisis central
+datos_reacciones = {
+    "id"         : ["PGI", "PFK", "FBA", "TPI", "GAPD", "PGK", "ENO", "PYK"],
+    "nombre"     : ["Phosphoglucose isomerase", "Phosphofructokinase",
+                    "Fructose-bisphosphate aldolase", "Triose-phosphate isomerase",
+                    "Glyceraldehyde-3-phosphate dehydrogenase", "Phosphoglycerate kinase",
+                    "Enolase", "Pyruvate kinase"],
+    "subsistema" : ["Glycolysis"]*8,
+    "reversible" : [True, False, False, True, False, False, False, False],
+    "flujo"      : [5.21, 4.86, 4.86, 4.86, 9.72, 9.72, 9.72, 9.72],
+    "ec_number"  : ["5.3.1.9", "2.7.1.11", "4.1.2.13", "5.3.1.1",
+                    "1.2.1.12", "2.7.2.3", "4.2.1.11", "2.7.1.40"],
+}
+
+df = pd.DataFrame(datos_reacciones)
+print(df.to_string(index=False))
+print(f"\nForma: {df.shape}  ({df.shape[0]} reacciones × {df.shape[1]} columnas)")
+```
+
+---
+
+## 4.2 Lectura y Escritura de Archivos
+
+```python
+# ── Leer CSV (ejemplo: tabla de metabolitos del modelo E. coli core) ──
+# En un proyecto real, este archivo vendría de BiGG Database
+# Aquí creamos un DataFrame de ejemplo y lo guardamos primero:
+
+df_metabolitos = pd.DataFrame({
+    "id"      : ["glc_D_e", "pyr_c", "atp_c", "adp_c", "h2o_c", "co2_c"],
+    "nombre"  : ["D-Glucose", "Pyruvate", "ATP", "ADP", "Water", "CO2"],
+    "formula" : ["C6H12O6", "C3H4O3", "C10H12N5O13P3", "C10H12N5O10P2", "H2O", "CO2"],
+    "carga"   : [0, -1, -4, -3, 0, 0],
+    "compartimento": ["e", "c", "c", "c", "c", "c"]
+})
+
+# Guardar como CSV
+df_metabolitos.to_csv("metabolitos_ejemplo.csv", index=False)
+
+# Leer de vuelta
+df_leido = pd.read_csv("metabolitos_ejemplo.csv")
+print(df_leido.dtypes)
+print(f"\nPrimeras filas:\n{df_leido.head(3)}")
+
+# ── Leer TSV (formato común en BiGG y KEGG) ──
+# pd.read_csv("archivo.tsv", sep="\t")
+
+# ── Leer Excel ──
+# df_excel = pd.read_excel("modelo.xlsx", sheet_name="reacciones")
+
+# ── Control de tipos al leer ──
+df_tipado = pd.read_csv("metabolitos_ejemplo.csv",
+                         dtype={"carga": np.int8})  # ahorro de memoria
+print(f"\nTipo de columna 'carga': {df_tipado['carga'].dtype}")
+```
+
+---
+
+## 4.3 Indexado, Filtrado y Selección
+
+```python
+# ── Selección de columnas ──
+print(df[["id", "nombre", "flujo"]])          # lista de columnas
+print(df["flujo"])                             # Serie de una columna
+
+# ── Filtrado con condiciones booleanas ──
+# Reacciones con flujo > 5 mmol/gDW/h
+activas_altas = df[df["flujo"] > 5.0]
+print(f"\nReacciones con flujo alto ({len(activas_altas)}):")
+print(activas_altas[["id", "flujo"]].to_string(index=False))
+
+# ── Múltiples condiciones ──
+# Reacciones irreversibles con flujo > 5
+irreversibles_activas = df[(~df["reversible"]) & (df["flujo"] > 5.0)]
+print(f"\nIrreversibles activas: {irreversibles_activas['id'].tolist()}")
+
+# ── Selección por etiqueta (loc) y posición (iloc) ──
+# loc: etiquetas del índice y nombres de columna
+df_indexed = df.set_index("id")
+print(f"\nFlujo de ENO: {df_indexed.loc['ENO', 'flujo']}")
+
+# iloc: enteros de posición (como NumPy)
+print(f"Primera fila, segunda columna: {df.iloc[0, 1]}")
+
+# ── Método query() — sintaxis expresiva para filtros complejos ──
+resultado = df.query("flujo > 5 and not reversible")
+print(f"\nQuery — irreversibles con flujo>5: {resultado['id'].tolist()}")
+```
+
+---
+
+## 4.4 Operaciones de Agrupamiento y Estadísticas
+
+```python
+# Tabla extendida con múltiples subsistemas para ilustrar groupby
+datos_ext = {
+    "id"        : ["PGI","PFK","CS","ACONT","ICDHyr","AKGDH","MDH","ENO","PYK"],
+    "subsistema": ["Glycolysis","Glycolysis","TCA","TCA","TCA","TCA","TCA",
+                   "Glycolysis","Glycolysis"],
+    "flujo"     : [5.21, 4.86, 3.12, 3.12, 3.12, 3.10, 3.09, 9.72, 9.72],
+    "reversible": [True,False,False,True,True,False,True,False,False],
+}
+df_ext = pd.DataFrame(datos_ext)
+
+# ── GroupBy: estadísticas por subsistema ──
+resumen = df_ext.groupby("subsistema")["flujo"].agg(
+    n_reacciones = "count",
+    flujo_medio  = "mean",
+    flujo_total  = "sum",
+    flujo_max    = "max"
+).round(3)
+print("Resumen por subsistema:")
+print(resumen)
+
+# ── Value counts: frecuencia de reversibilidad ──
+print(f"\nReversibilidad:\n{df_ext['reversible'].value_counts()}")
+
+# ── Estadísticas descriptivas ──
+print(f"\nEstadísticas de flujos:\n{df_ext['flujo'].describe().round(3)}")
+```
+
+---
+
+## 4.5 Joins y Unión de Tablas
+
+En biología computacional, frecuentemente necesitamos combinar tablas de fuentes distintas: flujos de CobraPy con anotaciones de genes de una base de datos, o metabolitos de BiGG con propiedades fisicoquímicas de ChEBI.
+
+```python
+# Tabla 1: flujos de FBA
+df_flujos = pd.DataFrame({
+    "rxn_id"  : ["PGI", "PFK", "ENO", "CS", "ICDHyr"],
+    "flujo"   : [5.21,  4.86, 9.72, 3.12,   3.12],
+})
+
+# Tabla 2: anotación de genes (de BiGG / NCBI)
+df_genes = pd.DataFrame({
+    "rxn_id"    : ["PGI", "PFK", "ENO", "CS"],
+    "gene_id"   : ["b4025", "b3916", "b2779", "b0720"],
+    "locus_tag" : ["pgi", "pfkA", "eno", "gltA"],
+})
+
+# ── Inner join: solo reacciones presentes en ambas tablas ──
+df_inner = pd.merge(df_flujos, df_genes, on="rxn_id", how="inner")
+print("Inner join:")
+print(df_inner.to_string(index=False))
+
+# ── Left join: conserva todas las reacciones con flujo ──
+df_left = pd.merge(df_flujos, df_genes, on="rxn_id", how="left")
+print("\nLeft join (ICDHyr sin anotación aparece como NaN):")
+print(df_left.to_string(index=False))
+
+# ── Rellenar valores faltantes ──
+df_left["gene_id"]   = df_left["gene_id"].fillna("sin_anotacion")
+df_left["locus_tag"] = df_left["locus_tag"].fillna("—")
+print("\nTras fillna:")
+print(df_left.to_string(index=False))
+```
+
+---
+
+## 4.6 🔬 Ejercicio Integrador: Tabla de Reacciones del Modelo *E. coli*
+
+::: {.ejercicio-header}
+Ejercicio 4.1 — Nivel: [Básico]{.badge-nivel .basico}
+:::
+
+::: {.ejercicio-body}
+```python
+import pandas as pd
+import numpy as np
+
+# Tabla de reacciones del modelo E. coli core (subconjunto de 10 reacciones)
+datos = {
+    "rxn_id"    : ["PGI","PFK","FBA","TPI","GAPD","PGK","PGM","ENO","PYK","CS"],
+    "subsistema": ["Glycolysis"]*9 + ["TCA cycle"],
+    "lb"        : [-1000,-1000,0,   -1000,0,   -1000,-1000,0,   0,   0  ],
+    "ub"        : [ 1000, 1000,1000, 1000,1000, 1000, 1000,1000,1000,1000],
+    "flujo_fba" : [5.21, 4.86,4.86,  4.86,9.72,  9.72, 9.72,9.72,9.72,3.12],
+}
+df_rxn = pd.DataFrame(datos)
+
+# ── Tarea 1: agregar columna de reversibilidad ──
+df_rxn["reversible"] = df_rxn["lb"] < 0
+print("Con columna de reversibilidad:")
+print(df_rxn[["rxn_id","subsistema","reversible","flujo_fba"]].head())
+
+# ── Tarea 2: identificar reacciones inactivas (flujo ≈ 0) ──
+df_rxn["activa"] = df_rxn["flujo_fba"].abs() > 1e-6
+print(f"\nReacciones activas: {df_rxn['activa'].sum()} / {len(df_rxn)}")
+
+# ── Tarea 3: exportar solo las activas para revisión ──
+df_activas = df_rxn[df_rxn["activa"]].reset_index(drop=True)
+df_activas.to_csv("reacciones_activas.csv", index=False)
+print(f"Archivo 'reacciones_activas.csv' generado con {len(df_activas)} reacciones.")
+```
+:::
+
+---
+
+## 📚 Para Profundizar
+
+- **McKinney, W.** (2022). *Python for Data Analysis*, 3ª ed. O'Reilly. — Capítulos 5–8 cubren Pandas en profundidad. Escrito por el creador de Pandas.
+- **Documentación oficial Pandas**: [https://pandas.pydata.org/docs/](https://pandas.pydata.org/docs/) — la referencia más actualizada.
+- **BiGG Database** — Para descargar tablas reales de modelos: [http://bigg.ucsd.edu](http://bigg.ucsd.edu)

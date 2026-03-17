@@ -1,0 +1,172 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Análisis de Balance de Flujos Metabólicos con Python"
+  subtitle: "Una introducción práctica al modelado computacional de sistemas biológicos mediante CobraPy"
+  author:
+    - name: "[Tu nombre]"
+      affiliation: "[Tu universidad / laboratorio]"
+      email: "[tu@email.edu]"
+  date: last-modified
+  date-format: "MMMM YYYY"
+  language: es
+  description: |
+    Manual en español sobre Flux Balance Analysis (FBA) con Python y CobraPy,
+    orientado a estudiantes de bioinformática, biología computacional e
+    ingeniería biotecnológica de nivel universitario y posgrado.
+
+  chapters:
+    - index.qmd
+    - prologo.qmd
+    - indice-general.qmd
+
+    - part: "Parte I — Fundamentos de Python para Bioinformáticos"
+      chapters:
+        - chapters/01-instalacion.qmd
+        - chapters/02-tipos-datos.qmd
+        - chapters/03-numpy.qmd
+        - chapters/04-pandas.qmd
+        - chapters/05-control-flujo.qmd
+        - chapters/06-visualizacion.qmd
+        - chapters/07-paquetes-buenas-practicas.qmd
+
+    - part: "Parte II — Sistemas Biológicos y Modelado"
+      chapters:
+        - chapters/08-sistemas-biologicos.qmd
+        - chapters/09-tipos-modelos.qmd
+        - chapters/10-redes-grafos.qmd
+        - chapters/11-metabolismo-matematica.qmd
+
+    - part: "Parte III — Flux Balance Analysis con CobraPy"
+      chapters:
+        - chapters/12-fundamentos-fba.qmd
+        - chapters/13-formulacion-matematica.qmd
+        - chapters/14-intro-cobrapy.qmd
+        - chapters/15-analisis-resultados.qmd
+        - chapters/16-casos-practicos.qmd
+        - chapters/17-visualizacion-redes.qmd
+        - chapters/18-errores-comunes.qmd
+        - chapters/19-proyecto-final.qmd
+
+    - part: "Apéndices"
+      chapters:
+        - chapters/A-instalacion-detallada.qmd
+        - chapters/B-datasets.qmd
+        - chapters/C-glosario.qmd
+        - chapters/D-como-citar.qmd
+
+    - references.qmd
+
+  search:
+    location: navbar
+    type: overlay
+
+  navbar:
+    background: "#1B4F72"
+    foreground: "light"
+    right:
+      - icon: github
+        href: https://github.com/[tu-usuario]/manual-fba-python
+        aria-label: GitHub
+
+  sidebar:
+    style: "docked"
+    background: "#1B4F72"
+    foreground: "light"
+    search: true
+    collapse-level: 1
+
+  page-footer:
+    left: "© [Año] [Tu nombre] — Licencia CC BY 4.0"
+    right: "Generado con [Quarto](https://quarto.org) & [CobraPy](https://cobrapy.readthedocs.io)"
+    border: true
+    background: "#1C1C1E"
+    foreground: "light"
+
+  downloads: [pdf, epub]
+  repo-url: https://github.com/[tu-usuario]/manual-fba-python
+  repo-actions: [edit, issue]
+  repo-branch: main
+
+format:
+  html:
+    theme:
+      - cosmo
+      - assets/css/manual-fba.scss
+    include-in-header:
+      text: |
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Playfair+Display:ital,wght@0,700;1,400&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    toc: true
+    toc-depth: 3
+    toc-title: "En este capítulo"
+    toc-location: right
+    toc-expand: 2
+    number-sections: true
+    number-depth: 3
+    code-fold: false
+    code-tools: true
+    code-copy: true
+    code-line-numbers: true
+    code-annotations: hover
+    highlight-style: github-dark
+    fig-align: center
+    fig-cap-location: bottom
+    fig-width: 7
+    fig-height: 4.5
+    fig-dpi: 150
+    smooth-scroll: true
+    anchor-sections: true
+    citations-hover: true
+    crossrefs-hover: true
+    footnotes-hover: true
+    lang: es
+
+  pdf:
+    documentclass: scrbook
+    classoption: ["12pt", "a4paper", "twoside", "openright"]
+    papersize: a4
+    fontsize: 12pt
+    linestretch: 1.35
+    mainfont: "TeX Gyre Pagella"
+    sansfont: "TeX Gyre Heros"
+    monofont: "JetBrains Mono"
+    monofontoptions: [Scale=0.85]
+    geometry: [top=30mm, bottom=30mm, left=32mm, right=28mm]
+    lang: es
+    babel-lang: spanish
+    colorlinks: true
+    linkcolor: "1B4F72"
+    urlcolor: "2E86C1"
+    citecolor: "117A65"
+    number-sections: true
+    pdf-engine: xelatex
+
+execute:
+  echo: true
+  warning: false
+  message: false
+  cache: true
+  freeze: auto
+
+jupyter: python3
+
+bibliography: references.bib
+csl: https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl
+cite-method: citeproc
+
+language:
+  toc-title-document: "Contenido"
+  toc-title-website: "En este capítulo"
+  crossref-fig-title: "Figura"
+  crossref-tbl-title: "Tabla"
+  crossref-eq-title: "Ecuación"
+  crossref-sec-title: "Sección"
+  appendix-title: "Apéndice"
+  references-title: "Referencias"
+  copy-button-tooltip: "Copiar código"
+  copied-to-clipboard-alert: "¡Copiado!"
+  code-fold-btn-text: "Mostrar código"

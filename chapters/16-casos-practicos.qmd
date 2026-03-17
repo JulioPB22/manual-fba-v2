@@ -1,0 +1,10 @@
+---
+title: "16-casos-practicos"
+---
+
+# Capítulo en construcción
+
+::: {.callout-important}
+## 🚧 En desarrollo
+Este capítulo se redactará próximamente.
+:::

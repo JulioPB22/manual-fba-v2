@@ -1,0 +1,308 @@
+---
+title: "Instalación de Python e Introducción al Entorno de Desarrollo"
+---
+
+::: {.objetivos-box}
+#### Objetivos de aprendizaje
+
+Al finalizar este capítulo serás capaz de:
+
+- Instalar Python 3.11+ correctamente en tu sistema operativo.
+- Distinguir entre los entornos de desarrollo Jupyter, Google Colab y VS Code, eligiendo el apropiado según el contexto de trabajo.
+- Comprender la diferencia funcional entre un script `.py`, un *notebook* `.ipynb` y un documento Quarto `.qmd`.
+- Crear y activar un entorno virtual para aislar las dependencias del proyecto.
+- Ejecutar tu primer script Python con aplicación directa en bioinformática.
+:::
+
+## 🧬 Motivación biológica
+
+Antes de escribir una sola línea de código, vale la pena preguntarse: ¿por qué Python y no Excel, R o MATLAB para trabajar con datos biológicos? La respuesta no es trivial. Excel carece de reproducibilidad y falla ante conjuntos de datos que superan el millón de filas —cifra modesta para un experimento de RNA-seq moderno—. R es un lenguaje estadístico excelente, pero su curva de aprendizaje en programación general es pronunciada y su rendimiento en operaciones matriciales de gran escala es inferior al de Python con NumPy. MATLAB, por su parte, es propietario y su ecosistema de biología de sistemas, aunque robusto, no alcanza la amplitud de la comunidad Python.
+
+Python ofrece algo que ninguno de los anteriores garantiza por igual: un ecosistema **abierto, reproducible y transversal**. La misma instalación que utilizas para parsear archivos FASTA te permite, capítulos después, formular y resolver un problema de programación lineal con CobraPy para predecir la tasa de crecimiento de *Escherichia coli* bajo distintas condiciones nutricionales. Esa continuidad es el argumento definitivo.
+
+::: {.callout-note}
+## 🧬 Contexto Histórico
+
+Python fue creado por Guido van Rossum y su primera versión pública apareció en 1991. Su adopción en ciencia computacional se aceleró a partir de 2008 con la liberación de NumPy 1.0 y la posterior creación de Pandas (2009) por Wes McKinney. Hoy, según el índice TIOBE y las encuestas anuales de Stack Overflow, Python es consistentemente el lenguaje de programación más utilizado en el mundo, con una penetración especialmente dominante en ciencia de datos, aprendizaje automático y bioinformática computacional [@mckinney2022python].
+:::
+
+---
+
+## 1.1 Instalación de Python 3.11+
+
+### Windows
+
+1. Dirígete a [https://www.python.org/downloads/](https://www.python.org/downloads/) y descarga el instalador de Python 3.11 o superior para Windows (64-bit).
+2. Ejecuta el instalador. **Crítico:** marca la casilla **"Add Python to PATH"** antes de hacer clic en *Install Now*. Omitir este paso es el error más frecuente entre usuarios nuevos.
+3. Verifica la instalación abriendo el *Símbolo del sistema* (cmd) o PowerShell:
+
+```bash
+python --version
+# Salida esperada: Python 3.11.x
+pip --version
+# Salida esperada: pip 23.x from C:\...\site-packages\pip (python 3.11)
+```
+
+### macOS
+
+macOS incluye Python 2.7 de sistema, que está **obsoleto y no debe usarse**. Instala Python 3 mediante [Homebrew](https://brew.sh):
+
+```bash
+# Instalar Homebrew si no lo tienes:
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Instalar Python 3.11:
+brew install python@3.11
+
+# Verificar:
+python3 --version
+```
+
+### Linux (Ubuntu/Debian)
+
+```bash
+sudo apt update
+sudo apt install python3.11 python3.11-venv python3-pip -y
+python3.11 --version
+```
+
+::: {.callout-warning}
+## ⚠️ Error Común — Conflicto de versiones
+
+En sistemas Linux, `python` puede apuntar a Python 2 mientras que `python3` apunta a Python 3. Siempre verifica con `python3 --version`. Si trabajas en un proyecto que requiere Python 3 exclusivamente, considera crear un alias en tu `.bashrc`:
+
+```bash
+alias python=python3
+alias pip=pip3
+```
+:::
+
+---
+
+## 1.2 Entornos Virtuales: aislando las dependencias
+
+Un **entorno virtual** es una instalación de Python independiente y aislada del sistema. Cuando instalas CobraPy en tu entorno virtual, no afectas ninguna otra instalación de Python en tu computadora. Esta práctica es **esencial** en proyectos científicos porque garantiza que el manual sea reproducible: si especificas exactamente qué versiones de qué librerías usar, cualquier persona puede recrear tu entorno de trabajo.
+
+```bash
+# Crear el entorno virtual (solo una vez por proyecto):
+python -m venv .venv-fba
+
+# Activar el entorno:
+# Windows:
+.venv-fba\Scripts\activate
+# macOS / Linux:
+source .venv-fba/bin/activate
+
+# El prompt cambiará a: (.venv-fba) usuario@maquina:~$
+
+# Instalar las dependencias del manual:
+pip install jupyter numpy pandas matplotlib seaborn cobrapy biopython
+
+# Guardar las versiones exactas para reproducibilidad:
+pip freeze > requirements.txt
+```
+
+El archivo `requirements.txt` generado lucirá así (con versiones exactas):
+
+```
+cobrapy==0.26.3
+numpy==1.26.4
+pandas==2.2.1
+matplotlib==3.8.3
+...
+```
+
+Cualquier colaborador puede instalar exactamente las mismas versiones con:
+
+```bash
+pip install -r requirements.txt
+```
+
+---
+
+## 1.3 Entornos de Desarrollo: Jupyter, Colab y VS Code
+
+### Jupyter Notebook / JupyterLab
+
+Jupyter es el estándar de facto para computación científica interactiva. Un *notebook* combina en un solo documento: celdas de código ejecutable, texto enriquecido con Markdown, ecuaciones en LaTeX y salidas gráficas. Es el entorno preferido para exploración de datos y prototipado.
+
+```bash
+# Iniciar Jupyter Lab (recomendado sobre Notebook clásico):
+jupyter lab
+# Se abrirá automáticamente en tu navegador en http://localhost:8888
+```
+
+::: {.callout-tip}
+## 📐 Anatomía de un Notebook
+
+Un archivo `.ipynb` es, internamente, un documento JSON que almacena el código fuente de cada celda, los metadatos del kernel (intérprete Python) y las salidas —incluyendo gráficas como texto base64—. Esto permite compartir resultados reproducibles sin que el receptor necesite ejecutar el código. Sin embargo, los archivos `.ipynb` no son amigables con Git porque los cambios en metadatos generan *diffs* ilegibles. Para este manual, se usa el formato `.qmd` de Quarto, que resuelve este problema.
+:::
+
+### Google Colab
+
+Google Colaboratory es un entorno Jupyter alojado en la nube que no requiere instalación local. Proporciona acceso gratuito a GPU/TPU, lo que lo hace valioso para tareas de aprendizaje automático. Sus limitaciones son la pérdida de archivos al cerrar la sesión y la dependencia de conexión a internet.
+
+Para usar los ejemplos de este manual en Colab, basta con copiar las celdas de código. Cuando sea necesario instalar paquetes no disponibles por defecto:
+
+```python
+# En Colab, las instalaciones son por sesión (se pierden al reiniciar):
+!pip install cobrapy --quiet
+```
+
+### Visual Studio Code
+
+VS Code es el entorno recomendado para el trabajo serio con este manual. Combina la ejecución interactiva de celdas (con la extensión Jupyter) con las ventajas de un editor de código completo: autocompletado inteligente, depuración, control de versiones integrado con Git y soporte nativo para Quarto. Los archivos `.qmd` se ejecutan y previsualizan directamente en VS Code con la extensión oficial de Quarto.
+
+---
+
+## 1.4 Tipos de Archivo: `.py`, `.ipynb` y `.qmd`
+
+| Formato | Descripción | Uso recomendado |
+|---|---|---|
+| `.py` | Script Python plano | Módulos, funciones reutilizables, pipelines |
+| `.ipynb` | Jupyter Notebook | Exploración de datos, prototipado |
+| `.qmd` | Quarto Markdown | Documentos técnicos, este manual, publicaciones |
+
+Los archivos `.qmd` son la columna vertebral de este manual. Mezclan texto académico en Markdown, ecuaciones en LaTeX, y bloques de código Python que se ejecutan en tiempo de renderización:
+
+````markdown
+---
+title: "Mi análisis metabólico"
+---
+
+## Introducción
+Aquí va el texto...
+
+```{{python}}
+import numpy as np
+S = np.array([[-1, 1], [1, -1]])
+print(S)
+```
+````
+
+---
+
+## 1.5 Organización del Proyecto
+
+Una estructura de directorios clara es tan importante como el código mismo. Para este manual, adoptamos la siguiente convención:
+
+```
+manual-fba/
+├── _quarto.yml          # Configuración del libro
+├── prologo.qmd
+├── indice-general.qmd
+├── chapters/            # Un .qmd por capítulo
+├── assets/
+│   ├── css/             # Estilos personalizados
+│   └── data/            # Datasets de ejemplo
+├── references.bib       # Bibliografía BibTeX
+├── requirements.txt     # Dependencias Python
+└── .gitignore           # Archivos ignorados por Git
+```
+
+::: {.callout-important}
+## 💻 Convención de nombrado de archivos
+
+Nombra los archivos `.qmd` con el prefijo numérico de su capítulo: `01-instalacion.qmd`, `02-tipos-datos.qmd`, etc. Esto garantiza que el sistema operativo los liste en orden cronológico y que Git los gestione de forma predecible. Usa guiones medios en lugar de espacios o guiones bajos: es la convención universal de URLs y sistemas de archivos modernos.
+:::
+
+---
+
+## 1.6 🔬 Ejercicio Integrador: Primer Script Biotecnológico
+
+::: {.ejercicio-header}
+Ejercicio 1.1 — Nivel: [Básico]{.badge-nivel .basico}
+:::
+
+::: {.ejercicio-body}
+El siguiente script integra los conceptos de este capítulo en un contexto biológico real. Analiza una secuencia de ADN y calcula propiedades básicas. Ejecútalo desde VS Code, Jupyter o la terminal.
+
+```python
+# ─────────────────────────────────────────────────────────────────
+# Script: analisis_secuencia.py
+# Descripción: Análisis básico de una secuencia de ADN codificante
+# Dependencias: ninguna (solo librería estándar de Python)
+# ─────────────────────────────────────────────────────────────────
+
+def analizar_secuencia(seq: str, nombre: str = "Secuencia") -> dict:
+    """
+    Calcula propiedades básicas de una secuencia de ADN.
+    
+    Parámetros
+    ----------
+    seq  : str  — Secuencia de ADN en mayúsculas (A, T, G, C)
+    nombre : str — Nombre descriptivo de la secuencia
+    
+    Retorna
+    -------
+    dict con longitud, contenido GC, composición y codones de inicio
+    """
+    seq = seq.upper().replace(" ", "").replace("\n", "")
+    
+    longitud = len(seq)
+    conteo   = {base: seq.count(base) for base in "ATGC"}
+    gc_content = (conteo["G"] + conteo["C"]) / longitud * 100
+    
+    # Buscar codones de inicio ATG
+    posiciones_atg = [i for i in range(len(seq) - 2) if seq[i:i+3] == "ATG"]
+    
+    return {
+        "nombre"       : nombre,
+        "longitud"     : longitud,
+        "composicion"  : conteo,
+        "gc_content"   : round(gc_content, 2),
+        "codones_inicio": posiciones_atg,
+    }
+
+
+def imprimir_reporte(resultado: dict) -> None:
+    """Imprime un reporte formateado del análisis."""
+    print(f"\n{'='*50}")
+    print(f"  REPORTE: {resultado['nombre']}")
+    print(f"{'='*50}")
+    print(f"  Longitud        : {resultado['longitud']} bp")
+    print(f"  Contenido GC    : {resultado['gc_content']} %")
+    print(f"  Composición     : {resultado['composicion']}")
+    print(f"  Codones ATG     : {len(resultado['codones_inicio'])} encontrado(s)")
+    print(f"  Posiciones ATG  : {resultado['codones_inicio']}")
+    print(f"{'='*50}\n")
+
+
+# ─── Fragmento del gen lacZ de E. coli (glucosidasa β-galactosidasa) ───
+seq_lacZ = """
+ATGACCATGATTACGCCAAGCTTGCATGCCTGCAGGTCGACGGATCCCCGGGAATTCGAG
+CTCGGTACCCGGGGATCCTCTAGAGTCGACCTGCAGGCATGCAAGCTTGGCGTAATCAT
+"""
+
+resultado = analizar_secuencia(seq_lacZ, nombre="lacZ - E. coli (fragmento)")
+imprimir_reporte(resultado)
+```
+
+**Salida esperada:**
+```
+==================================================
+  REPORTE: lacZ - E. coli (fragmento)
+==================================================
+  Longitud        : 120 bp
+  Contenido GC    : 52.5 %
+  Composición     : {'A': 25, 'T': 32, 'G': 33, 'C': 30}
+  Codones ATG     : 2 encontrado(s)
+  Posiciones ATG  : [0, 10]
+==================================================
+```
+
+**Preguntas para reflexión:**
+1. ¿Por qué el contenido GC de un gen es biológicamente relevante?
+2. Modifica la función para que también detecte codones de paro (TAA, TAG, TGA).
+3. ¿Qué cambiarías en la función para hacerla compatible con secuencias de ARN?
+:::
+
+---
+
+## 📚 Para Profundizar
+
+- **Grus, J.** (2019). *Data Science from Scratch*, 2ª ed. O'Reilly. — Capítulos 1–2 para fundamentos del entorno Python.
+- **McKinney, W.** (2022). *Python for Data Analysis*, 3ª ed. O'Reilly. — Capítulo 1: introducción al ecosistema científico.
+- **Documentación oficial de Python**: [https://docs.python.org/3/](https://docs.python.org/3/)
+- **Quarto — Getting Started**: [https://quarto.org/docs/get-started/](https://quarto.org/docs/get-started/)
+- **Real Python — Virtual Environments**: [https://realpython.com/python-virtual-environments-a-primer/](https://realpython.com/python-virtual-environments-a-primer/)

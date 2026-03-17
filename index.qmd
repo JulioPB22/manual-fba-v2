@@ -1,0 +1,29 @@
+---
+title: "Prefacio"
+author:
+  - name: "Ing. Julio Cesar Pantoja Barroso"
+    affiliation: "Unidad Profesional Interdisciplinaria de Ingeniería Campus Guanajuato (UPIIG), Instituto Politécnico Nacional (IPN)"
+  - name: "Ing. María Fernanda Manríquez García"
+    affiliation: "Unidad Profesional Interdisciplinaria de Ingeniería Campus Guanajuato (UPIIG), Instituto Politécnico Nacional (IPN)"
+  - name: "Dr. José Manuel Rivera Garnica"
+    affiliation: "Unidad Profesional Interdisciplinaria de Ingeniería Campus Guanajuato (UPIIG), Instituto Politécnico Nacional (IPN)"
+date: "Abril 2026"
+---
+
+# Bienvenida {.unnumbered}
+
+Este manual nació de una necesidad concreta: la escasez de material en español que integre de manera progresiva el lenguaje de programación Python con el Análisis de Balance de Flujos (*Flux Balance Analysis*, FBA).
+
+## Cómo usar este manual {.unnumbered}
+
+| Símbolo | Elemento | Propósito |
+|:---:|---|---|
+| 🧬 | **Motivación biológica** | ¿Por qué importa? |
+| 📐 | **Concepto** | La teoría necesaria |
+| 💻 | **Código reproducible** | Listo para ejecutar |
+| 🔬 | **Ejercicio** | Práctica guiada |
+| 📚 | **Para profundizar** | Lecturas recomendadas |
+
+---
+
+© Julio Pantoja 2026

@@ -1,0 +1,216 @@
+# GUÍA DE MIGRACIÓN — Manual FBA a VS Code + GitHub
+# Instrucciones completas paso a paso
+
+=======================================================================
+PARTE 1 — INSTALACIÓN DE HERRAMIENTAS
+=======================================================================
+
+## PASO 1: Instalar VS Code
+Descarga desde: https://code.visualstudio.com/
+Versión recomendada: la estable más reciente (≥ 1.89)
+
+## PASO 2: Instalar extensiones de VS Code
+Abre VS Code → Panel lateral izquierdo → ícono de extensiones (⌘+Shift+X / Ctrl+Shift+X)
+
+Instala las siguientes (busca por nombre exacto):
+
+  1. "Quarto" (quarto.quarto) — soporte completo para .qmd
+  2. "Python" (ms-python.python) — IntelliSense y ejecución de celdas
+  3. "Jupyter" (ms-toolsai.jupyter) — vista de notebooks interactivos
+  4. "GitLens" (eamodio.gitlens) — control de versiones avanzado
+  5. "Prettier - Code formatter" (esbenp.prettier-vscode) — formato de código
+
+## PASO 3: Instalar Quarto CLI
+Descarga desde: https://quarto.org/docs/get-started/
+Elige el instalador para tu sistema operativo.
+
+Verifica instalación en terminal:
+  quarto --version
+  # Debe mostrar: 1.5.x o superior
+
+## PASO 4: Instalar Python y dependencias
+Descarga Python 3.11+ desde: https://www.python.org/downloads/
+
+Luego en terminal:
+  pip install jupyter numpy pandas matplotlib cobrapy seaborn biopython
+
+Verifica:
+  python --version          # Python 3.11.x
+  pip show cobrapy          # Debe mostrar versión instalada
+
+=======================================================================
+PARTE 2 — ESTRUCTURA DEL PROYECTO EN VS CODE
+=======================================================================
+
+Crea una carpeta en tu computadora, por ejemplo:
+  C:\Users\TuNombre\Documentos\manual-fba\    (Windows)
+  ~/Documentos/manual-fba/                    (Mac/Linux)
+
+Estructura exacta que debes tener:
+
+manual-fba/
+├── _quarto.yml                    ← Configuración central (ya creado)
+├── index.qmd                      ← Prefacio (ya creado)
+├── prologo.qmd                    ← Prólogo al estudiante (nuevo)
+├── indice-general.qmd             ← Índice del manual (nuevo)
+├── references.bib                 ← Bibliografía BibTeX
+├── references.qmd                 ← Página de referencias
+├── assets/
+│   └── css/
+│       └── manual-fba.scss        ← Tema visual (ya creado)
+└── chapters/
+    ├── 01-instalacion.qmd
+    ├── 02-tipos-datos.qmd
+    ├── 03-numpy.qmd
+    ├── 04-pandas.qmd
+    ├── 05-control-flujo.qmd
+    ├── 06-visualizacion.qmd
+    ├── 07-paquetes-buenas-practicas.qmd
+    ├── 08-sistemas-biologicos.qmd
+    ├── 09-metabolismo-matematica.qmd
+    ├── 10-fundamentos-fba.qmd
+    ├── 11-formulacion-matematica.qmd
+    ├── 12-intro-cobrapy.qmd
+    ├── 13-analisis-resultados.qmd
+    ├── 14-casos-practicos.qmd
+    ├── 15-visualizacion-redes.qmd
+    ├── 16-errores-comunes.qmd
+    ├── 17-proyecto-final.qmd
+    ├── A-instalacion-detallada.qmd
+    ├── B-datasets.qmd
+    ├── C-glosario.qmd
+    └── D-como-citar.qmd
+
+## Abrir el proyecto en VS Code:
+  File → Open Folder → selecciona la carpeta manual-fba
+
+=======================================================================
+PARTE 3 — CONFIGURAR KERNEL DE PYTHON EN VS CODE
+=======================================================================
+
+1. Abre cualquier archivo .qmd
+2. En la barra inferior de VS Code verás "Select Kernel"
+3. Haz clic → "Python Environments" → selecciona Python 3.11+
+4. Si no aparece, abre la paleta de comandos (⌘+Shift+P / Ctrl+Shift+P)
+   → escribe "Python: Select Interpreter"
+   → elige el Python donde instalaste las dependencias
+
+=======================================================================
+PARTE 4 — COMANDOS QUARTO EN VS CODE
+=======================================================================
+
+En la terminal integrada de VS Code (Ctrl+` / ⌘+`):
+
+# Vista previa en vivo con hot-reload (recomendado durante escritura):
+quarto preview
+
+# Renderizar solo HTML:
+quarto render --to html
+
+# Renderizar solo un capítulo (más rápido durante desarrollo):
+quarto render chapters/01-instalacion.qmd --to html
+
+# Renderizar PDF (requiere LaTeX instalado):
+quarto render --to pdf
+
+# Ver en qué versiones están tus dependencias:
+quarto check
+
+Atajo rápido desde VS Code:
+  → Con un archivo .qmd abierto, aparece el botón "Preview" en la esquina
+    superior derecha (ícono de ojo). Úsalo para vista previa instantánea.
+
+=======================================================================
+PARTE 5 — CONFIGURAR GIT Y GITHUB
+=======================================================================
+
+## Instalar Git:
+  Windows: https://git-scm.com/download/win
+  Mac:     brew install git   (o viene preinstalado)
+  Linux:   sudo apt install git
+
+## Configurar identidad (una sola vez):
+  git config --global user.name "Tu Nombre"
+  git config --global user.email "tu@email.com"
+
+## Inicializar el repositorio local:
+  cd ~/Documentos/manual-fba
+  git init
+  git add .
+  git commit -m "🎉 Inicio del proyecto: plantilla base del manual FBA"
+
+## Crear repositorio en GitHub:
+  1. Ve a https://github.com → botón "New repository"
+  2. Nombre sugerido: "manual-fba-python" (público o privado)
+  3. NO marques "Initialize repository" (ya lo hiciste localmente)
+  4. Copia la URL del repositorio: https://github.com/TU-USUARIO/manual-fba-python.git
+
+## Conectar local con GitHub:
+  git remote add origin https://github.com/TU-USUARIO/manual-fba-python.git
+  git branch -M main
+  git push -u origin main
+
+## Flujo de trabajo diario (después de escribir o editar):
+  git add .
+  git commit -m "✏️ Cap. 3: agrego sección de broadcasting con ejemplo E. coli"
+  git push
+
+=======================================================================
+PARTE 6 — ARCHIVO .gitignore (PEGA ESTO COMO ARCHIVO EN LA RAÍZ)
+=======================================================================
+
+Crea un archivo llamado exactamente ".gitignore" en la raíz del proyecto:
+
+  _book/
+  _freeze/
+  .quarto/
+  __pycache__/
+  *.pyc
+  .DS_Store
+  Thumbs.db
+  *.egg-info/
+  .env
+  .venv/
+  env/
+
+=======================================================================
+PARTE 7 — CONVENCIÓN DE COMMITS RECOMENDADA
+=======================================================================
+
+Usa prefijos semánticos para que el historial sea legible:
+
+  🎉 init:      Inicio o estructura del proyecto
+  ✏️  content:   Redacción de contenido nuevo
+  🔧 fix:       Corrección de errores
+  📊 code:      Bloques de código Python
+  📚 refs:      Fuentes bibliográficas
+  🎨 style:     Cambios de diseño/CSS
+  🔬 review:    Revisión académica
+  📦 build:     Cambios en _quarto.yml o configuración
+
+Ejemplo:
+  git commit -m "✏️ content: prólogo al estudiante completo"
+  git commit -m "📊 code: ejercicios de matrices estequiométricas Cap.3"
+  git commit -m "🔬 review: revisión de terminología FBA Cap.10-11"
+
+=======================================================================
+PARTE 8 — PUBLICAR EL MANUAL EN LÍNEA (OPCIONAL — GitHub Pages)
+=======================================================================
+
+Quarto puede publicar automáticamente el HTML en GitHub Pages:
+
+  # En terminal dentro del proyecto:
+  quarto publish gh-pages
+
+  Esto:
+  1. Renderiza el manual completo
+  2. Crea una rama "gh-pages" en tu repositorio
+  3. Publica en: https://TU-USUARIO.github.io/manual-fba-python/
+
+Para configurar GitHub Pages:
+  → GitHub → tu repositorio → Settings → Pages
+  → Source: "Deploy from a branch" → Branch: gh-pages / root
+
+=======================================================================
+FIN DE LA GUÍA
+=======================================================================
