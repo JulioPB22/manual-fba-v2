@@ -35,7 +35,7 @@ $headings-font-weight: 700;
 $spacer: 1rem;
 
 // — Código —
-$code-bg:            #1E2732;       // Fondo oscuro para bloques de código
+$code-bg:            #d3deec;       // Fondo blanco para bloques de código
 $code-color:         #CDD9E5;
 $code-font-size:     0.88em;
 
@@ -66,10 +66,23 @@ body {
 }
 
 #quarto-content {
-  max-width: 1080px; /* Ajusta el ancho máximo para aprovechar mejor el espacio en pantallas grandes */
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+/* Contenedor del documento principal (centra el contenido sin mover la barra lateral) */
+main.content {
+  max-width: 1080px;
   width: 100%;
   margin: 0 auto;
-  padding: 0 1.2rem; /* Respeta márgenes laterales en pantallas pequeñas */
+  padding: 2.5rem 1.2rem 3.5rem;
+}
+
+/* Asegura que los bloques de código puedan ocupar el ancho disponible */
+pre.sourceCode {
+  max-width: 100%;
 }
 
 // Sidebar de navegación

@@ -68,8 +68,11 @@ book:
     foreground: "light"
     right:
       - icon: github
-        href: https://github.com/[tu-usuario]/manual-fba-python
+        href: https://github.com/JulioPB22/manual-fba-v2
         aria-label: GitHub
+      - icon: code-slash
+        href: https://github.com/JulioPB22/manual-fba-v2
+        aria-label: Source code
 
   sidebar:
     style: "docked"
@@ -86,7 +89,7 @@ book:
     foreground: "light"
 
   downloads: [pdf, epub]
-  repo-url: https://github.com/[tu-usuario]/manual-fba-python
+  repo-url: https://github.com/JulioPB22/manual-fba-v2
   repo-actions: [edit, issue]
   repo-branch: main
 
