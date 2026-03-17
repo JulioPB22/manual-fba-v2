@@ -17,3 +17,4 @@ env/
 
 /.quarto/
 **/*.quarto_ipynb
+*.tex

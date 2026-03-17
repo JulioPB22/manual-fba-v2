@@ -98,7 +98,7 @@ div.csl-indent {
 <link href="../site_libs/quarto-html/quarto-syntax-highlighting-8a36787d37a309c00503ce8984a43a6b.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-7e29095fd6801b388fb53898fd2568a8.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-5f0d506fcbf9304d4cc71b0daeba3116.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -499,7 +499,7 @@ window.Quarto = {
 <section id="motivación-biológica" class="level2" data-number="6.1">
 <h2 data-number="6.1" class="anchored" data-anchor-id="motivación-biológica"><span class="header-section-number">6.1</span> 🧬 Motivación biológica</h2>
 <p>La biología de sistemas cuantitativa descansa sobre una estructura matemática central: la <strong>matriz estequiométrica</strong> <span class="math inline">\(S\)</span>. Esta matriz, de dimensiones <span class="math inline">\(m \times n\)</span> donde <span class="math inline">\(m\)</span> es el número de metabolitos y <span class="math inline">\(n\)</span> el número de reacciones, codifica toda la topología de la red metabólica. Cada columna es una reacción; cada fila, un metabolito; cada entrada <span class="math inline">\(S_{ij}\)</span>, el coeficiente estequiométrico del metabolito <span class="math inline">\(i\)</span> en la reacción <span class="math inline">\(j\)</span> (negativo si es sustrato, positivo si es producto).</p>
-<p>Cuando el modelo de <em>E. coli</em> a escala de genoma iJO1366 <span class="citation" data-cites="orth2011comprehensive">(<a href="../references.html#ref-orth2011comprehensive" role="doc-biblioref">Orth et&nbsp;al., 2011</a>)</span> contiene 1,805 metabolitos y 2,712 reacciones, <span class="math inline">\(S\)</span> tiene dimensiones 1,805 × 2,712 y más de cuatro millones de entradas. Manejar esa información con listas de Python sería imprácticamente lento. NumPy resuelve este problema con arreglos almacenados en bloques contiguos de memoria C, permitiendo operaciones sobre millones de valores en microsegundos.</p>
+<p>Cuando el modelo de <em>E. coli</em> a escala de genoma iJO1366 <span class="citation" data-cites="orth2011comprehensive">(<a href="#ref-orth2011comprehensive" role="doc-biblioref">Orth et&nbsp;al., 2011</a>)</span> contiene 1,805 metabolitos y 2,712 reacciones, <span class="math inline">\(S\)</span> tiene dimensiones 1,805 × 2,712 y más de cuatro millones de entradas. Manejar esa información con listas de Python sería imprácticamente lento. NumPy resuelve este problema con arreglos almacenados en bloques contiguos de memoria C, permitiendo operaciones sobre millones de valores en microsegundos.</p>
 <hr>
 </section>
 <section id="el-ndarray-estructura-fundamental" class="level2" data-number="6.2">
@@ -746,7 +746,7 @@ window.Quarto = {
 
 <!-- -->
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list">
 <div id="ref-orth2011comprehensive" class="csl-entry" role="listitem">
 Orth, J. D., Conrad, T. M., Na, J., Lerman, J. A., Nam, H., Feist, A. M., &amp; Palsson, B. Ø. (2011). A comprehensive genome-scale reconstruction of <span>Escherichia coli</span> metabolism—2011. <em>Molecular Systems Biology</em>, <em>7</em>, 535. <a href="https://doi.org/10.1038/msb.2011.65">https://doi.org/10.1038/msb.2011.65</a>
 </div>
